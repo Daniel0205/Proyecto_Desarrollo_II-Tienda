@@ -35,7 +35,7 @@ class Admin_page extends Component {
 
   handleClick(e) {
 
-    fetch("/Client/desactivate", {
+    fetch("/Client/deactivate", {
       method: "POST",
       headers: {
         Accept: "application/json, text/plain, */*",

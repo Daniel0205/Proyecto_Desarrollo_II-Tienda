@@ -15,6 +15,11 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Background from "../Images/books.jpg";
 
+import { Redirect } from 'react-router-dom'
+
+var logged = false;
+var email = "", password = "";
+
 function MadeWithLove() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -53,11 +58,34 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function SignInSide() {
+
   const classes = useStyles();
 
-  function handleClick(e) {
+  function handleClick(e) { if(!logged)
     e.preventDefault();
-    console.log('The link was clicked.');
+    fetch ("/Client", {
+      method: 'POST',
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({email,password})
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.success) {
+        console.log("logged"); 
+        logged = true; 
+      }
+        
+    });
+  }
+
+  function handleChange(e) {  
+    if (e.target.name === 'email')
+      email = e.target.value;
+    if (e.target.name === 'password')
+      password = e.target.value;
   }
 
   return (
@@ -83,6 +111,8 @@ export default function SignInSide() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={e => handleChange(e)}
+              onSubmit={e => e}
             />
             <TextField
               variant="outlined"
@@ -94,18 +124,19 @@ export default function SignInSide() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={e => handleChange(e)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
             <Button
-              // type="submit"
+              type="submit"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={handleClick}
+              onClick={handleClick} 
             >
               Sign In
             </Button>
