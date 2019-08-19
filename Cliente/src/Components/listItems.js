@@ -5,13 +5,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import CategoryIcon from '@material-ui/icons/Category';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import StoreIcon from '@material-ui/icons/Store';
+import ViewListIcon from '@material-ui/icons/ViewList';
 import { Link } from 'react-router-dom'
 
 export const mainListItemsAdmin = (
@@ -87,32 +87,32 @@ export const mainListItemsClient = (
       <ListItemText primary="Dashboard" />
     </ListItem>
 
-    <ListItem button >
+    <ListItem button component={Link} to="/User_page/store">
+      <ListItemIcon>
+        <StoreIcon />
+      </ListItemIcon>
+      <ListItemText primary="Tienda" />
+    </ListItem>
+
+    <ListItem button component={Link} to="/User_page/shopping_car">
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
-      <ListItemText primary="Orders" />
+      <ListItemText primary="Carrito de compras" />
     </ListItem>
 
-    <ListItem button>
+    <ListItem button component={Link} to="/User_page/buy_list">
       <ListItemIcon>
-        <PeopleIcon />
+        <ViewListIcon />
       </ListItemIcon>
-      <ListItemText primary="Customers" />
+      <ListItemText primary="Historial de compras" />
     </ListItem>
 
-    <ListItem button>
+    <ListItem button component={Link} to="/User_page/account">
       <ListItemIcon>
-        <BarChartIcon />
+        <AccountCircleIcon />
       </ListItemIcon>
-      <ListItemText primary="Reports" />
-    </ListItem>
-    
-    <ListItem button>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
+      <ListItemText primary="Opciones de cuenta" />
     </ListItem>
   </div>);
 

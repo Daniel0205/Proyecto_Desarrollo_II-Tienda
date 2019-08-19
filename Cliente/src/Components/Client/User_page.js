@@ -12,16 +12,17 @@ import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItemsAdmin, secondaryListItemsAdmin } from '../../listItems';
+import { mainListItemsClient, secondaryListItemsClient } from '../listItems';
 import { makeStyles } from '@material-ui/core/styles';
-import Activate_Client from '../Activate_Client/Activate_Client';
-import Products from '../Products';
-import Categories from '../Categories';
-import Subcategories from '../Subcategories';
+import Account from './Account';
+import Store from './Store';
+import Shopping_car from './Shopping_car'
+import Buy_list from './Buy_list'
 import { Route } from 'react-router-dom'
 
 
 const drawerWidth = 240;
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -104,7 +105,7 @@ const useStyles = makeStyles(theme => ({
 
 
 
-export default function Admin_page(props) {
+export default function User_page(props) {
 
 
   const classes = useStyles();
@@ -118,6 +119,7 @@ export default function Admin_page(props) {
     setOpen(false);
   };
 
+  
     
   return (
     <div>
@@ -157,15 +159,16 @@ export default function Admin_page(props) {
             </IconButton>
           </div>
           <Divider />
-          <List onSelect={e => console.log(e)} component="nav">{mainListItemsAdmin}</List>
+          <List onSelect={e => console.log(e)} component="nav">{mainListItemsClient}</List>
           <Divider />
-          <List>{secondaryListItemsAdmin}</List>
+          <List>{secondaryListItemsClient}</List>
         </Drawer>
         
-        <Route  path="/Admin_page/Activate_Client" component={Activate_Client} />
-        <Route  path="/Admin_page/categories" component={Categories} />
-        <Route  path="/Admin_page/subcategories" component={Subcategories} />
-        <Route  path="/Admin_page/products" component={Products} />
+        <Route  path="/User_page/account" component={Account} />
+        <Route  path="/User_page/shopping_car" component={Shopping_car} />
+        <Route  path="/User_page/store" component={Store} />
+        <Route  path="/User_page/buy_list" component={Buy_list} />
+
         
     </div>);
   

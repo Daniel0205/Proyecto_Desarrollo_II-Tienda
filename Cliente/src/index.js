@@ -10,7 +10,7 @@ import Sign_up from "./Components/Sign_up"
 import Admin_page from './Components/Admin/Admin_page/Admin_page'
 
 
-import User_page from './Components/User_page';
+import User_page from './Components/Client/User_page';
 
 
 import { Provider } from 'react-redux';

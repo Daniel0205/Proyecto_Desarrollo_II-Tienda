@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Input} from '@material-ui/core'
 
-export default class User_page extends React.Component {
+export default class Account extends React.Component {
 
   constructor(props){
     super(props);
@@ -260,7 +260,7 @@ actualizarDatos(e){
 
     render(){
 
-      console.log(this.state)
+      
       return( 
       
       <div className='botons'>
