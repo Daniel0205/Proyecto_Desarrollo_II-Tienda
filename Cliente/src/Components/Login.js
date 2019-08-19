@@ -14,11 +14,15 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Background from "../Images/books.jpg";
+import updateUsername from '../store/username/action'
+import updateType from '../store/type/action'
+import {connect} from "react-redux"
 
-import { Redirect } from 'react-router-dom'
+
+//import { Redirect } from 'react-router-dom'
 
 var logged = false;
-var email = "", password = "";
+var username = "", password = "";
 
 function MadeWithLove() {
   return (
@@ -57,11 +61,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignInSide() {
+const SignInSide = ({updateUsername,updateType}) =>{
 
   const classes = useStyles();
 
-  function handleClick(e) { if(!logged)
+  function handleClick(e) { 
+    if(!logged)
     e.preventDefault();
     fetch ("/Client", {
       method: 'POST',
@@ -69,21 +74,24 @@ export default function SignInSide() {
         Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({email,password})
+      body: JSON.stringify({username,password})
     })
     .then(res => res.json())
     .then(res => {
-      if (res.success) {
-        console.log("logged"); 
-        logged = true; 
+      if(res.bool){
+        updateUsername(res.username);
+        updateType(res.type)
       }
-        
+      else{
+        console.log("NO entro")
+      }
     });
+    
   }
 
   function handleChange(e) {  
-    if (e.target.name === 'email')
-      email = e.target.value;
+    if (e.target.name === 'username')
+      username = e.target.value;
     if (e.target.name === 'password')
       password = e.target.value;
   }
@@ -106,10 +114,10 @@ export default function SignInSide() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
               onChange={e => handleChange(e)}
               onSubmit={e => e}
@@ -131,11 +139,11 @@ export default function SignInSide() {
               label="Remember me"
             />
             <Button
-              type="submit"
+              
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit}
+              className={classes.submit} 
               onClick={handleClick} 
             >
               Sign In
@@ -156,3 +164,6 @@ export default function SignInSide() {
     </Grid>
   );
 }
+
+
+export default  connect (null, {updateUsername,updateType}) (SignInSide);

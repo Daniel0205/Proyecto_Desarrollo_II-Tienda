@@ -10,13 +10,8 @@ const Pool = require('pg-pool');
 ////////////////////////////////////////////
 //////////CONFIGURACION DEL ORM ////////////
 ////////////////////////////////////////////
-const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('Library', 'postgres', '1234', {
-  host: 'localhost',
-  dialect: 'postgres',
-})
-const db = require('./config/database.js')
+const sequelize = require('./config/database.js')
 
 
 /////////////////////////////////////////////

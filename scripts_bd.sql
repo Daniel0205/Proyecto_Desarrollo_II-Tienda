@@ -19,9 +19,8 @@ CREATE TABLE client(
 
 DROP TABLE IF EXISTS admin CASCADE;
 CREATE TABLE admin(
-   id	        CHAR(9) PRIMARY KEY,	
-   password	    TEXT NOT NULL,
-   username	    TEXT NOT NULL
+   username     TEXT PRIMARY KEY,	
+   password	    TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS message CASCADE;
@@ -113,3 +112,4 @@ INSERT INTO public.client(
 	 ('josette', 'Josette', 'Drouin', '1990-12-22', 'CC', 7757000001, '1234', 7006667099, 'F','Cll 66 7-14', 'josette_D@gmail.com' , 330, true),
 	 ('clehar', 'Clement ', 'Harrelson', '1995-11-22', 'CC', 4447000001, '1234', 5009967092, 'N','Cra 56 7-184', 'clehar@gmail.com' , 329, true);
 	
+insert into admin(password,username) values('1234','1629338'),('1234','1670129'),('1234','1630536'),('1234','1625644');

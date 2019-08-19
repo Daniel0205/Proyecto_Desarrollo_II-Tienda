@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bd = require('../config/database');
 const Client = require('../models/Client');
+const Admin = require('../models/Admin');
 
 
 /////////////////////////////////////////////////////
@@ -74,7 +75,7 @@ router.post("/deactivate", function (req, res) {
         })
 })
 
-
+/*
 //////PRUEBA
 const session = require("express-session");
 
@@ -83,30 +84,37 @@ router.use(session({
     resave: true,
     saveUninitialized: true
 }));
+*/
 
 //Modificar los datos de un producto especifico de la base de datos
 router.post("/", function (req, res) {
-    let { email, password } = req.body;
-    req.session.count = req.session.count ? req.session.count + 1 : 0;
+    let { username, password } = req.body;
+  //  req.session.count = req.session.count ? req.session.count + 1 : 0;
     Client.findOne({
-        attributes: ['password'],
-        where: { email: email }
+        attributes: ['username'],
+        where: { username: username ,password: password }
     })
-        .then(x => {
-            if (x.password === password) {
-                //res.send(`${req.session.count}`);
-                res.jsonp({ success: true });
-              } else {
-                res.jsonp({
-                  success: false,
-                  message: 'Email o contraseña incorrecta'
-                });
-              }
-        })
-        .catch(err => {
-            console.log(err)
-            res.json({ bool: false })
-        });
+    .then(x => {
+        console.log("NO ENCONTRO")
+        if (x===null){
+            Admin.findOne({
+                attributes: ['username'],
+                where: { username: username ,password: password }
+            })
+            .then(x=>{
+                if (x!==null)res.json({bool: true , username: username, type: "admin" })
+                else res.json({ bool: false })
+            })
+        }
+        else{
+                res.json({bool: true , username: username, type: "client" })
+        }
+    })
+    .catch(err => {
+        
+        console.log(err)
+        res.json({ bool: false })
+    });
 })
 
 

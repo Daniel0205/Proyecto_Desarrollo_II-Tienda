@@ -12,24 +12,29 @@ import Products from './Components/Products';
 import Categories from './Components/Categories';
 import Subcategories from './Components/Subcategories';
 
+import { Provider } from 'react-redux';
+import store from './store'
+
 
 const routing = (
-    <Router>
-      <div>
-        <Route exact="/" component={App} />
-        <Redirect from="/" to="/home" />
+    <Provider store={store}>
+      <Router>
+        <div>
+          <Route exact component={App} />
+          <Redirect from="/" to="/home" />
 
-        <Route exact path="/home" component={Home} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/sign_up" component={Sign_up} />
+          <Route exact path="/home" component={Home} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/sign_up" component={Sign_up} />
 
-        <Route exact path="/admin_page" component={Admin_page} />
-        <Route exact path="/user_page" component={User_page} />
-        <Route exact path="/products" component={Products} />
-        <Route exact path="/categories" component={Categories} />
-        <Route exact path="/subcategories" component={Subcategories} />
-      </div>
-    </Router>
+          <Route exact path="/admin_page" component={Admin_page} />
+          <Route exact path="/user_page" component={User_page} />
+          <Route exact path="/products" component={Products} />
+          <Route exact path="/categories" component={Categories} />
+          <Route exact path="/subcategories" component={Subcategories} />
+        </div>
+      </Router>
+    </Provider>
   )
 
 ReactDOM.render(routing, document.getElementById('root'));
