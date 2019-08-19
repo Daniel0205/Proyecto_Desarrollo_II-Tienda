@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import {Select} from '@material-ui/core';
+import {Select,Button} from '@material-ui/core';
 import { JsonToTable } from "react-json-to-table";
-import "./Admin_page.css"
+import "./Activate_Client.css"
 
 
 class Admin_page extends Component {
@@ -87,7 +87,7 @@ class Admin_page extends Component {
       <div>
         <JsonToTable json={this.state.algo} />
         <br />
-        <button id="desactivar" onClick={this.handleClick }>activate/deactivate</button>
+        <Button id="desactivar" onClick={this.handleClick }>activate/deactivate</Button>
         <Select 
                     name="categoryName"
                     value={this.state.status}
