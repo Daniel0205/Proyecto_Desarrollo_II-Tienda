@@ -88,7 +88,7 @@ class Admin_page extends Component {
         <br /><br />
         <JsonToTable json={this.state.algo} />
         <br />
-        <Button id="desactivar" onClick={this.handleClick}>activate/deactivate</Button>
+        <Button id="desactivar" onClick={this.handleClick}>activate/deactivate&nbsp;</Button>
         <Select
           name="categoryName"
           value={this.state.status}
@@ -96,7 +96,7 @@ class Admin_page extends Component {
           placeholder="Selecciona una subcategoria:"
         >
           <option value="Select" >
-            Selecciona una categoria:
+            Select a client:
                     </option>
           {this.state.algo.Client.map(x =>
             <option value={x.username} key={x.username}>
