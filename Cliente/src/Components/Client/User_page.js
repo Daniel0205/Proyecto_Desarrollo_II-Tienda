@@ -28,6 +28,12 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+  },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
   },
@@ -55,14 +61,14 @@ const useStyles = makeStyles(theme => ({
   },
   menuButton: {
     marginRight: 36,
-  },  
+  },
   menuButtonHidden: {
     display: 'none',
   },
   title: {
     flexGrow: 1,
   },
-  drawerPaper: {
+  drawerPaper: { 
     position: 'relative',
     whiteSpace: 'nowrap',
     width: drawerWidth,
@@ -87,12 +93,13 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
+    padding: '60px 15px 25px 15px',
   },
-  container: {
+  container: { 
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
   },
-  paper: {
+  paper: { 
     padding: theme.spacing(2),
     display: 'flex',
     overflow: 'auto',
@@ -119,57 +126,60 @@ export default function User_page(props) {
     setOpen(false);
   };
 
-  
-    
+
+
   return (
-    <div>
-        <CssBaseline />
-        <AppBar className={clsx(classes.appBar, open && classes.appBarShift)} id="menuD">
-          <Toolbar className={classes.toolbar}>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-              Dashboard
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar className={clsx(classes.appBar, open && classes.appBarShift)} id="menuD">
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+            Dashboard
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </Toolbar>
-        </AppBar>
+          <IconButton color="inherit">
+            <Badge badgeContent={4} color="secondary">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+        </Toolbar>
+      </AppBar>
 
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-          }}
-          open={open}
-        >
-          <div className={classes.toolbarIcon}>
-            <IconButton onClick={handleDrawerClose}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </div>
-          <Divider />
-          <List onSelect={e => console.log(e)} component="nav">{mainListItemsClient}</List>
-          <Divider />
-          <List>{secondaryListItemsClient}</List>
-        </Drawer>
-        
-        <Route  path="/User_page/account" component={Account} />
-        <Route  path="/User_page/shopping_car" component={Shopping_car} />
-        <Route  path="/User_page/store" component={Store} />
-        <Route  path="/User_page/buy_list" component={Buy_list} />
+      <Drawer
+        className={classes.drawer}
+        variant="permanent"
+        classes={{
+          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+        }}
+        anchor="left"
+        open={open}
+      >
+        <div className={classes.toolbarIcon}>
+          <IconButton onClick={handleDrawerClose}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+        <Divider />
+        <List onSelect={e => console.log(e)} component="nav">{mainListItemsClient}</List>
+        <Divider />
+        <List>{secondaryListItemsClient}</List>
+      </Drawer>
 
-        
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <Route path="/User_page/buy_list" component={Buy_list} />
+        <Route path="/User_page/account" component={Account} />
+        <Route path="/User_page/shopping_car" component={Shopping_car} />
+        <Route path="/User_page/store" component={Store} />
+      </main>
     </div>);
-  
+
 }
