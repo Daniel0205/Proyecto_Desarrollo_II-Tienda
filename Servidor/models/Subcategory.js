@@ -17,8 +17,8 @@ const Subcategory = db.define ('subcategory',{
 },{
     freezeTableName: true,
     timestamps: false,
-
 })
+
 
 
 Subcategory.hasMany(Book,{ foreignKey: 'name_subcategory'});

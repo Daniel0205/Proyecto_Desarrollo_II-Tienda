@@ -8,7 +8,7 @@ const BillBook = db.define ('bill_book',{
         type: Sequelize.BIGINT,
         primaryKey: true 
     },
-    ISBN:{
+    isbn:{
         type: Sequelize.BIGINT,
         primaryKey: true 
     },
@@ -21,7 +21,6 @@ const BillBook = db.define ('bill_book',{
     timestamps: false
 })
 
-BillBook.belongsTo(Bill,{foreingkey: 'id_bill', sourcekey:'id_bill'});
-BillBook.hasMany(Book,{foreingkey: 'ISBN', sourcekey:'ISBN'});
+BillBook.hasMany(Book,{foreingkey: 'isbn', sourcekey:'isbn'});
 
 module.exports = BillBook;

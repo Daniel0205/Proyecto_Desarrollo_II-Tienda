@@ -12,7 +12,7 @@ const Admin = require('../models/Admin');
 //Insertar productos en la base de datos
 router.post("/insert", function (req, res) {
 
-    delete req.body.tipo
+    //delete req.body.tipo
 
     Client.create(req.body)
         .then(x => res.json([{ bool: true }]))

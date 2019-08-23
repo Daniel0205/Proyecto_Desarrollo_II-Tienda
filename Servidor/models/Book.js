@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database')
 
+
 const Book = db.define ('book',{
     isbn:{
         type: Sequelize.BIGINT,
@@ -52,9 +53,8 @@ const Book = db.define ('book',{
     }
 },{
     freezeTableName: true,
-    timestamps: false
+    timestamps: false,
+
 })
-
-
 
 module.exports = Book;

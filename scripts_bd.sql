@@ -99,11 +99,50 @@ CREATE TABLE inventario(
    availability	    INT NOT NULL
 );
 
-INSERT INTO category VALUES ('DRAMA','CUALQUIERA PARCE');
-INSERT INTO subcategory VALUES ('JUVENIL','DRAMA', 'CUALQUIERA PARCE');
+--Registros de ejemplo
+
+INSERT INTO admin(password,username) values
+   ('1234','1629338'),
+   ('1234','1670129'),
+   ('1234','1630536'),
+   ('1234','1625644');
+
+INSERT INTO category VALUES 
+   ('Académicos','CUALQUIERA PARCE'),
+   ('Novelas','CUALQUIERA PARCE'),
+   ('Lenguas','CUALQUIERA PARCE'),
+   ('Poesía','CUALQUIERA PARCE'),
+   ('Filosofía','CUALQUIERA PARCE');
+
+INSERT INTO subcategory VALUES 
+   ('Humanidades','Académicos', 'CUALQUIERA PARCE'),
+   ('Salud','Académicos', 'CUALQUIERA PARCE'),
+   ('Ciencias exactas','Académicos', 'CUALQUIERA PARCE'),
+   ('Ingenieria','Académicos', 'CUALQUIERA PARCE'),
+   ('Diccionarios','Académicos', 'CUALQUIERA PARCE'),
+   ('Fantástica','Novelas', 'CUALQUIERA PARCE'),
+   ('Histórica','Novelas', 'CUALQUIERA PARCE'),
+   ('Misterio','Novelas', 'CUALQUIERA PARCE'),
+   ('Drama','Novelas', 'CUALQUIERA PARCE'),
+   ('Juvenil','Novelas', 'CUALQUIERA PARCE'),
+   ('Inglés','Lenguas', 'CUALQUIERA PARCE'),
+   ('Portugués','Lenguas', 'CUALQUIERA PARCE'),
+   ('Francés','Lenguas', 'CUALQUIERA PARCE'),
+   ('Alemán','Lenguas', 'CUALQUIERA PARCE'),
+   ('Italiano','Lenguas', 'CUALQUIERA PARCE'),
+   ('Drámatica','Poesía', 'CUALQUIERA PARCE'),
+   ('Lírica','Poesía', 'CUALQUIERA PARCE'),
+   ('Épica','Poesía', 'CUALQUIERA PARCE'),
+   ('Vanguardista','Poesía', 'CUALQUIERA PARCE'),
+   ('Contemporánea','Poesía', 'CUALQUIERA PARCE'),
+   ('Metafísica','Filosofía', 'CUALQUIERA PARCE'),
+   ('Lógica','Filosofía', 'CUALQUIERA PARCE'),
+   ('Filosofía del lenguaje','Filosofía', 'CUALQUIERA PARCE'),
+   ('Epistemología','Filosofía', 'CUALQUIERA PARCE'),
+   ('Filosofía política','Filosofía', 'CUALQUIERA PARCE');
 
 
-INSERT INTO public.client(
+INSERT INTO client(
 	username, first_name, last_name, date_birth, type_id, id, password, phone_number,gender, address, email, credit_card_number, state)
 	VALUES 
 	 ('dan', 'Darren', 'Haan', '2000-06-23', 'CC', 116554391, '1234', 3146884001,'M', 'Cl 5 5N-45', 'dar.han@gmail.com' , 333, true), 
@@ -112,4 +151,6 @@ INSERT INTO public.client(
 	 ('josette', 'Josette', 'Drouin', '1990-12-22', 'CC', 7757000001, '1234', 7006667099, 'F','Cll 66 7-14', 'josette_D@gmail.com' , 330, true),
 	 ('clehar', 'Clement ', 'Harrelson', '1995-11-22', 'CC', 4447000001, '1234', 5009967092, 'N','Cra 56 7-184', 'clehar@gmail.com' , 329, true);
 	
-insert into admin(password,username) values('1234','1629338'),('1234','1670129'),('1234','1630536'),('1234','1625644');
+INSERT INTO book VALUES
+   (),
+   ();

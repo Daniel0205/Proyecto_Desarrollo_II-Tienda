@@ -15,16 +15,13 @@ router.get("/consult", (req,res) =>{
 
 
 //consulta todas las categorias en la base de datos
-router.post("/create", (req,res) =>{
+router.post("/createCategory", (req,res) =>{
   
   let {name_category,description} = req.body
 
 
   // Insert into table
-  Category.create({
-    description,
-    name_category
-  })
+  Category.create(req.body)
     .then(x =>res.json({bool:true}))
     .catch(err => {
       console.log(err)
