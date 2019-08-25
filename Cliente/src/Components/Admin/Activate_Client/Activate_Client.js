@@ -88,12 +88,12 @@ class Admin_page extends Component {
         <br /><br />
         <JsonToTable json={this.state.algo} />
         <br />
-        <Button id="desactivar" onClick={this.handleClick}>activate/deactivate&nbsp;</Button>
+        <Button id="desactivar" onClick={this.handleClick}>Activate/Deactivate&nbsp;</Button>
         <Select
           name="categoryName"
           value={this.state.status}
           onChange={(x) => this.setState({ status: x.target.value })}
-          placeholder="Selecciona una subcategoria:"
+          placeholder="Select a client:"
         >
           <option value="Select" >
             Select a client:

@@ -81,22 +81,22 @@ export default class Sign_up extends React.Component {
       <label >Last name:</label>
       <Input type="text" onChange={(x)=>this.setState({last_name:x.target.value})} value={this.state.last_name}></Input><br/>
 
-      <label >Date birth:</label>
+      <label >Birthdate:</label>
       <TextField type ="date" onChange={(x)=>this.setState({date_birth:x.target.value})} value={this.state.date_birth}></TextField><br/>
 
-      <label >Type ID:</label>
+      <label >ID type:</label>
       <Select onSelect={(x)=>this.setState({type_id:x.target.value})} value="CC">
-        <option value="CC">Cedula de ciudadania</option>
-        <option value="TI">Tarjeta de identidad</option>         
-        <option value="RC">Registro Civil</option>         
-        <option value="TP">Pasaporte</option>         
+        <option value="CC">Citizen's ID</option>
+        <option value="TI">Identity card</option>         
+        <option value="RC">Civil registration</option>         
+        <option value="TP">Passport</option>         
       </Select><br/>
 
       <label>Genero:</label>
       <Select onSelect={(x)=>this.setState({gender:x.target.value})} value="F">
-        <option value="F">Femenino</option>
-        <option value="M">Masculino</option>         
-        <option value="N">No definido</option>         
+        <option value="F">Female</option>
+        <option value="M">Male</option>         
+        <option value="N">Undefined</option>         
       </Select><br/>
 
       <label >ID:</label>
@@ -108,7 +108,7 @@ export default class Sign_up extends React.Component {
       <label >Address:</label>
       <Input type="text" onChange={(x)=>this.setState({address:x.target.value})} value={this.state.address}></Input><br/>
 
-      <label >Email:</label>
+      <label >E-mail:</label>
       <Input type="text" onChange={(x)=>this.setState({email:x.target.value})} value={this.state.email}></Input><br/>
 
       <label>Credit card number:</label>

@@ -177,14 +177,14 @@ class Account extends React.Component {
       case "modify":
         return (
           <div>
-            <h1>Edit your information</h1>
+            <h1>Edit your information:</h1>
             <label >First name:</label>
             <Input id='first_name' type="text" placeholder='first_name*' onChange={this.actualizarDatos} value={this.state.first_name}></Input><br />
 
             <label >Last name:</label>
             <Input id='last_name' type="text" placeholder='last_name*' onChange={this.actualizarDatos} value={this.state.last_name}></Input><br />
 
-            <label >Date birth:</label>
+            <label >Birthdate:</label>
             <Input id='date_birth' type="text" placeholder='date_birth*' onChange={this.actualizarDatos} value={this.state.date_birth}></Input><br />
 
             <label>Phone number:</label>
@@ -193,7 +193,7 @@ class Account extends React.Component {
             <label >Address:</label>
             <Input id='address' type="text" placeholder='address*' onChange={this.actualizarDatos} value={this.state.address}></Input><br />
 
-            <label>Email:</label>
+            <label>E-mail:</label>
             <Input id='email' type="text" placeholder='email*' onChange={this.actualizarDatos} value={this.state.email}></Input><br />
 
             <label >Credit card number:</label>
@@ -212,7 +212,6 @@ class Account extends React.Component {
 
         return (
           <div>
-            <h1>Put the username of your account</h1>
             <label>Username:</label>
             <Input id='username' type="text" disabled placeholder='username*' onChange={e => this.setState({ username: e.target.value })} value={this.state.username}></Input><br />
 
@@ -222,7 +221,7 @@ class Account extends React.Component {
             <label >Last name:</label>
             <Input id='last_name' type="text" disabled placeholder='last_name*' onChange={this.actualizarDatos} value={this.state.last_name}></Input><br />
 
-            <label >Date birth:</label>
+            <label >Birthdate:</label>
             <Input id='date_birth' type="text" disabled placeholder='date_birth*' onChange={this.actualizarDatos} value={this.state.date_birth}></Input><br />
 
             <label >Phone number:</label>
@@ -231,7 +230,7 @@ class Account extends React.Component {
             <label >Address:</label>
             <Input id='address' type="text" disabled placeholder='address*' onChange={this.actualizarDatos} value={this.state.address}></Input><br />
 
-            <label >Email:</label>
+            <label >E-mail:</label>
             <Input id='email' type="text" disabled placeholder='email*' onChange={this.actualizarDatos} value={this.state.email}></Input><br />
 
             <label >Credit card number:</label>
@@ -247,7 +246,7 @@ class Account extends React.Component {
 
         return (
           <div>
-            <Button id='delete' onClick={this.deleteClient} >Confirmar</Button>
+            <Button id='delete' onClick={this.deleteClient} >Confirm</Button>
           </div>
         );
       default:
@@ -260,9 +259,9 @@ class Account extends React.Component {
     return (
       <div className='botons'>
 
-        <Button onClick={() => this.setState({ tipo: "modify" })}>Modify my information</Button><br />
-        <Button onClick={() => this.setState({ tipo: "consult" })}>Consult my information</Button><br />
-        <Button onClick={() => this.setState({ tipo: "delete" })}>I want to delete my profile</Button><br />
+        <Button onClick={() => this.setState({ tipo: "modify" })}>Modify information</Button><br />
+        <Button onClick={() => this.setState({ tipo: "consult" })}>Consult information</Button><br />
+        <Button onClick={() => this.setState({ tipo: "delete" })}>Delete profile</Button><br />
         {this.cambioPagina()}
       </div>
     );
