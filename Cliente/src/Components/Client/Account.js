@@ -1,12 +1,17 @@
 import React from 'react';
 import { Button, Input } from '@material-ui/core'
+import {getUsername} from '../../store/username/reducer'
+import {connect} from 'react-redux'
+import updateUsername from '../../store/username/action'
+import updateType from '../../store/type/action'
 
-export default class Account extends React.Component {
+class Account extends React.Component {
 
   constructor(props) {
     super(props);
-
+    console.log(this.props)
     this.state = {
+      username:this.props.username,
       first_name: '',
       last_name: '',
       date_birth: '',
@@ -24,6 +29,7 @@ export default class Account extends React.Component {
     this.deleteClient = this.deleteClient.bind(this);
     this.cambioPagina = this.cambioPagina.bind(this);
     this.actualizarDatos = this.actualizarDatos.bind(this);
+    this.consultClient()
   }
 
 
@@ -84,8 +90,12 @@ export default class Account extends React.Component {
     })
       .then(res => res.json())
       .then(res => {
+        console.log(res)
+
         if (res[0].bool) {
-          console.log("funciona");
+          this.props.updateUsername("");
+          this.props.updateType("init")
+
         }
         else {
           console.log("no funciona");
@@ -160,7 +170,6 @@ export default class Account extends React.Component {
         break;
     }
   }
-  //<Input name="isbn" type="text" placeholder='ISBN*' onChange={this.actualizarDatos} value={this.state.isbn}/> <br/>
   cambioPagina(e) {
 
     switch (this.state.tipo) {
@@ -169,28 +178,28 @@ export default class Account extends React.Component {
         return (
           <div>
             <h1>Edit your information</h1>
-            <label for="first_name">First name:</label>
+            <label >First name:</label>
             <Input id='first_name' type="text" placeholder='first_name*' onChange={this.actualizarDatos} value={this.state.first_name}></Input><br />
 
-            <label for="last_name">Last name:</label>
+            <label >Last name:</label>
             <Input id='last_name' type="text" placeholder='last_name*' onChange={this.actualizarDatos} value={this.state.last_name}></Input><br />
 
-            <label for="date_birth">Date birth:</label>
+            <label >Date birth:</label>
             <Input id='date_birth' type="text" placeholder='date_birth*' onChange={this.actualizarDatos} value={this.state.date_birth}></Input><br />
 
-            <label for="phone_number">Phone number:</label>
+            <label>Phone number:</label>
             <Input id='phone_number' type="text" placeholder='phone_number*' onChange={this.actualizarDatos} value={this.state.phone_number}></Input><br />
 
-            <label for="address">Address:</label>
+            <label >Address:</label>
             <Input id='address' type="text" placeholder='address*' onChange={this.actualizarDatos} value={this.state.address}></Input><br />
 
-            <label for="email">Email:</label>
+            <label>Email:</label>
             <Input id='email' type="text" placeholder='email*' onChange={this.actualizarDatos} value={this.state.email}></Input><br />
 
-            <label for="credit_card_number">Credit card number:</label>
+            <label >Credit card number:</label>
             <Input id='credit_card_number' type="text" placeholder='credit_card_number*' onChange={this.actualizarDatos} value={this.state.credit_card_number}></Input><br />
 
-            <label for="password">Password:</label>
+            <label >Password:</label>
             <Input id='password' type="password" placeholder='password*' onChange={this.actualizarDatos} value={this.state.password}></Input><br />
 
             <Button id='modify' onClick={this.modCliente} >Edit</Button>
@@ -204,33 +213,31 @@ export default class Account extends React.Component {
         return (
           <div>
             <h1>Put the username of your account</h1>
-            <label for="username">Username:</label>
-            <Input id='username' type="text" placeholder='username*' onChange={e => this.setState({ username: e.target.value })} value={this.state.username}></Input><br />
+            <label>Username:</label>
+            <Input id='username' type="text" disabled placeholder='username*' onChange={e => this.setState({ username: e.target.value })} value={this.state.username}></Input><br />
 
-            <Button id='consult' onClick={this.consultClient} >Consult</Button><br />
-
-            <label for="first_name">First name:</label>
+            <label >First name:</label>
             <Input id='first_name' type="text" disabled placeholder='first_name*' onChange={this.actualizarDatos} value={this.state.first_name}></Input><br />
 
-            <label for="last_name">Last name:</label>
+            <label >Last name:</label>
             <Input id='last_name' type="text" disabled placeholder='last_name*' onChange={this.actualizarDatos} value={this.state.last_name}></Input><br />
 
-            <label for="date_birth">Date birth:</label>
+            <label >Date birth:</label>
             <Input id='date_birth' type="text" disabled placeholder='date_birth*' onChange={this.actualizarDatos} value={this.state.date_birth}></Input><br />
 
-            <label for="phone_number">Phone number:</label>
+            <label >Phone number:</label>
             <Input id='phone_number' type="text" disabled placeholder='phone_number*' onChange={this.actualizarDatos} value={this.state.phone_number}></Input><br />
 
-            <label for="address">Address:</label>
+            <label >Address:</label>
             <Input id='address' type="text" disabled placeholder='address*' onChange={this.actualizarDatos} value={this.state.address}></Input><br />
 
-            <label for="email">Email:</label>
+            <label >Email:</label>
             <Input id='email' type="text" disabled placeholder='email*' onChange={this.actualizarDatos} value={this.state.email}></Input><br />
 
-            <label for="credit_card_number">Credit card number:</label>
+            <label >Credit card number:</label>
             <Input id='credit_card_number' type="text" disabled placeholder='credit_card_number*' onChange={this.actualizarDatos} value={this.state.credit_card_number}></Input><br />
 
-            <label for="password">Password:</label>
+            <label >Password:</label>
             <Input id='password' type="password" disabled placeholder='password*' onChange={this.actualizarDatos} value={this.state.password}></Input><br />
 
           </div>
@@ -240,12 +247,7 @@ export default class Account extends React.Component {
 
         return (
           <div>
-            <h1>Put the username of your account</h1>
-            <label for="username">Username:</label>
-            <Input id='username' type="text" placeholder='username*' onChange={e => this.setState({ username: e.target.value })} value={this.state.username}></Input><br />
-
-            <Button id='delete' onClick={this.deleteClient} >Delete</Button>
-
+            <Button id='delete' onClick={this.deleteClient} >Confirmar</Button>
           </div>
         );
       default:
@@ -257,8 +259,7 @@ export default class Account extends React.Component {
 
     return (
       <div className='botons'>
-        <h1>Welcome "inserte nombre aqui"</h1>
-        <h2>What do you want to do?...</h2>
+
         <Button onClick={() => this.setState({ tipo: "modify" })}>Modify my information</Button><br />
         <Button onClick={() => this.setState({ tipo: "consult" })}>Consult my information</Button><br />
         <Button onClick={() => this.setState({ tipo: "delete" })}>I want to delete my profile</Button><br />
@@ -268,3 +269,12 @@ export default class Account extends React.Component {
   }
 }
 
+
+const mapStateToProps= state => {
+  return {
+    username: getUsername(state)
+  }
+}
+
+export default connect (mapStateToProps, {updateUsername,updateType})(Account);
+ 

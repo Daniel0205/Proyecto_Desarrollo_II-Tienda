@@ -20,6 +20,7 @@ class  App extends Component {
       case "init":
           return (
             <div>
+              <Redirect to="/login" />
               <AppBar position="static">
                 <Toolbar>
         

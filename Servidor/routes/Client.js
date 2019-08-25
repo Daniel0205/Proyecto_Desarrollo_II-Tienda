@@ -17,7 +17,6 @@ router.post("/insert", function (req, res) {
     Client.create(req.body)
         .then(x => res.json([{ bool: true }]))
         .catch(err => {
-            cosnole.log(err)
             res.json([{ bool: false }])
         });
 
