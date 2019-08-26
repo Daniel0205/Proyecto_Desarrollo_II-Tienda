@@ -18,6 +18,8 @@ import Activate_Client from '../Activate_Client/Activate_Client';
 import Products from '../Products';
 import Categories from '../Categories';
 import Subcategories from '../Subcategories';
+import Message from '../Message';
+import Bill from '../Bill';
 import { Route } from 'react-router-dom'
 
 
@@ -174,6 +176,8 @@ export default function Admin_page(props) {
         <Route path="/Admin_page/categories" component={Categories} />
         <Route path="/Admin_page/subcategories" component={Subcategories} />
         <Route path="/Admin_page/products" component={Products} />
+        <Route path="/Admin_page/message" component={Message} />
+        <Route path="/Admin_page/bill" component={Bill} />
       </main>
     </div>);
 

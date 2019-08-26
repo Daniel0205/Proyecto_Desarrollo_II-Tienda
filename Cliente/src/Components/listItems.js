@@ -13,8 +13,12 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import StoreIcon from '@material-ui/icons/Store';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ContactMailIcon from '@material-ui/icons/ContactMail';
+import MessageIcon from '@material-ui/icons/Message';
+import HistoryIcon from '@material-ui/icons/History';
 //import LocationCityIcon from '@material-ui/icons/LocationCity';
 import { Link } from 'react-router-dom'
+
 
 
 export const mainListItemsAdmin = (
@@ -53,6 +57,20 @@ export const mainListItemsAdmin = (
       </ListItemIcon>
       <ListItemText primary="Subcategories" />
     </ListItem>
+
+    <ListItem button component={Link} to="/Admin_page/message">
+      <ListItemIcon>
+        <MessageIcon />
+      </ListItemIcon>
+      <ListItemText primary="Messages" />
+    </ListItem>
+
+    <ListItem button component={Link} to="/Admin_page/bill">
+      <ListItemIcon>
+        <HistoryIcon />
+      </ListItemIcon>
+      <ListItemText primary="Bill history" />
+    </ListItem>
   </div>);
 
 
@@ -78,11 +96,8 @@ export const secondaryListItemsAdmin = (
       </ListItemIcon>
       <ListItemText primary="Year-end sale" />
     </ListItem>
-    <ListSubheader inset></ListSubheader>
-    <ListItem onClick={()=>{
-                  this.props.updateType("init")
-                  this.props.updateUsername("")
-                }}  component={Link}to={`/home/`} button>
+    <ListSubheader inset>Session</ListSubheader>
+    <ListItem  component={Link}to={`/home/`} button>
       <ListItemIcon>
         <ExitToAppIcon />
       </ListItemIcon>
@@ -131,12 +146,18 @@ export const mainListItemsClient = (
 
 export const secondaryListItemsClient = (
   <div>
-    <ListSubheader inset></ListSubheader>
-    <ListItem button>
+    <ListSubheader inset>Session</ListSubheader>
+    <ListItem button component={Link} to="/User_page/contact_us">
+      <ListItemIcon>
+        <ContactMailIcon />
+      </ListItemIcon>
+      <ListItemText primary="Contact us" />
+    </ListItem>
+    <ListItem  component={Link}to={`/home/`} button>
       <ListItemIcon>
         <ExitToAppIcon />
       </ListItemIcon>
-      <ListItemText primary="Current month" />
+      <ListItemText primary="Sign off" />
     </ListItem>
 
   </div>

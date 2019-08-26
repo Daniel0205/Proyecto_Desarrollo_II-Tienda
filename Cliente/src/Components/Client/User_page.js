@@ -16,6 +16,7 @@ import Account from './Account';
 import Store from './Store';
 import Shopping_car from './Shopping_car'
 import Buy_list from './Buy_list'
+import Contact_us from './Contact_us'
 import { Route } from 'react-router-dom'
 
 
@@ -174,6 +175,7 @@ export default function User_page(props) {
         <Route path="/User_page/account" component={Account} />
         <Route path="/User_page/shopping_car" component={Shopping_car} />
         <Route path="/User_page/store" component={Store} />
+        <Route path="/User_page/contact_us" component={Contact_us} />
       </main>
     </div>);
 
