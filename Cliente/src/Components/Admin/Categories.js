@@ -147,25 +147,25 @@ export default class Categories extends React.Component {
       switch(this.state.type){
         case "Search":
             return (<div key="0">
-              <h2 >Nombre:</h2>
+              <h2 >Name:</h2>
               <h3 >{this.state.name}</h3>
 
               <h2 >Description:</h2>
               <h3 >{this.state.description}</h3>
 
-              <Button onClick={()=>this.setState({type:"Actualizar"})}>Actualizar</Button>
-              <Button onClick={this.eliminar}>Eliminar</Button>
+              <Button onClick={()=>this.setState({type:"Actualizar"})}>Update</Button>
+              <Button onClick={this.eliminar}>Delete</Button>
           
             </div>);
         case "Actualizar":
           return ( <div>
             <form>
-              <h3>Nombre de la categoria:</h3>
+              <h3>Category name:</h3>
               <Input value={this.state.name} onChange={this.handleName} disabled/><br/>
-              <h3>Descripcion de la categoria:</h3>
-              <Input value={this.state.description} onChange={this.handleDescription} placeholder='Descripcion de la categoria'/><br/>
-              <Button onClick={this.actualizar}>Actualizar</Button>
-              <Button onClick={()=>this.setState({type:"Search"})}>Cancelar</Button>
+              <h3>Description of the category</h3>
+              <Input value={this.state.description} onChange={this.handleDescription} placeholder='Description of the category'/><br/>
+              <Button onClick={this.actualizar}>Update</Button>
+              <Button onClick={()=>this.setState({type:"Search"})}>Cancel</Button>
             </form>
           </div>);
         default:
@@ -179,7 +179,7 @@ export default class Categories extends React.Component {
 
     if(this.state.type!=='Create'){
       return (<div>
-        <h1>Categorias</h1>
+        <h1>Category</h1>
         
         <Select
               name="categoryName"
@@ -187,7 +187,7 @@ export default class Categories extends React.Component {
               onChange={this.handleSelect}
             >
               <option value="Select" > 
-                Selecciona una categoria:
+                Select a category:
               </option>
               {this.state.categoryNames.map(x =>
                         <option value={x.name_category} key={x.name_category}>
@@ -199,20 +199,20 @@ export default class Categories extends React.Component {
                           type:"Create",
                           name:"",
                           description:"",
-                        })}>Crear Categoria</Button>
+                        })}>Create Category</Button>
       </div>);
     }
     else{
       return(
         <div>
-          <h1>Categorias</h1>
+          <h1>Category</h1>
           <form>
-            <h3>Nombre de la categoria:</h3>
-            <Input value={this.state.name} onChange={this.handleName} placeholder='Nombre de la categoria'/><br/>
-            <h3>Descripcion de la categoria:</h3>
-            <Input value={this.state.description} onChange={this.handleDescription} placeholder='Descripcion de la categoria'/><br/>
-            <Button onClick={this.crear}>Crear</Button>
-            <Button onClick={()=>this.setState({type:"Search",selected:"Select"})}>Cancelar</Button>
+            <h3>Category name:</h3>
+            <Input value={this.state.name} onChange={this.handleName} placeholder='Category name'/><br/>
+            <h3>Description of the category"</h3>
+            <Input value={this.state.description} onChange={this.handleDescription} placeholder='Description of the category'/><br/>
+            <Button onClick={this.crear}>Create</Button>
+            <Button onClick={()=>this.setState({type:"Search",selected:"Select"})}>Cancel</Button>
           </form>
         </div>
       )

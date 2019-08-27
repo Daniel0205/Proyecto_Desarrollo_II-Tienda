@@ -79,6 +79,7 @@ const SignInSide = ({updateUsername,updateType}) =>{
     .then(res => res.json())
     .then(res => {
       if(res.bool){
+        console.log(res)
         updateUsername(res.username);
         updateType(res.type)
       }

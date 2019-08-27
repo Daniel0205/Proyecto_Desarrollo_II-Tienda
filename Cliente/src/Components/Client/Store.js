@@ -5,6 +5,6 @@ import React from 'react';
 export default class Store extends React.Component {
 
     render(){      
-      return (<h1>tienda</h1>);
+      return (<h1>Store</h1>);
     }
   }

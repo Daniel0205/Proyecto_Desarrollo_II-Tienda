@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Input} from '@material-ui/core'
+import {Button, Input, Select } from '@material-ui/core'
 
 export default class Products extends React.Component {
 
@@ -201,22 +201,38 @@ export default class Products extends React.Component {
         return(
           <div>
             <hr/>
-            <p>Inserte los datos del producto que desea agregar</p>
+            <p>Enter the product data you want to add:</p>
             <form>
+              <label>ISBN*:</label> <br/>
               <Input name="isbn" type="text" placeholder='ISBN*' onChange={this.actualizarDatos} value={this.state.isbn}/> <br/>
-              <Input name="name_subcategory" type="text" placeholder='Subcategoria*' onChange={this.actualizarDatos} value={this.state.name_subcategory}/> <br/>
-              <Input name="publication_year" type="text" placeholder='Año*' onChange={this.actualizarDatos} value={this.state.publication_year}/> <br/>
-              <Input name="synopsis" type="text" placeholder='Sipnosis*' onChange={this.actualizarDatos} value={this.state.synopsis}/> <br/>
-              <Input name="title" type="text" placeholder='Titulo*' onChange={this.actualizarDatos} value={this.state.title}/> <br/>
-              <Input name="author" type="text" placeholder='Autor*' onChange={this.actualizarDatos} value={this.state.author}/> <br/>
-              <Input name="number_of_pages" type="text" placeholder='Páginas*' onChange={this.actualizarDatos} value={this.state.number_of_pages}/> <br/>
-              <Input name="price" type="text" placeholder='Precio*' onChange={this.actualizarDatos} value={this.state.price}/> <br/>
-              <Input name="editorial" type="text" placeholder='Editorial*' onChange={this.actualizarDatos} value={this.state.editorial}/> <br/>
-              <Input name="edition" type="text" placeholder='Edición*' onChange={this.actualizarDatos} value={this.state.edition}/> <br/>
-              <Input name="lang" type="text" placeholder='Lenguaje*' onChange={this.actualizarDatos} value={this.state.lang}/><br/> 
-              <Input name="cover_type" type="text" placeholder='Tipo de cubierta*' onChange={this.actualizarDatos} value={this.state.cover_type}/><br/>
-              <Input name="recommended_age" type="text" placeholder='Edad recomedada*' onChange={this.actualizarDatos} value={this.state.recommended_age}/> <br/>
-              <Button  onClick={this.insertpro}>Insertar producto</Button> <br/>
+              <label>Subcategory*:</label> <br/>
+              <Input name="name_subcategory" type="text" placeholder='Subcategory*' onChange={this.actualizarDatos} value={this.state.name_subcategory}/> <br/>
+              <label>Year of publication*:</label> <br/>
+              <Input name="publication_year" type="number" min="2019" onChange={this.actualizarDatos} value={this.state.publication_year}/> <br/>
+              <label>Synopsis*:</label> <br/>
+              <Input name="synopsis" type="text" placeholder='Synopsis*' onChange={this.actualizarDatos} value={this.state.synopsis}/> <br/>
+              <label>Title*:</label> <br/>
+              <Input name="title" type="text" placeholder='Title*' onChange={this.actualizarDatos} value={this.state.title}/> <br/>
+              <label>Author*:</label> <br/>
+              <Input name="author" type="text" placeholder='Author*' onChange={this.actualizarDatos} value={this.state.author}/> <br/>
+              <label>Number of pages*:</label> <br/>
+              <Input name="number_of_pages" type="number" min="1" onChange={this.actualizarDatos} value={this.state.number_of_pages}/> <br/>
+              <label>Price*:</label> <br/>
+              <Input name="price" type="text" placeholder='Price*' onChange={this.actualizarDatos} value={this.state.price}/> <br/>
+              <label>Editión*:</label> <br/>
+              <Input name="editorial" type="number" min="1" onChange={this.actualizarDatos} value={this.state.editorial}/> <br/>
+              <label>Editorial*:</label> <br/>
+              <Input name="edition" type="text" placeholder='Editión*' onChange={this.actualizarDatos} value={this.state.edition}/> <br/>
+              <label>Language*:</label> <br/>
+              <Input name="lang" type="text" placeholder='Language*' onChange={this.actualizarDatos} value={this.state.lang}/><br/> 
+              <label>Cover type::</label>
+              <Select onSelect={(x)=>this.setState({cover_type:x.target.value})} value="G">
+                <option value="G">Gross</option>
+                <option value="B">Soft</option>               
+              </Select><br/>
+              <label>Recommended age*</label>
+              <Input name="recommended_age" type="text" placeholder='Recommended age*' onChange={this.actualizarDatos} value={this.state.recommended_age}/> <br/>
+              <Button  onClick={this.insertpro}>Insert product</Button> <br/>
             </form>
           </div>
         );
@@ -224,22 +240,35 @@ export default class Products extends React.Component {
         return(
           <div>
             <hr/>
-            <p>Inserte el isbn del producto que desea consultar </p>
+            <p>Enter the product data you want to consult:</p>
             <form>
-              <Input name="isbn" type="text" placeholder='ISBN*' onChange={this.actualizarDatos} value={this.state.isbn}/>
+              <label>ISBN*:</label> <br/>
+              <Input name="isbn" type="text"   value={this.state.isbn}/>
               <Button onClick={this.getpro}>Consultar producto</Button> <br/>
-              <Input name="name_subcategory" type="text" disabled placeholder='Subcategoria*' onChange={this.actualizarDatos} value={this.state.name_subcategory}/> <br/>
-              <Input name="publication_year" type="text" disabled placeholder='Año*' onChange={this.actualizarDatos} value={this.state.publication_year}/> <br/>
-              <Input name="synopsis" type="text" disabled placeholder='Sipnosis*' onChange={this.actualizarDatos} value={this.state.synopsis}/> <br/>
-              <Input name="title" type="text" disabled placeholder='Titulo*' onChange={this.actualizarDatos} value={this.state.title}/> <br/>
-              <Input name="author" type="text" disabled placeholder='Autor*' onChange={this.actualizarDatos} value={this.state.author}/> <br/>
-              <Input name="number_of_pages" type="text" disabled placeholder='Páginas*' onChange={this.actualizarDatos} value={this.state.number_of_pages}/> <br/>
-              <Input name="price" type="text" disabled placeholder='Precio*' onChange={this.actualizarDatos} value={this.state.price}/> <br/>
-              <Input name="editorial" type="text" disabled placeholder='Editorial*' onChange={this.actualizarDatos} value={this.state.editorial}/> <br/>
-              <Input name="edition" type="text" disabled placeholder='Edición*' onChange={this.actualizarDatos} value={this.state.edition}/> <br/>
-              <Input name="lang" type="text" disabled placeholder='Lenguaje*' onChange={this.actualizarDatos} value={this.state.lang}/><br/> 
-              <Input name="cover_type" type="text" disabled placeholder='Tipo de cubierta*' onChange={this.actualizarDatos} value={this.state.cover_type}/><br/>
-              <Input name="recommended_age" type="text" disabled placeholder='Edad recomedada*' onChange={this.actualizarDatos} value={this.state.recommended_age}/> <br/>
+              <label>Subcategory*:</label> <br/>
+              <Input name="name_subcategory" type="text" disabled   value={this.state.name_subcategory}/> <br/>
+              <label>Year of publication*:</label> <br/>
+              <Input name="publication_year" type="text" disabled  value={this.state.publication_year}/> <br/>
+              <label>Synopsis*:</label> <br/>
+              <Input name="synopsis" type="text" disabled   value={this.state.synopsis}/> <br/>
+              <label>Title*:</label> <br/>
+              <Input name="title" type="text" disabled   value={this.state.title}/> <br/>
+              <label>Author*:</label> <br/>
+              <Input name="author" type="text" disabled    value={this.state.author}/> <br/>
+              <label>Number of pages*:</label> <br/>
+              <Input name="number_of_pages" type="text" disabled   value={this.state.number_of_pages}/> <br/>
+              <label>Price*:</label> <br/>
+              <Input name="price" type="text" disabled   value={this.state.price}/> <br/>
+              <label>Editorial*:</label> <br/>
+              <Input name="editorial" type="text" disabled   value={this.state.editorial}/> <br/>
+              <label>Editión*:</label> <br/>
+              <Input name="edition" type="text" disabled   value={this.state.edition}/> <br/>
+              <label>Language*:</label> <br/>
+              <Input name="lang" type="text" disabled   value={this.state.lang}/><br/> 
+              <label>Cover type:</label>
+              <Input name="cover_type" type="text" disabled   value={this.state.cover_type}/><br/>
+              <label>Recommended age*</label>
+              <Input name="recommended_age" type="text" disabled   value={this.state.recommended_age}/> <br/>
             </form>
           </div>
         );
@@ -247,23 +276,39 @@ export default class Products extends React.Component {
         return(
           <div>
             <hr/>
-            <p>Inserte los datos del producto que desea modificar</p>
+            <p>Enter the product data you want to update:</p>
             <form>
-              <Input name="isbn" type="text" placeholder='ISBN*' onChange={this.actualizarDatos} value={this.state.isbn}/> 
+              <label>ISBN*:</label> <br/>
+              <Input name="isbn" type="text" onChange={this.actualizarDatos} value={this.state.isbn}/> 
               <Button onClick={this.getpro}>Cargar producto</Button> <br/>
-              <Input name="name_subcategory" type="text" placeholder='Subcategoria*' onChange={this.actualizarDatos} value={this.state.name_subcategory}/> <br/>
-              <Input name="publication_year" type="text" placeholder='Año*' onChange={this.actualizarDatos} value={this.state.publication_year}/> <br/>
-              <Input name="synopsis" type="text" placeholder='Sipnosis*' onChange={this.actualizarDatos} value={this.state.synopsis}/> <br/>
-              <Input name="title" type="text" placeholder='Titulo*' onChange={this.actualizarDatos} value={this.state.title}/> <br/>
-              <Input name="author" type="text" placeholder='Autor*' onChange={this.actualizarDatos} value={this.state.author}/> <br/>
-              <Input name="number_of_pages" type="text" placeholder='Páginas*' onChange={this.actualizarDatos} value={this.state.number_of_pages}/> <br/>
-              <Input name="price" type="text" placeholder='Precio*' onChange={this.actualizarDatos} value={this.state.price}/> <br/>
+              <label>Subcategory*:</label> <br/>
+              <Input name="name_subcategory" type="text" onChange={this.actualizarDatos} value={this.state.name_subcategory}/> <br/>
+              <label>Year of publication*:</label> <br/>
+              <Input name="publication_year" type="number" min="2019"  onChange={this.actualizarDatos} value={this.state.publication_year}/> <br/>
+              <label>Synopsis*:</label> <br/>
+              <Input name="synopsis" type="text" onChange={this.actualizarDatos} value={this.state.synopsis}/> <br/>
+              <label>Title*:</label> <br/>
+              <Input name="title" type="text" onChange={this.actualizarDatos} value={this.state.title}/> <br/>
+              <label>Author*:</label> <br/>
+              <Input name="author" type="text" onChange={this.actualizarDatos} value={this.state.author}/> <br/>
+              <label>Number of pages*:</label> <br/>
+              <Input name="number_of_pages" type="number" min="1" onChange={this.actualizarDatos} value={this.state.number_of_pages}/> <br/>
+              <label>Price*:</label> <br/>
+              <Input name="price" type="text"  onChange={this.actualizarDatos} value={this.state.price}/> <br/>
+              <label>Editorial*:</label> <br/>
               <Input name="editorial" type="text" placeholder='Editorial*' onChange={this.actualizarDatos} value={this.state.editorial}/> <br/>
-              <Input name="edition" type="text" placeholder='Edición*' onChange={this.actualizarDatos} value={this.state.edition}/> <br/>
-              <Input name="lang" type="text" placeholder='Lenguaje*' onChange={this.actualizarDatos} value={this.state.lang}/><br/> 
-              <Input name="cover_type" type="text" placeholder='Tipo de cubierta*' onChange={this.actualizarDatos} value={this.state.cover_type}/><br/>
-              <Input name="recommended_age" type="text" placeholder='Edad recomedada*' onChange={this.actualizarDatos} value={this.state.recommended_age}/> <br/>
-              <Button  onClick={this.updatepro}>Actualizar producto</Button> <br/>
+              <label>Editión*:</label> <br/>
+              <Input name="edition" type="number" min="1" placeholder='Editión*' onChange={this.actualizarDatos} value={this.state.edition}/> <br/>
+              <label>Language*:</label> <br/>
+              <Input name="lang" type="text" placeholder='Language*' onChange={this.actualizarDatos} value={this.state.lang}/><br/> 
+              <label>Cover type:</label>
+              <Select onSelect={(x)=>this.setState({cover_type:x.target.value})} value="G">
+                <option value="G">Gross</option>
+                <option value="B">Soft</option>               
+              </Select><br/>
+              <label>Recommended age*</label>
+              <Input name="recommended_age" type="text" placeholder='Recommended age*' onChange={this.actualizarDatos} value={this.state.recommended_age}/> <br/>
+              <Button  onClick={this.updatepro}>Update product</Button> <br/>
             </form>          
           </div>
         );
@@ -271,9 +316,9 @@ export default class Products extends React.Component {
         return(
           <div>
             <hr/>
-            <p>Inserte el isbn del producto que desea eliminar</p>
+            <p>Select the product data you want to add:</p>
             <Input name="isbn" type="text" placeholder='ISBN*' onChange={this.actualizarDatos} value={this.state.isbn}/> <br/>
-            <Button  onClick={this.deletepro}>Eliminar producto</Button>
+            <Button  onClick={this.deletepro}>Delete product</Button>
           </div>
         );
       default:
@@ -285,10 +330,10 @@ export default class Products extends React.Component {
       return (
         <div className='botns'>
         <h1>Products</h1>
-        <Button onClick={() => this.setState({tipo: "insertar"})}>INSERTAR PRODUCTOS</Button>
-        <Button onClick={() => this.setState({tipo: "obtener"})}>OBTENER PRODUCTOS</Button>
-        <Button onClick={() => this.setState({tipo: "actualizar"})}>ACTUALIZAR PRODUCTOS</Button>
-        <Button onClick={() => this.setState({tipo: "eliminar"})}>ELIMINAR PRODUCTOS</Button>
+        <Button onClick={() => this.setState({tipo: "insertar"})}>INSERT PRODUCT</Button>
+        <Button onClick={() => this.setState({tipo: "obtener"})}>CONSULT PRODUCTS</Button>
+        <Button onClick={() => this.setState({tipo: "actualizar"})}>UPDATE PRODUCTS</Button>
+        <Button onClick={() => this.setState({tipo: "eliminar"})}>DELETE PRODUCTS</Button>
         {this.action()}
       </div>
       );

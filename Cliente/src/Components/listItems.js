@@ -12,7 +12,14 @@ import CategoryIcon from '@material-ui/icons/Category';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import StoreIcon from '@material-ui/icons/Store';
 import ViewListIcon from '@material-ui/icons/ViewList';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ContactMailIcon from '@material-ui/icons/ContactMail';
+import MessageIcon from '@material-ui/icons/Message';
+import HistoryIcon from '@material-ui/icons/History';
+//import LocationCityIcon from '@material-ui/icons/LocationCity';
 import { Link } from 'react-router-dom'
+
+
 
 export const mainListItemsAdmin = (
   <div>
@@ -27,28 +34,42 @@ export const mainListItemsAdmin = (
       <ListItemIcon>
         <LocalLibraryIcon />
       </ListItemIcon>
-      <ListItemText primary="Productos" />
+      <ListItemText primary="Products" />
     </ListItem>
 
     <ListItem button component={Link} to="/Admin_page/Activate_Client">
       <ListItemIcon>
         <PersonAddDisabledIcon />
       </ListItemIcon>
-      <ListItemText primary="Clientes" />
+      <ListItemText primary="Customers" />
     </ListItem>
 
     <ListItem button component={Link} to="/Admin_page/categories">
       <ListItemIcon>
         <CategoryIcon />
       </ListItemIcon>
-      <ListItemText primary="Categorias" />
+      <ListItemText primary="Categories" />
     </ListItem>
     
     <ListItem button component={Link} to="/Admin_page/subcategories">
       <ListItemIcon>
         <CategoryIcon />
       </ListItemIcon>
-      <ListItemText primary="Subcategorias" />
+      <ListItemText primary="Subcategories" />
+    </ListItem>
+
+    <ListItem button component={Link} to="/Admin_page/message">
+      <ListItemIcon>
+        <MessageIcon />
+      </ListItemIcon>
+      <ListItemText primary="Messages" />
+    </ListItem>
+
+    <ListItem button component={Link} to="/Admin_page/bill">
+      <ListItemIcon>
+        <HistoryIcon />
+      </ListItemIcon>
+      <ListItemText primary="Bill history" />
     </ListItem>
   </div>);
 
@@ -75,6 +96,13 @@ export const secondaryListItemsAdmin = (
       </ListItemIcon>
       <ListItemText primary="Year-end sale" />
     </ListItem>
+    <ListSubheader inset>Session</ListSubheader>
+    <ListItem  component={Link}to={`/home/`} button>
+      <ListItemIcon>
+        <ExitToAppIcon />
+      </ListItemIcon>
+      <ListItemText primary="Sign off" />
+    </ListItem>
   </div>
 );
 
@@ -91,51 +119,46 @@ export const mainListItemsClient = (
       <ListItemIcon>
         <StoreIcon />
       </ListItemIcon>
-      <ListItemText primary="Tienda" />
+      <ListItemText primary="Store" />
     </ListItem>
 
     <ListItem button component={Link} to="/User_page/shopping_car">
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
-      <ListItemText primary="Carrito de compras" />
+      <ListItemText primary="Shopping cart" />
     </ListItem>
 
     <ListItem button component={Link} to="/User_page/buy_list">
       <ListItemIcon>
         <ViewListIcon />
       </ListItemIcon>
-      <ListItemText primary="Historial de compras" />
+      <ListItemText primary="Shopping history" />
     </ListItem>
 
     <ListItem button component={Link} to="/User_page/account">
       <ListItemIcon>
         <AccountCircleIcon />
       </ListItemIcon>
-      <ListItemText primary="Opciones de cuenta" />
+      <ListItemText primary="Account options" />
     </ListItem>
   </div>);
 
 export const secondaryListItemsClient = (
   <div>
-    <ListSubheader inset>Saved reports</ListSubheader>
-    <ListItem button>
+    <ListSubheader inset>Session</ListSubheader>
+    <ListItem button component={Link} to="/User_page/contact_us">
       <ListItemIcon>
-        <AssignmentIcon />
+        <ContactMailIcon />
       </ListItemIcon>
-      <ListItemText primary="Current month" />
+      <ListItemText primary="Contact us" />
     </ListItem>
-    <ListItem button>
+    <ListItem  component={Link}to={`/home/`} button>
       <ListItemIcon>
-        <AssignmentIcon />
+        <ExitToAppIcon />
       </ListItemIcon>
-      <ListItemText primary="Last quarter" />
+      <ListItemText primary="Sign off" />
     </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
-    </ListItem>
+
   </div>
 );

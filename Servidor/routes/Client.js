@@ -17,17 +17,16 @@ router.post("/insert", function (req, res) {
     Client.create(req.body)
         .then(x => res.json([{ bool: true }]))
         .catch(err => {
-            cosnole.log(err)
             res.json([{ bool: false }])
         });
 
 })
-//consulta todas las subcategorias en la base de datos
+//consulta todas los usuarios en la base de datos
 router.get("/consult", (req, res) => {
 
     Client.findAll({
         attributes: ['username', 'first_name', 'last_name', 'date_birth', 'type_id', 'id', 'phone_number', 'address',
-            'email', 'credit_card_number', [bd.cast(bd.col('state'), 'VARCHAR(5)'), 'state']]
+            'email', ['credit_card_number', 'credit card'], [bd.cast(bd.col('state'), 'VARCHAR(5)'), 'state active']]
     })
         .then(x => res.json([{ Client: x }]))
         .catch(err => {

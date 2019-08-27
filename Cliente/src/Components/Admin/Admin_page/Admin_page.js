@@ -18,6 +18,8 @@ import Activate_Client from '../Activate_Client/Activate_Client';
 import Products from '../Products';
 import Categories from '../Categories';
 import Subcategories from '../Subcategories';
+import Message from '../Message';
+import Bill from '../Bill';
 import { Route } from 'react-router-dom'
 
 
@@ -26,6 +28,12 @@ const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+  },
+  drawer: {
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
@@ -54,7 +62,7 @@ const useStyles = makeStyles(theme => ({
   },
   menuButton: {
     marginRight: 36,
-  },  
+  },
   menuButtonHidden: {
     display: 'none',
   },
@@ -86,6 +94,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
+    padding: '60px 15px 25px 15px',
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -106,7 +115,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function Admin_page(props) {
 
-
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
 
@@ -118,55 +126,59 @@ export default function Admin_page(props) {
     setOpen(false);
   };
 
-    
-  return (
-    <div>
-        <CssBaseline />
-        <AppBar className={clsx(classes.appBar, open && classes.appBarShift)} id="menuD">
-          <Toolbar className={classes.toolbar}>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-              Dashboard
-            </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </Toolbar>
-        </AppBar>
 
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-          }}
-          open={open}
-        >
-          <div className={classes.toolbarIcon}>
-            <IconButton onClick={handleDrawerClose}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </div>
-          <Divider />
-          <List onSelect={e => console.log(e)} component="nav">{mainListItemsAdmin}</List>
-          <Divider />
-          <List>{secondaryListItemsAdmin}</List>
-        </Drawer>
-        
-        <Route  path="/Admin_page/Activate_Client" component={Activate_Client} />
-        <Route  path="/Admin_page/categories" component={Categories} />
-        <Route  path="/Admin_page/subcategories" component={Subcategories} />
-        <Route  path="/Admin_page/products" component={Products} />
-        
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar className={clsx(classes.appBar, open && classes.appBarShift)} id="menuD">
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+            Dashboard
+            </Typography>
+          <IconButton color="inherit">
+            <Badge badgeContent={4} color="secondary">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+
+      <Drawer className={classes.drawer}
+        variant="permanent"
+        classes={{
+          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+        }}
+        open={open}
+      >
+        <div className={classes.toolbarIcon}>
+          <IconButton onClick={handleDrawerClose}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+        <Divider />
+        <List onSelect={e => console.log(e)} component="nav">{mainListItemsAdmin}</List>
+        <Divider />
+        <List>{secondaryListItemsAdmin}</List>
+      </Drawer>
+
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <Route path="/Admin_page/Activate_Client" component={Activate_Client} />
+        <Route path="/Admin_page/categories" component={Categories} />
+        <Route path="/Admin_page/subcategories" component={Subcategories} />
+        <Route path="/Admin_page/products" component={Products} />
+        <Route path="/Admin_page/message" component={Message} />
+        <Route path="/Admin_page/bill" component={Bill} />
+      </main>
     </div>);
-  
+
 }

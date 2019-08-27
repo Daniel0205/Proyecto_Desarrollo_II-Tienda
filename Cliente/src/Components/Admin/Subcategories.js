@@ -162,41 +162,41 @@ export default class Subcategories extends React.Component {
       switch(this.state.type){
         case "Search":
             return (<div key="0">
-              <h2 >Nombre:</h2>
+              <h2 >Name:</h2>
               <h3 >{this.state.name}</h3>
-              <h2 >Categoria a la que pertenece:</h2>
+              <h2 >Category to which it belongs:</h2>
               <h3 >{this.state.catName}</h3>
               <h2 >Description:</h2>
               <h3 >{this.state.description}</h3>
 
-              <Button onClick={()=>this.setState({type:"Actualizar"})}>Actualizar</Button>
-              <Button onClick={this.eliminar}>Eliminar</Button>
+              <Button onClick={()=>this.setState({type:"Actualizar"})}>Update</Button>
+              <Button onClick={this.eliminar}>Delete</Button>
           
             </div>);
         case "Actualizar":
           return ( <div>
             <form>
-              <h3>Nombre de la subcategoria:</h3>
+              <h3>Subcategory Name:</h3>
               <Input value={this.state.name} onChange={this.handleName} disabled/><br/>
-              <h3>Categoria a la que pertenece:</h3>
+              <h3>Category to which it belongs:</h3>
               <Select 
                     name="categoryName"
                     value={this.state.catName}
                     onChange={(x)=>this.setState({catName:x.target.value})}
-                    placeholder="Selecciona una subcategoria:"
+                    placeholder="Select a subcategory:"
                   >
                     <option value="Select" > 
-                      Selecciona una categoria:
+                      Select a category:
                     </option>
                     {this.state.categoryNames.map(x =>
                               <option value={x.name_category} key={x.name_category}>
                                     {x.name_category}
                               </option>)}
               </Select>
-              <h3>Descripcion de la subcategoria:</h3>
+              <h3>Subcategory Description:</h3>
               <Input value={this.state.description} onChange={this.handleDescription} placeholder='Descripcion de la categoria'/><br/>
-              <Button onClick={this.actualizar}>Actualizar</Button>
-              <Button onClick={()=>this.setState({type:"Search"})}>Cancelar</Button>
+              <Button onClick={this.actualizar}>Update</Button>
+              <Button onClick={()=>this.setState({type:"Search"})}>Cancel</Button>
             </form>
           </div>);
         default:
@@ -210,7 +210,7 @@ export default class Subcategories extends React.Component {
 
     if(this.state.type!=='Create'){
       return (<div>
-        <h1>Subcategorias</h1>
+        <h1>Subcategories</h1>
         
         <Select
               name="categoryName"
@@ -218,7 +218,7 @@ export default class Subcategories extends React.Component {
               onChange={this.handleSelect}
             >
               <option value="Select" > 
-                Selecciona una subcategoria:
+                Select a subcategory
               </option>
               {this.state.subcategoryNames.map(x =>
                         <option value={x.name_subcategory} key={x.name_subcategory}>
@@ -231,36 +231,36 @@ export default class Subcategories extends React.Component {
                           name:"",
                           description:"",
                           catName:"Select"
-                        })}>Crear Subategoria</Button>
+                        })}>Create Subategory</Button>
       </div>);
     }
     else{
       return(
         <div>
-          <h1>Subcategorias</h1>
+          <h1>Subcategories</h1>
            
-            <h3>Nombre de la subcategoria:</h3>
-            <Input value={this.state.name} onChange={this.handleName} placeholder='Nombre de la categoria'/><br/>
-            <h3>Categoria a la que pertenece:</h3>
+            <h3>Subcategory Name:</h3>
+            <Input value={this.state.name} onChange={this.handleName} placeholder='Subcategory Name:'/><br/>
+            <h3>Category to which it belongs:</h3>
             <Select
                 name="categoryName"
                 value={this.state.catName}
                 onChange={(x)=>this.setState({catName:x.target.value})}
-                placeholder="Selecciona una subcategoria:"
+                placeholder="Select a subcategory:"
               >
                 <option value="Select" > 
-                  Selecciona una categoria:
+                  Select a category:
                 </option>
                 {this.state.categoryNames.map(x =>
                           <option value={x.name_category} key={x.name_category}>
                                 {x.name_category}
                           </option>)}
           </Select>
-            <h3>Descripcion de la subcategoria:</h3>
-            <Input value={this.state.description} onChange={this.handleDescription} placeholder='Descripcion de la categoria'/><br/>
+            <h3>Subcategory Description:</h3>
+            <Input value={this.state.description} onChange={this.handleDescription} placeholder='Subcategory Description'/><br/>
 
-            <Button onClick={this.crear}>Crear</Button>
-            <Button onClick={()=>this.setState({type:"Search",selected:"Select"})}>Cancelar</Button>
+            <Button onClick={this.crear}>Create</Button>
+            <Button onClick={()=>this.setState({type:"Search",selected:"Select"})}>Cancel</Button>
         </div>
       )
     }

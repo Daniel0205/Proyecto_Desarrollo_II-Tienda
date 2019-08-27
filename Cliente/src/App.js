@@ -20,6 +20,7 @@ class  App extends Component {
       case "init":
           return (
             <div>
+              
               <AppBar position="static">
                 <Toolbar>
         
@@ -57,11 +58,7 @@ class  App extends Component {
     
               {/* --- Enlace a la ruta de la pagina de bienvenida --- */}
               <TypoGraphy variant="h6" >
-                <Link to={`/home/`} style={{ textDecoration: 'none', color: 'white' }}
-                onClick={()=>{
-                  this.props.updateType("init")
-                  this.props.updateUsername("")
-                }}> Cerrar Sesion</Link>
+                Darko Library
               </TypoGraphy>         
             
             </Toolbar>
@@ -76,14 +73,10 @@ class  App extends Component {
               <AppBar position="static">
                 <Toolbar>
         
-                  {/* --- Enlace a la ruta de la pagina de bienvenida --- */}
-                  <TypoGraphy variant="h6" >
-                    <Link to={`/home/`} style={{ textDecoration: 'none', color: 'white' }}
-                    onClick={()=>{
-                      this.props.updateType("init")
-                      this.props.updateUsername("")
-                    }}> Cerrar Sesion</Link>
-                  </TypoGraphy>         
+                {/* --- Enlace a la ruta de la pagina de bienvenida --- */}
+                <TypoGraphy variant="h6" >
+                  Darko Library
+                </TypoGraphy>      
                 
                 </Toolbar>
               </AppBar>
