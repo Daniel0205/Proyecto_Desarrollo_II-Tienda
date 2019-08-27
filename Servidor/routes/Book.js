@@ -1,4 +1,5 @@
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const router = express.Router();
 const db  =require('../config/database')
 const Book = require('../models/Book')
@@ -12,6 +13,24 @@ const Book = require('../models/Book')
 router.post("/insert", function(req,res){
 
     delete req.body.tipo
+    let path = '';
+
+
+    if (Object.keys(req.files).length != 0) {
+              
+        let EDFile = req.files.EDFile;
+        path = `./images/${EDFile.name}`;
+        req.body.imagepath = path;
+
+        EDFile.mv(path, function(err) {
+            if (err){
+                return res.status(500).send(err);
+            }else{
+                console.log('File uploaded!');
+            }
+        });
+    }
+    
 
     Book.create(req.body)
     .then(x => res.json([{bool:true}]))
@@ -24,7 +43,6 @@ router.post("/insert", function(req,res){
 
 //Consultar productos de la base de datos
 router.post('/get', function(req,res){
-
 
     Book.findAll({where: {
         isbn: req.body.isbn
@@ -63,5 +81,12 @@ router.delete('/delete', function(req,res){
     });
 
 })
+
+router.post('/upload/:isbn', function(req, res) {
+
+
+
+
+  });
 
 module.exports =router;

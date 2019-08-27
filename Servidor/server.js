@@ -1,8 +1,10 @@
 ////////////////////////////////////////////
 ///////////MODULOS  IMPORTADOS//////////////
 ////////////////////////////////////////////
-var express = require("express");
-var app = express();
+const express = require("express");
+const fileUpload = require('express-fileupload');
+const app = express();
+app.use(fileUpload())
 
 const Pool = require('pg-pool');
 

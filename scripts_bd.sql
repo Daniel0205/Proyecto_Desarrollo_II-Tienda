@@ -32,14 +32,14 @@ CREATE TABLE message(
 
 DROP TABLE IF EXISTS category CASCADE;
 CREATE TABLE category(
-   name_category	CHAR(15) PRIMARY KEY,
+   name_category	TEXT PRIMARY KEY,
    description	    TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS subcategory CASCADE;
 CREATE TABLE subcategory(
-   name_subcategory	CHAR(15) PRIMARY KEY,
-   name_category	CHAR(15),
+   name_subcategory	TEXT PRIMARY KEY,
+   name_category	TEXT,
    description	    TEXT NOT NULL,
 CONSTRAINT fk_category FOREIGN KEY (name_category) REFERENCES category (name_category) ON DELETE CASCADE
 );
@@ -53,12 +53,14 @@ CREATE TABLE book(
    title		TEXT NOT NULL,
    author		TEXT NOT NULL,	
    number_of_pages 		INT NOT NULL,
+   cost BIGINT NOT NULL, 
    price		BIGINT NOT NULL,   
    editorial 		TEXT NOT NULL,
    edition		TEXT NOT NULL,
    lang		TEXT NOT NULL,	
    cover_type 		CHAR(1) NOT NULL,
-   recommended_age		TEXT NOT NULL
+   recommended_age		TEXT NOT NULL,
+   imagepath   TEXT
    CHECK (cover_type IN ('G', 'B'))
 );
 
@@ -108,11 +110,11 @@ INSERT INTO admin(password,username) values
    ('1234','1625644');
 
 INSERT INTO category VALUES 
-   ('Académicos','CUALQUIERA PARCE'),
-   ('Novelas','CUALQUIERA PARCE'),
-   ('Lenguas','CUALQUIERA PARCE'),
-   ('Poesía','CUALQUIERA PARCE'),
-   ('Filosofía','CUALQUIERA PARCE');
+   ('Académicos','Contenido relacionado al conocimiento'),
+   ('Novelas','Literatura en prosa'),
+   ('Lenguas','Contenido para aprender lenguas'),
+   ('Poesía','Literatura estetica y ritmica'),
+   ('Filosofía','Aborda problemas raramente abordados por la ciencia');
 
 INSERT INTO subcategory VALUES 
    ('Humanidades','Académicos', 'CUALQUIERA PARCE'),

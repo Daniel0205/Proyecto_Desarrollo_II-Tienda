@@ -27,6 +27,10 @@ const Book = db.define ('book',{
         type: Sequelize.INTEGER,
         allowNull: false       
     },
+    cost:{
+        type: Sequelize.BIGINT,
+        allowNull: false       
+    },
     price:{
         type: Sequelize.BIGINT,
         allowNull: false             
@@ -50,6 +54,10 @@ const Book = db.define ('book',{
     recommended_age:{
         type: Sequelize.TEXT,
         allowNull: false             
+    },
+    imagepath:{
+        type: Sequelize.TEXT,
+        allowNull: true             
     }
 },{
     freezeTableName: true,
