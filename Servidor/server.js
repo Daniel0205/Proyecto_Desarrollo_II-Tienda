@@ -43,6 +43,8 @@ app.use('/Critics',require('./routes/Critics'));
 app.use('/Bill',require('./routes/Bill'));
 app.use('/BillBook',require('./routes/BillBook'));
 
+app.use(express.static('images'));
+
 /////////////////////////////////////////////////////
 ////////////CONFIGURACION DEL PUERTO ////////////////
 /////////////////////////////////////////////////////

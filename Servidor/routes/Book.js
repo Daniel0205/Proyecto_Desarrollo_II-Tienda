@@ -12,28 +12,33 @@ const Book = require('../models/Book')
 //Insertar productos en la base de datos
 router.post("/insert", function(req,res){
 
-    delete req.body.tipo
+    delete req.body.tipo;
+    delete req.body.source;
     let path = '';
-
+    let EDFile = null;
 
     if (Object.keys(req.files).length != 0) {
               
-        let EDFile = req.files.EDFile;
+        EDFile = req.files.EDFile;
         path = `./images/${EDFile.name}`;
         req.body.imagepath = path;
-
-        EDFile.mv(path, function(err) {
-            if (err){
-                return res.status(500).send(err);
-            }else{
-                console.log('File uploaded!');
-            }
-        });
     }
     
 
     Book.create(req.body)
-    .then(x => res.json([{bool:true}]))
+    .then(x => {
+        if(EDFile != null){
+            EDFile.mv(path, function(err) {
+                if (err){
+                    return res.status(500).send(err);
+                }else{
+                    console.log('File uploaded!');
+                }
+            });
+        }
+
+        res.json([{bool:true}]);
+    })
     .catch(err => {
         console.log(err)
         res.json([{bool:false}])
@@ -81,12 +86,5 @@ router.delete('/delete', function(req,res){
     });
 
 })
-
-router.post('/upload/:isbn', function(req, res) {
-
-
-
-
-  });
 
 module.exports =router;

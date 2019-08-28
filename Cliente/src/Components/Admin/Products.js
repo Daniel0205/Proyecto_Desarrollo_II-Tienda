@@ -20,7 +20,8 @@ export default class Products extends React.Component {
       lang: '',
       cover_type: '',
       recommended_age:'',
-      tipo: 'inicio' 
+      tipo: 'inicio',
+      source: null 
     }
 
 
@@ -326,6 +327,22 @@ export default class Products extends React.Component {
     }
   }
 
+  componentDidMount() {
+    fetch("/Book/getI/./images/lenna.jpg",{
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        isbn : this.state.isbn,
+      })
+    })
+    .then(res => res.json())
+    .then(res => this.setState(res[0]))
+ 
+  }
+
     render(){
       return (
         <div className='botns'>
@@ -335,6 +352,7 @@ export default class Products extends React.Component {
         <Button onClick={() => this.setState({tipo: "actualizar"})}>UPDATE PRODUCTS</Button>
         <Button onClick={() => this.setState({tipo: "eliminar"})}>DELETE PRODUCTS</Button>
         {this.action()}
+        <img src="http://localhost:3001/lenna.jpg" alt="prueba de imagen" width="200" height="300"/>;
       </div>
       );
     }
