@@ -17,11 +17,12 @@ router.post("/insert", function(req,res){
     let path = '';
     let EDFile = null;
 
-    if (Object.keys(req.files).length != 0) {
+    if (Object.keys(req.files.EDFile).length != 0) {
               
         EDFile = req.files.EDFile;
         path = `./images/${EDFile.name}`;
-        req.body.imagepath = path;
+        imgRoute = `/images/${EDFile.name}`
+        req.body.imagepath = imgRoute;
     }
     
 
