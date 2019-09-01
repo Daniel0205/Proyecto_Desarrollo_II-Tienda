@@ -74,16 +74,9 @@ CREATE TABLE critics(
 
 DROP TABLE IF EXISTS bill CASCADE;
 CREATE TABLE bill(
-   id_bill          BIGINT PRIMARY KEY,
+   id_bill          SERIAL PRIMARY KEY,
    username		    TEXT REFERENCES client(username),
    date		    DATE NOT NULL
-);
-
-DROP TABLE IF EXISTS bill_book CASCADE;
-CREATE TABLE bill_book(
-   id_bill      BIGINT REFERENCES bill(id_bill),
-   ISBN		    BIGINT REFERENCES book(ISBN),
-   quantity	    INT NOT NULL
 );
 
 DROP TABLE IF EXISTS distribution_point CASCADE;
@@ -93,6 +86,15 @@ CREATE TABLE distribution_point(
    telephone 	  INT NOT NULL
 );
 
+DROP TABLE IF EXISTS bill_book CASCADE;
+CREATE TABLE bill_book(
+   id_bill      BIGINT REFERENCES bill(id_bill),
+   ISBN		    BIGINT REFERENCES book(ISBN),
+   name_dp		  TEXT REFERENCES distribution_point(name_dp),
+   quantity	    INT NOT NULL
+);
+
+
 DROP TABLE IF EXISTS inventario CASCADE;
 CREATE TABLE inventario(
    name_dp        TEXT REFERENCES distribution_point(name_dp),
@@ -101,7 +103,7 @@ CREATE TABLE inventario(
 );
 
 ------------------------------------------------------
-
+--add product to every distribution point inventory
 CREATE OR REPLACE FUNCTION anadirProducto() RETURNS TRIGGER AS $$
 DECLARE
 	   row distribution_point%rowtype;
@@ -114,6 +116,19 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER nuevoProducto AFTER INSERT ON book FOR EACH ROW EXECUTE PROCEDURE anadirProducto();
+
+------Update the inventory
+CREATE OR REPLACE FUNCTION updateProducto() RETURNS TRIGGER AS $$
+
+BEGIN
+
+	UPDATE inventario SET availability=availability-new.quantity WHERE isbn=new.isbn AND name_dp=new.name_dp;
+	
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER updateProducto AFTER INSERT ON bill_Book FOR EACH ROW EXECUTE PROCEDURE updateProducto();
 --------------------------------------------------------
 
 INSERT INTO admin(password,username) values
@@ -180,3 +195,7 @@ INSERT INTO book (
    (1,'Humanidades',2019,'CUALQUIERA','HOLA1','YO',10,10000,15000,'NINGUNA',1,'INGLES','G',15,NULL),
    (2,'Salud',2019,'CUALQUIERA','HOLA2','YO',10,10000,15000,'NINGUNA',2,'INGLES','B',15,NULL),
    (3,'Humanidades',2019,'CUALQUIERA','HOLA3','YO',10,10000,15000,'NINGUNA',3,'INGLES','G',15,NULL);
+
+insert into bill(username,date) values ('dan','NOW()');
+
+insert into bill_book values (1,1,'Cali',5)

@@ -7,7 +7,8 @@ const Client = require( './Client')
 const Bill = db.define ('bill',{
     id_bill:{
         type: Sequelize.BIGINT,
-        primaryKey: true 
+        primaryKey: true,
+        autoIncrement: true
     },
     username:{
         type: Sequelize.TEXT,
