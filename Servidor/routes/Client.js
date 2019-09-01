@@ -94,7 +94,7 @@ router.post("/", function (req, res) {
         where: { username: username ,password: password }
     })
     .then(x => {
-        console.log("NO ENCONTRO")
+        
         if (x===null){
             Admin.findOne({
                 attributes: ['username'],

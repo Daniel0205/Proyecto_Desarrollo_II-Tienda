@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const db  =require('../config/database')
 const BillBook = require('../models/BillBook')
 
 /////////////////////////////////////////////////////
@@ -10,7 +9,8 @@ const BillBook = require('../models/BillBook')
 //insertar un producto a un venta
 router.post("/insert",function(req,res){
 
-    BillBook.create(req.body).then(x => res.json(x))
+    BillBook.create(req.body)
+    .then(x => res.json(x))
     .catch(err => console.log(err));
   
 })
