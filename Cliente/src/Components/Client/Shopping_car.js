@@ -101,7 +101,7 @@ class Shopping_car extends React.Component {
                       </IconButton>
                     </Card>  
                     );
-      aux.push(<Button onClick={this.buy}>To buy</Button>)
+      aux.push(<Button key="boton" onClick={this.buy}>To buy</Button>)
       return aux
     }
     else return (<p>You have no items in your shopping cart</p>)
