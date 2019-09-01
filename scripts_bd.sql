@@ -88,15 +88,14 @@ CREATE TABLE bill_book(
 
 DROP TABLE IF EXISTS distribution_point CASCADE;
 CREATE TABLE distribution_point(
-   id_dp          SERIAL PRIMARY KEY,
-   name_dp		  TEXT NOT NULL,
+   name_dp		  TEXT  PRIMARY KEY,
    address        TEXT NOT NULL,
    telephone 	  INT NOT NULL
 );
 
 DROP TABLE IF EXISTS inventario CASCADE;
 CREATE TABLE inventario(
-   id_dp        INT REFERENCES distribution_point(id_dp),
+   name_dp        TEXT REFERENCES distribution_point(name_dp),
    ISBN		    BIGINT REFERENCES book(ISBN),
    availability	    INT NOT NULL
 );
@@ -107,8 +106,8 @@ CREATE OR REPLACE FUNCTION anadirProducto() RETURNS TRIGGER AS $$
 DECLARE
 	   row distribution_point%rowtype;
 BEGIN
-	FOR row IN (SELECT id_dp FROM distribution_point) LOOP
-		INSERT INTO inventario(id_dp,isbn,availability) VALUES(row.id_dp,NEW.isbn,10);
+	FOR row IN (SELECT name_dp FROM distribution_point) LOOP
+		INSERT INTO inventario(name_dp,isbn,availability) VALUES(row.name_dp,NEW.isbn,10);
 	END LOOP;
 	RETURN NEW;
 END;
