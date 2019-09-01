@@ -1,8 +1,10 @@
 ////////////////////////////////////////////
 ///////////MODULOS  IMPORTADOS//////////////
 ////////////////////////////////////////////
-var express = require("express");
-var app = express();
+const express = require("express");
+const fileUpload = require('express-fileupload');
+const app = express();
+app.use(fileUpload())
 
 const Pool = require('pg-pool');
 
@@ -26,8 +28,6 @@ sequelize.authenticate()
     console.log('No se conecto'+err)
 }) 
 
-
-
 var bodyParser = require("body-parser"); // middleware  to handle HTTP POST request
 app.use(bodyParser.json()); // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // to support URL-encoded bodies
@@ -37,7 +37,13 @@ app.use('/Category', require('./routes/Category'));
 app.use('/Subcategory', require('./routes/Subcategory'));
 app.use('/Book',require('./routes/Book'));
 app.use('/Client',require('./routes/Client'));
+app.use('/Inventory',require('./routes/Inventory'));
+app.use('/Message',require('./routes/Message'));
+app.use('/Critics',require('./routes/Critics'));
+app.use('/Bill',require('./routes/Bill'));
+app.use('/BillBook',require('./routes/BillBook'));
 
+app.use('/images',express.static('images'));
 
 /////////////////////////////////////////////////////
 ////////////CONFIGURACION DEL PUERTO ////////////////

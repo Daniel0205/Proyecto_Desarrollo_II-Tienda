@@ -53,6 +53,7 @@ CREATE TABLE book(
    title		TEXT NOT NULL,
    author		TEXT NOT NULL,	
    number_of_pages 		INT NOT NULL,
+   cost BIGINT NOT NULL, 
    price		BIGINT NOT NULL,   
    editorial 		TEXT NOT NULL,
    edition		INT NOT NULL,
@@ -175,8 +176,8 @@ INSERT INTO distribution_point(
 
 
 INSERT INTO book (
-   ISBN,name_subcategory,publication_year,synopsis,title,author,number_of_pages,price,editorial,edition,lang,cover_type,recommended_age,imagepath)
+   ISBN,name_subcategory,publication_year,synopsis,title,author,number_of_pages,cost,price,editorial,edition,lang,cover_type,recommended_age,imagepath)
    VALUES
-   (1,'Humanidades',2019,'CUALQUIERA','HOLA1','YO',10,15000,'NINGUNA',1,'INGLES','G',15,NULL),
-   (2,'Salud',2019,'CUALQUIERA','HOLA2','YO',10,15000,'NINGUNA',2,'INGLES','B',15,NULL),
-   (3,'Humanidades',2019,'CUALQUIERA','HOLA3','YO',10,15000,'NINGUNA',3,'INGLES','G',15,NULL);
+   (1,'Humanidades',2019,'CUALQUIERA','HOLA1','YO',10,10000,15000,'NINGUNA',1,'INGLES','G',15,NULL),
+   (2,'Salud',2019,'CUALQUIERA','HOLA2','YO',10,10000,15000,'NINGUNA',2,'INGLES','B',15,NULL),
+   (3,'Humanidades',2019,'CUALQUIERA','HOLA3','YO',10,10000,15000,'NINGUNA',3,'INGLES','G',15,NULL);

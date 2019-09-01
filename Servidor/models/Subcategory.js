@@ -5,7 +5,7 @@ const Book  = require( './Book');
 
 const Subcategory = db.define ('subcategory',{
     name_subcategory:{
-        type: Sequelize.STRING(15),
+        type: Sequelize.TEXT,
         primaryKey: true 
     },
 
@@ -17,8 +17,8 @@ const Subcategory = db.define ('subcategory',{
 },{
     freezeTableName: true,
     timestamps: false,
-
 })
+
 
 
 Subcategory.hasMany(Book,{ foreignKey: 'name_subcategory'});
