@@ -240,7 +240,7 @@ export default class Subcategories extends React.Component {
           <h1>Subcategories</h1>
            
             <h3>Subcategory Name:</h3>
-            <Input value={this.state.name} onChange={this.handleName} placeholder='Subcategory Name:'/><br/>
+            <Input id="name" value={this.state.name} onChange={this.handleName} placeholder='Subcategory Name:'/><br/>
             <h3>Category to which it belongs:</h3>
             <Select
                 name="categoryName"
