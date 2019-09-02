@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react';
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -19,19 +19,6 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
 
 var logged = false;
-var username = "", password = "";
-
-
-ValidatorForm.addValidationRule(
-  "isValidName", (string) => /[a-zA-Z \u00E0-\u00FC]/g.test(string)
-);
-ValidatorForm.addValidationRule(
-  "isValidLengthName", (string) => /\b[a-zA-Z \u00E0-\u00FC]{1,20}\b/g.test(string)
-);
-ValidatorForm.addValidationRule(
-  "isValidLengthDescription", (string) => /\b[a-zA-Z \u00E0-\u00FC]{1,50}\b/g.test(string)
-);
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -66,6 +53,24 @@ const SignInSide = ({ updateUsername, updateType }) => {
 
   const classes = useStyles();
 
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+
+  ValidatorForm.addValidationRule(
+    "isValidName", (string) => /[a-zA-Z0-9 \u00E0-\u00FC]/g.test(string)
+  );
+  ValidatorForm.addValidationRule(
+    "isValidLengthName", (string) => /\b[a-zA-Z0-9 \u00E0-\u00FC]{5,15}\b/g.test(string)
+  );
+  
+  ValidatorForm.addValidationRule(
+    "isValidLengthPassword", (string) => /\b[a-zA-Z0-9 \u00E0-\u00FC]{10,25}\b/g.test(string)
+  );
+  
+ 
+  console.log(ValidatorForm)
+
   function handleClick(e) {
     if (!logged)
       e.preventDefault();
@@ -93,13 +98,13 @@ const SignInSide = ({ updateUsername, updateType }) => {
 
   function handleChange(e) {
     if (e.target.name === 'username')
-      username = e.target.value;
+      setUsername(e.target.value)
     if (e.target.name === 'password')
-      password = e.target.value;
+      setPassword(e.target.value)
   }
 
-  function handleSubmit() {
-    handleClick();
+  function handleSubmit(e) {
+    handleClick(e);
   }
 
   return (
@@ -124,23 +129,24 @@ const SignInSide = ({ updateUsername, updateType }) => {
               name="username"
               autoComplete="username"
               autoFocus
-              onChange={e => handleChange(e)}
+              value={username}
+              onChange={e => handleChange(e)}              
               validators={["required", "isValidName", "isValidLengthName"]}
-              errorMessages={["Required field username!", "Invalid format!", "Invalid lentgth!"]}
+              errorMessages={["Please fill out  this field", "Invalid format!", "Invalid lentgth!"]}
             />
             <TextValidator
               variant="outlined"
               margin="normal"
-              required
               fullWidth
               name="password"
               label="Password"
               type="password"
               id="password"
+              value={password}
               autoComplete="current-password"
               onChange={e => handleChange(e)}
-              //validators={[""]}
-              //errorMessages={[""]}
+              validators={["required", "isValidName", "isValidLengthPassword"]}
+              errorMessages={["Please fill out  this field", "Invalid format!", "Invalid lentgth!"]}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
