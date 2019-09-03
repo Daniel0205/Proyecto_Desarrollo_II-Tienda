@@ -125,8 +125,8 @@ const SignInSide = ({ updateUsername, updateType }) => {
               autoComplete="username"
               autoFocus
               onChange={e => handleChange(e)}
-              validators={["required", "isValidName", "isValidLengthName"]}
-              errorMessages={["Required field username!", "Invalid format!", "Invalid lentgth!"]}
+             // validators={["required", "isValidName", "isValidLengthName"]}
+              //errorMessages={["Required field username!", "Invalid format!", "Invalid lentgth!"]}
             />
             <TextValidator
               variant="outlined"
@@ -152,6 +152,7 @@ const SignInSide = ({ updateUsername, updateType }) => {
               color="primary"
               className={classes.submit}
               type="submit"
+              onClick={handleClick}
             >
               Sign In
             </Button>

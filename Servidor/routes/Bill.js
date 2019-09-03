@@ -21,6 +21,12 @@ router.post("/buy",function(req,res){
     .then(x =>{
         BillBook.bulkCreate(
             req.body.books.map((z)=>{
+                console.log({
+                    id_bill:x.id_bill,
+                    isbn:z.isbn,
+                    name_dp:z.name_dp,
+                    quantity:z.quantity
+                })
                 return({
                     id_bill:x.id_bill,
                     isbn:z.isbn,
@@ -56,25 +62,13 @@ router.post("/getBills",function(req,res){
 router.post("/getBill",function(req,res){
 
     Bill.findAll({where: {
-        id_bill: req.body.id_bill
+        username: req.body.username
     }})
-    .then(x =>  res.json(x))
+    .then(x =>     console.log("AFa"))
     .catch(err => console.log(err));
 
 })
   
-//Modificar una venta
 
-router.put("/update", function(req,res){
-
-    let index = req.body.id_bill;
-    delete req.body.id_bill
-
-    Bill.update(req.body,{where: {
-        id_bill: index
-    }}).then(x => res.json(x))
-    .catch(err => console.log(err));
-
-})
 
 module.exports =router;

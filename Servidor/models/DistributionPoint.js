@@ -3,13 +3,9 @@ const db = require('../config/database');
 const Inventory = require('./Inventory')
 
 const DistributionPoint = db.define ('distribution_point',{
-    id_dp:{
-        type: Sequelize.INTEGER,
-        primaryKey: true 
-    },
     name_dp:{
         type: Sequelize.TEXT,
-        allowNull: false  
+        primaryKey: true 
     },
     address:{
         type: Sequelize.TEXT,

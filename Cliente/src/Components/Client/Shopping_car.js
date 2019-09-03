@@ -32,6 +32,7 @@ class Shopping_car extends React.Component {
       body: JSON.stringify({
         username:this.props.username,
         books:this.props.car.map((z)=>{
+          console.log(z)
           return({
               isbn:z.isbn,
               name_dp:z.distribution_point,
