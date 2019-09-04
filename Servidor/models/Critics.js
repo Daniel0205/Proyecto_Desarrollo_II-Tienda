@@ -28,6 +28,6 @@ const Critics = db.define ('critics',{
 })
 
 Critics.hasMany(Client,{foreingkey: 'username'});
-Critics.hasMany(Book,{foreingkey: 'isbn'});
+Book.hasMany(Critics,{foreingkey: 'isbn'});
 
 module.exports = Critics;

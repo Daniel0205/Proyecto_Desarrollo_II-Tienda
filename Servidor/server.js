@@ -6,8 +6,6 @@ const fileUpload = require('express-fileupload');
 const app = express();
 app.use(fileUpload())
 
-const Pool = require('pg-pool');
-
 
 ////////////////////////////////////////////
 //////////CONFIGURACION DEL ORM ////////////

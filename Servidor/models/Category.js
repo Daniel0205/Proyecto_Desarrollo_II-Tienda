@@ -18,4 +18,7 @@ const Category = db.define ('category',{
     timestamps: false
 })
 
+Category.hasMany(Subcategory,{ foreignKey: 'name_category'});
+Subcategory.belongsTo(Category,{ foreignKey: 'name_category',source:'name_category'});
+
 module.exports = Category;  
