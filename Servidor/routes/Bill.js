@@ -63,29 +63,32 @@ router.post("/getBill",function(req,res){
         username: req.body.username
     }})
     .then(x =>{
-        if(x.length==0) res.json(aux)
+        
+        if(x.length==0){res.json(aux)}
         for (let i = 0; i < x.length; i++) {
-            var bill = {
-                id_bill: x[i].id_bill,
-                date: x[i].date,
-                products: []
-            }
+      
             BillBook.findAll({
                 attributes: ['quantity','isbn','name_dp'],
                 where:{id_bill:x[i].id_bill},
                 include: [{model:Book, attributes: ['title']}]
             })
-            .then(x=>{
-                bill.products=x.map(x=>{
-                    return({
-                        quantity:x.quantity,
-                        isbn:x.isbn,
-                        name_dp:x.name_dp,
-                        title:x.book.title})
-                    
-                })
+            .then(z=>{
+                var bill = {
+                    id_bill: x[i].id_bill,
+                    date: x[i].date,
+                    products: z.map(x=>{
+                        return({
+                            quantity:x.quantity,
+                            isbn:x.isbn,
+                            name_dp:x.name_dp,
+                            title:x.book.title})  
+                    })
+                }
+         
                 aux.push(bill)
-                if(i===x.length-1) res.json(aux)
+
+     
+                if(i+1===x.length) {res.json(aux)}
             })
             .catch(err => console.log(err));        
         }
@@ -94,7 +97,5 @@ router.post("/getBill",function(req,res){
     .catch(err => console.log(err));
 
 })
-  
-
 
 module.exports =router;

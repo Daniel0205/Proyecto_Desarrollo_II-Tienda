@@ -8,30 +8,33 @@ class Buy_list extends React.Component {
     super(props)
 
     this.getBuys = this.getBuys.bind(this);
+    this.getBuys()
   }
 
   getBuys(){
-    fetch ("", {
+    fetch ("/bill/getBill", {
       method: 'POST',
       headers: {
         Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify()
+      body: JSON.stringify({username:this.props.username})
     })
-    .then(res => res.json())
+    .then(res=>res.json())
+    .then(res => {
+      console.log(res)
+    })
     
   }
 
   render(){      
-
-    console.log(this.state)
     return (
     <div className='buy_list'>       
       <h1>buy list</h1>
     </div>);
   }
 }
+
 
 const mapStateToProps= state => {
   return {
