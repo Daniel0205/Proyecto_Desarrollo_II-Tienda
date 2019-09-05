@@ -18,6 +18,7 @@ import Shopping_car from './Shopping_car'
 import Buy_list from './Buy_list'
 import Contact_us from './Contact_us'
 import { Route } from 'react-router-dom'
+import { Select } from '@material-ui/core';
 
 
 const drawerWidth = 240;
@@ -111,11 +112,13 @@ const useStyles = makeStyles(theme => ({
 
 
 
+
 export default function User_page(props) {
 
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [dp, setDp] = React.useState([]);
 
 
   const handleDrawerOpen = () => {
@@ -125,6 +128,20 @@ export default function User_page(props) {
     setOpen(false);
   };
 
+
+  if(dp.length===0){
+ 
+    fetch("/DistributionPoint/consult", {
+      method: "GET",
+    })
+      .then(res => res.json())
+      .then(res => {
+        
+        if(res.bool)setDp(res.data);
+      })
+  }
+
+  console.log(dp)
 
 
   return (
@@ -144,7 +161,9 @@ export default function User_page(props) {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Dashboard
             </Typography>
-          
+            <Select>
+              {dp.map(x => <option >{x.name_dp}</option>)}
+            </Select>
         </Toolbar>
       </AppBar>
 

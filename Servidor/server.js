@@ -40,6 +40,7 @@ app.use('/Message',require('./routes/Message'));
 app.use('/Critics',require('./routes/Critics'));
 app.use('/Bill',require('./routes/Bill'));
 app.use('/BillBook',require('./routes/BillBook'));
+app.use('/DistributionPoint',require('./routes/DistributionPoint'));
 
 app.use('/images',express.static('images'));
 
