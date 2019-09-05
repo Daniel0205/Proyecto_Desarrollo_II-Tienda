@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database')
 
+
 const Book = db.define ('book',{
     isbn:{
         type: Sequelize.BIGINT,
@@ -26,6 +27,10 @@ const Book = db.define ('book',{
         type: Sequelize.INTEGER,
         allowNull: false       
     },
+    cost:{
+        type: Sequelize.BIGINT,
+        allowNull: false       
+    },
     price:{
         type: Sequelize.BIGINT,
         allowNull: false             
@@ -49,12 +54,15 @@ const Book = db.define ('book',{
     recommended_age:{
         type: Sequelize.TEXT,
         allowNull: false             
+    },
+    imagepath:{
+        type: Sequelize.TEXT,
+        allowNull: true             
     }
 },{
     freezeTableName: true,
-    timestamps: false
+    timestamps: false,
+
 })
-
-
 
 module.exports = Book;

@@ -1,15 +1,15 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
-/**
+
 const Client  = require( './Client')
 const Book  = require( './Book')
- */
+
 const Critics = db.define ('critics',{
     username:{
         type: Sequelize.TEXT,
         primaryKey: true 
     },
-    ISBN:{
+    isbn:{
         type: Sequelize.BIGINT,
         primaryKey: true 
     },
@@ -27,7 +27,7 @@ const Critics = db.define ('critics',{
     timestamps: false
 })
 
-Critics.belongsTo(Client,{foreingkey: 'username', sourcekey:'username'});
-Critics.belongsTo(Book,{foreingkey: 'ISBN', sourcekey:'ISBN'});
+Critics.hasMany(Client,{foreingkey: 'username'});
+Critics.hasMany(Book,{foreingkey: 'isbn'});
 
 module.exports = Critics;

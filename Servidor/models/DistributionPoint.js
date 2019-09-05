@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
-//const Inventory = require('./Inventory')
+const Inventory = require('./Inventory')
 
 const DistributionPoint = db.define ('distribution_point',{
     id_dp:{

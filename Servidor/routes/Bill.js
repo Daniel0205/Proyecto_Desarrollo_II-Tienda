@@ -8,7 +8,7 @@ const Bill = require('../models/Bill')
 /////////////////////////////////////////////////////
 
 //insertar una venta
-router.post("/insertBill",function(req,res){
+router.post("/insert",function(req,res){
 
     Bill.create(req.body).then(x => res.json(x))
     .catch(err => console.log(err));
@@ -39,24 +39,13 @@ router.post("/getBill",function(req,res){
   
 //Modificar una venta
 
-router.put("/updateBill", function(req,res){
+router.put("/update", function(req,res){
 
     let index = req.body.id_bill;
     delete req.body.id_bill
 
     Bill.update(req.body,{where: {
         id_bill: index
-    }}).then(x => res.json(x))
-    .catch(err => console.log(err));
-
-})
-
-//Eliminar una venta
-
-router.delete("/deleteClient/:idbill", function(req,res){
-
-    Bill.destroy({where: {
-        id_bill: req.params.idbill
     }}).then(x => res.json(x))
     .catch(err => console.log(err));
 
