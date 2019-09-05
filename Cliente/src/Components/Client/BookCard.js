@@ -20,13 +20,6 @@ const useStyles = makeStyles(theme => ({
   price: {
     color: 'red',
   },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
 }));
 
 export default function BookCard(props) {
@@ -35,7 +28,7 @@ export default function BookCard(props) {
 
   return (
     <Card className={classes.card}>
-      <CardActionArea>
+      <CardActionArea onClick={() => {props.callback(props.isbn)}}>
         <CardMedia
           className={classes.media}
           image={path}
@@ -45,7 +38,7 @@ export default function BookCard(props) {
           <Typography gutterBottom variant="h5" component="h4">
             {props.title}
           </Typography>
-          <Typography classname={classes.price} gutterBottom variant="h6" color="primary" component="h6">
+          <Typography className={classes.price} gutterBottom variant="h6" color="primary" component="h6">
             $ {props.price}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
@@ -60,7 +53,7 @@ export default function BookCard(props) {
         <IconButton aria-label="Add a comment">
           <AddCommentRoundedIcon />
         </IconButton>
-        <Button size="small" color="primary" className={classes.button}>
+        <Button size="small" onClick={() => {props.callback(props.isbn)}} color="primary" className={classes.button}>
           Details
         </Button>
       </CardActions>
