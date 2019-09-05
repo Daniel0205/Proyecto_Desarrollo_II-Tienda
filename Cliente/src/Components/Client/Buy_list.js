@@ -1,50 +1,73 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {connect} from 'react-redux';
 import {getUsername} from '../../store/username/reducer';
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-
-const useStyles = makeStyles({
-  card: {
-    minWidth: 275,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-});
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
 
 
+function createTable(rows){
+  return (
+    <Paper>
+      <Table >
+        <TableHead>
+          <TableRow>
+            <TableCell>Title</TableCell>
+            <TableCell align="right">ISBN</TableCell>
+            <TableCell align="right">Quantity</TableCell>
+            <TableCell align="right">Distribution Point</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row,i) => (
+            <TableRow key={i}>
+              <TableCell component="th" scope="row">
+                {row.title}
+              </TableCell>
+              <TableCell align="right">{row.isbn}</TableCell>
+              <TableCell align="right">{row.quantity}</TableCell>
+              <TableCell align="right">{row.name_dp}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Paper>
+  );
+}
 
-export function createCard(list){
+function createCard(list){
   
   console.log(list)
 
-  return(<Card >
+  return(list.map((x,i)=>
+  <Card key={i}>
     <CardContent>
       <Typography  color="textSecondary" gutterBottom>
-        Word of the Day
+        Bill #{x.id_bill}
       </Typography>
-      
+      <Typography  color="textSecondary" gutterBottom>
+        Date: {x.date}
+      </Typography>
+      {createTable(x.products)}      
     </CardContent>
-  </Card>)
+  </Card>))
 }
 
 
-
 function Buy_list(props) {
-  const classes = useStyles(); 
+  
+  
+  console.log(props.username)
 
+  const [list,setList]=useState([]);
+  
   fetch ("/bill/getBill", {
     method: 'POST',
     headers: {
@@ -54,15 +77,13 @@ function Buy_list(props) {
     body: JSON.stringify({username:props.username})
   })
   .then(res=>res.json())
-  .then(res => {
-    
+  .then(res => { if(list.length===0)setList(res) })
 
-    return (
-      <div className='buy_list'>       
-        <h1>buy list</h1>
-        {createCard(res)}
-      </div>);
-  })
+  return (
+    <div className='buy_list'>       
+      <h1>buy list</h1>
+      {createCard(list)}
+    </div>);
   
 
   
