@@ -1,13 +1,13 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
-//const Client =require('./Client')
+const Client =require('./Client')
 
 const Message = db.define ('message',{
     username:{
         type: Sequelize.TEXT,
         primaryKey: true 
     },
-    message:{
+    description:{
         type: Sequelize.TEXT,
         primaryKey: true 
     },
@@ -21,6 +21,6 @@ const Message = db.define ('message',{
     timestamps: false
 })
 
-Message.belongsTo(Client,{foreingkey: 'username', sourcekey:'username'});
+Message.hasMany(Client,{foreingkey: 'username'});
 
 module.exports = Message;

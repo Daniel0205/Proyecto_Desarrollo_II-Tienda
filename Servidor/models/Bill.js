@@ -1,13 +1,14 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
-/*
+
 const BillBook = require( './BillBook')
 const Client = require( './Client')
-*/
+
 const Bill = db.define ('bill',{
     id_bill:{
         type: Sequelize.BIGINT,
-        primaryKey: true 
+        primaryKey: true,
+        autoIncrement: true
     },
     username:{
         type: Sequelize.TEXT,
@@ -22,8 +23,6 @@ const Bill = db.define ('bill',{
     timestamps: false
 })
 
-
-Bill.hasMany(BillBook,{foreingkey: 'ISBN', sourcekey:'ISBN'});
-Bill.belongsTo(Client,{foreingkey: 'username', sourcekey:'username'});
+Bill.hasMany(Client,{foreingkey: 'username', sourcekey:'username'});
 
 module.exports = Bill;

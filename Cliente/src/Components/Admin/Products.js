@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Input, Select } from '@material-ui/core'
+import {Button, Input, Select, MenuItem} from '@material-ui/core'
 
 export default class Products extends React.Component {
 
@@ -14,13 +14,16 @@ export default class Products extends React.Component {
       title: '',
       author: '',
       number_of_pages:'',
+      cost: '',
       price: '', 
       editorial: '',
       edition: '',
       lang: '',
-      cover_type: '',
+      cover_type: 'G',
       recommended_age:'',
-      tipo: 'inicio' 
+      tipo: 'inicio',
+      source: null,
+      file : null 
     }
 
 
@@ -37,13 +40,17 @@ export default class Products extends React.Component {
 
   insertpro(){
 
+      let myForm = document.getElementById('toSend');
+      let formData = new FormData(myForm);
+      formData.append('cover_type',this.state.cover_type)
+
       fetch("/Book/insert",{
         method: "POST",
         headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json"
+          Accept: "application/json, text/plain, */*"
+          //"Content-Type": "multipart/form-data"
         },
-        body: JSON.stringify(this.state)
+        body: formData
       })
       .then(res => res.json())
       .then(res => {
@@ -160,6 +167,11 @@ export default class Products extends React.Component {
           number_of_pages:e.target.value
         })
       break;
+      case 'cost':
+        this.setState({
+          cost:e.target.value
+        })
+      break;
       case 'price':
         this.setState({
           price:e.target.value
@@ -190,6 +202,11 @@ export default class Products extends React.Component {
           recommended_age:e.target.value
         })
       break;
+      case 'EDFile':
+        this.setState({
+          file:e.target.files[0]
+        })
+      break;
       default:
       break;
     }
@@ -202,7 +219,7 @@ export default class Products extends React.Component {
           <div>
             <hr/>
             <p>Enter the product data you want to add:</p>
-            <form>
+            <form id="toSend">
               <label>ISBN*:</label> <br/>
               <Input name="isbn" type="text" placeholder='ISBN*' onChange={this.actualizarDatos} value={this.state.isbn}/> <br/>
               <label>Subcategory*:</label> <br/>
@@ -217,21 +234,25 @@ export default class Products extends React.Component {
               <Input name="author" type="text" placeholder='Author*' onChange={this.actualizarDatos} value={this.state.author}/> <br/>
               <label>Number of pages*:</label> <br/>
               <Input name="number_of_pages" type="number" min="1" onChange={this.actualizarDatos} value={this.state.number_of_pages}/> <br/>
+              <label>Cost*:</label> <br/>
+              <Input name="cost" type="text" placeholder='Cost*' onChange={this.actualizarDatos} value={this.state.cost}/> <br/>
               <label>Price*:</label> <br/>
               <Input name="price" type="text" placeholder='Price*' onChange={this.actualizarDatos} value={this.state.price}/> <br/>
-              <label>Editión*:</label> <br/>
+              <label>Edition*:</label> <br/>
               <Input name="editorial" type="number" min="1" onChange={this.actualizarDatos} value={this.state.editorial}/> <br/>
               <label>Editorial*:</label> <br/>
               <Input name="edition" type="text" placeholder='Editión*' onChange={this.actualizarDatos} value={this.state.edition}/> <br/>
               <label>Language*:</label> <br/>
               <Input name="lang" type="text" placeholder='Language*' onChange={this.actualizarDatos} value={this.state.lang}/><br/> 
-              <label>Cover type::</label>
-              <Select onSelect={(x)=>this.setState({cover_type:x.target.value})} value="G">
-                <option value="G">Gross</option>
-                <option value="B">Soft</option>               
+              <label>Cover type</label>
+              <Select onSelect={(x)=>this.setState({cover_type:x.target.value})} value={this.state.cover_type}><br/> 
+                <MenuItem value="G">Gross</MenuItem>
+                <MenuItem value="B">Soft</MenuItem>               
               </Select><br/>
-              <label>Recommended age*</label>
+              <label>Recommended age*</label><br/>
               <Input name="recommended_age" type="text" placeholder='Recommended age*' onChange={this.actualizarDatos} value={this.state.recommended_age}/> <br/>
+              <label>Cover image</label><br/>
+              <Input name="EDFile" type="file" placeholder='Cover image' onChange={this.actualizarDatos}/> <br/>
               <Button  onClick={this.insertpro}>Insert product</Button> <br/>
             </form>
           </div>
@@ -316,7 +337,7 @@ export default class Products extends React.Component {
         return(
           <div>
             <hr/>
-            <p>Select the product data you want to add:</p>
+            <p>Select the product data you want to delete:</p>
             <Input name="isbn" type="text" placeholder='ISBN*' onChange={this.actualizarDatos} value={this.state.isbn}/> <br/>
             <Button  onClick={this.deletepro}>Delete product</Button>
           </div>

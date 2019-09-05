@@ -5,7 +5,7 @@ const Subcategory = require('./Subcategory') ;
 
 const Category = db.define ('category',{
     name_category:{
-        type: Sequelize.STRING(15),
+        type: Sequelize.TEXT,
         primaryKey: true 
     },
     description:{

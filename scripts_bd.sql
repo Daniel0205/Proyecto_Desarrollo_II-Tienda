@@ -32,14 +32,14 @@ CREATE TABLE message(
 
 DROP TABLE IF EXISTS category CASCADE;
 CREATE TABLE category(
-   name_category	CHAR(15) PRIMARY KEY,
+   name_category	TEXT PRIMARY KEY,
    description	    TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS subcategory CASCADE;
 CREATE TABLE subcategory(
-   name_subcategory	CHAR(15) PRIMARY KEY,
-   name_category	CHAR(15),
+   name_subcategory	TEXT PRIMARY KEY,
+   name_category	TEXT,
    description	    TEXT NOT NULL,
 CONSTRAINT fk_category FOREIGN KEY (name_category) REFERENCES category (name_category) ON DELETE CASCADE
 );
@@ -48,17 +48,19 @@ DROP TABLE IF EXISTS book CASCADE;
 CREATE TABLE book(
    ISBN         	BIGINT PRIMARY KEY,
    name_subcategory	TEXT REFERENCES subcategory(name_subcategory),	
-   publication_year	TEXT NOT NULL,
+   publication_year	INT NOT NULL,
    synopsis 		TEXT NOT NULL,
    title		TEXT NOT NULL,
    author		TEXT NOT NULL,	
    number_of_pages 		INT NOT NULL,
+   cost BIGINT NOT NULL, 
    price		BIGINT NOT NULL,   
    editorial 		TEXT NOT NULL,
-   edition		TEXT NOT NULL,
+   edition		INT NOT NULL,
    lang		TEXT NOT NULL,	
    cover_type 		CHAR(1) NOT NULL,
-   recommended_age		TEXT NOT NULL
+   recommended_age		INT NOT NULL,
+   imagepath   TEXT
    CHECK (cover_type IN ('G', 'B'))
 );
 
@@ -72,38 +74,105 @@ CREATE TABLE critics(
 
 DROP TABLE IF EXISTS bill CASCADE;
 CREATE TABLE bill(
-   id_bill          BIGINT PRIMARY KEY,
+   id_bill          SERIAL PRIMARY KEY,
    username		    TEXT REFERENCES client(username),
    date		    DATE NOT NULL
+);
+
+DROP TABLE IF EXISTS distribution_point CASCADE;
+CREATE TABLE distribution_point(
+   name_dp		  TEXT  PRIMARY KEY,
+   address        TEXT NOT NULL,
+   telephone 	  INT NOT NULL
 );
 
 DROP TABLE IF EXISTS bill_book CASCADE;
 CREATE TABLE bill_book(
    id_bill      BIGINT REFERENCES bill(id_bill),
    ISBN		    BIGINT REFERENCES book(ISBN),
+   name_dp		  TEXT REFERENCES distribution_point(name_dp),
    quantity	    INT NOT NULL
 );
 
-DROP TABLE IF EXISTS distribution_point CASCADE;
-CREATE TABLE distribution_point(
-   id_dp          SERIAL PRIMARY KEY,
-   name_dp		  TEXT NOT NULL,
-   address        TEXT NOT NULL,
-   telephone 	  INT NOT NULL
-);
 
 DROP TABLE IF EXISTS inventario CASCADE;
 CREATE TABLE inventario(
-   id_dp        INT REFERENCES distribution_point(id_dp),
+   name_dp        TEXT REFERENCES distribution_point(name_dp),
    ISBN		    BIGINT REFERENCES book(ISBN),
    availability	    INT NOT NULL
 );
 
-INSERT INTO category VALUES ('DRAMA','CUALQUIERA PARCE');
-INSERT INTO subcategory VALUES ('JUVENIL','DRAMA', 'CUALQUIERA PARCE');
+------------------------------------------------------
+--add product to every distribution point inventory
+CREATE OR REPLACE FUNCTION anadirProducto() RETURNS TRIGGER AS $$
+DECLARE
+	   row distribution_point%rowtype;
+BEGIN
+	FOR row IN (SELECT name_dp FROM distribution_point) LOOP
+		INSERT INTO inventario(name_dp,isbn,availability) VALUES(row.name_dp,NEW.isbn,10);
+	END LOOP;
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER nuevoProducto AFTER INSERT ON book FOR EACH ROW EXECUTE PROCEDURE anadirProducto();
+
+------Update the inventory
+CREATE OR REPLACE FUNCTION updateProducto() RETURNS TRIGGER AS $$
+
+BEGIN
+
+	UPDATE inventario SET availability=availability-new.quantity WHERE isbn=new.isbn AND name_dp=new.name_dp;
+	
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER updateProducto AFTER INSERT ON bill_Book FOR EACH ROW EXECUTE PROCEDURE updateProducto();
+--------------------------------------------------------
+
+INSERT INTO admin(password,username) values
+   ('1234','1629338'),
+   ('1234','1670129'),
+   ('1234','1630536'),
+   ('1234','1625644');
+
+INSERT INTO category VALUES 
+   ('Académicos','Contenido relacionado al conocimiento'),
+   ('Novelas','Literatura en prosa'),
+   ('Lenguas','Contenido para aprender lenguas'),
+   ('Poesía','Literatura estetica y ritmica'),
+   ('Filosofía','Aborda problemas raramente abordados por la ciencia');
+
+INSERT INTO subcategory VALUES 
+   ('Humanidades','Académicos', 'CUALQUIERA PARCE'),
+   ('Salud','Académicos', 'CUALQUIERA PARCE'),
+   ('Ciencias exactas','Académicos', 'CUALQUIERA PARCE'),
+   ('Ingenieria','Académicos', 'CUALQUIERA PARCE'),
+   ('Diccionarios','Académicos', 'CUALQUIERA PARCE'),
+   ('Fantástica','Novelas', 'CUALQUIERA PARCE'),
+   ('Histórica','Novelas', 'CUALQUIERA PARCE'),
+   ('Misterio','Novelas', 'CUALQUIERA PARCE'),
+   ('Drama','Novelas', 'CUALQUIERA PARCE'),
+   ('Juvenil','Novelas', 'CUALQUIERA PARCE'),
+   ('Inglés','Lenguas', 'CUALQUIERA PARCE'),
+   ('Portugués','Lenguas', 'CUALQUIERA PARCE'),
+   ('Francés','Lenguas', 'CUALQUIERA PARCE'),
+   ('Alemán','Lenguas', 'CUALQUIERA PARCE'),
+   ('Italiano','Lenguas', 'CUALQUIERA PARCE'),
+   ('Drámatica','Poesía', 'CUALQUIERA PARCE'),
+   ('Lírica','Poesía', 'CUALQUIERA PARCE'),
+   ('Épica','Poesía', 'CUALQUIERA PARCE'),
+   ('Vanguardista','Poesía', 'CUALQUIERA PARCE'),
+   ('Contemporánea','Poesía', 'CUALQUIERA PARCE'),
+   ('Metafísica','Filosofía', 'CUALQUIERA PARCE'),
+   ('Lógica','Filosofía', 'CUALQUIERA PARCE'),
+   ('Filosofía del lenguaje','Filosofía', 'CUALQUIERA PARCE'),
+   ('Epistemología','Filosofía', 'CUALQUIERA PARCE'),
+   ('Filosofía política','Filosofía', 'CUALQUIERA PARCE');
 
 
-INSERT INTO public.client(
+INSERT INTO client(
 	username, first_name, last_name, date_birth, type_id, id, password, phone_number,gender, address, email, credit_card_number, state)
 	VALUES 
 	 ('dan', 'Darren', 'Haan', '2000-06-23', 'CC', 116554391, '1234', 3146884001,'M', 'Cl 5 5N-45', 'dar.han@gmail.com' , 333, true), 
@@ -112,4 +181,21 @@ INSERT INTO public.client(
 	 ('josette', 'Josette', 'Drouin', '1990-12-22', 'CC', 7757000001, '1234', 7006667099, 'F','Cll 66 7-14', 'josette_D@gmail.com' , 330, true),
 	 ('clehar', 'Clement ', 'Harrelson', '1995-11-22', 'CC', 4447000001, '1234', 5009967092, 'N','Cra 56 7-184', 'clehar@gmail.com' , 329, true);
 	
-insert into admin(password,username) values('1234','1629338'),('1234','1670129'),('1234','1630536'),('1234','1625644');
+INSERT INTO distribution_point(
+   name_dp,address,telephone) 
+   VALUES 
+   ('Cali','cualquiera',12345679),
+   ('Medellin','cualquiera',12345679),
+   ('Bogota','cualquiera',12345679);
+
+
+INSERT INTO book (
+   ISBN,name_subcategory,publication_year,synopsis,title,author,number_of_pages,cost,price,editorial,edition,lang,cover_type,recommended_age,imagepath)
+   VALUES
+   (1,'Humanidades',2019,'CUALQUIERA','HOLA1','YO',10,10000,15000,'NINGUNA',1,'INGLES','G',15,NULL),
+   (2,'Salud',2019,'CUALQUIERA','HOLA2','YO',10,10000,15000,'NINGUNA',2,'INGLES','B',15,NULL),
+   (3,'Humanidades',2019,'CUALQUIERA','HOLA3','YO',10,10000,15000,'NINGUNA',3,'INGLES','G',15,NULL);
+
+insert into bill(username,date) values ('dan','NOW()');
+
+insert into bill_book values (1,1,'Cali',5)

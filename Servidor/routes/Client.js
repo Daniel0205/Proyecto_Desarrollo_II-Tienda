@@ -12,7 +12,7 @@ const Admin = require('../models/Admin');
 //Insertar productos en la base de datos
 router.post("/insert", function (req, res) {
 
-    delete req.body.tipo
+    //delete req.body.tipo
 
     Client.create(req.body)
         .then(x => res.json([{ bool: true }]))
@@ -94,7 +94,7 @@ router.post("/", function (req, res) {
         where: { username: username ,password: password }
     })
     .then(x => {
-        console.log("NO ENCONTRO")
+        
         if (x===null){
             Admin.findOne({
                 attributes: ['username'],
