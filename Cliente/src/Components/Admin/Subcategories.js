@@ -267,18 +267,18 @@ export default class Subcategories extends React.Component {
       return (
         <div className="subcategories">
           <h1>Subcategories</h1>
-
-          <h3>Subcategory Name:</h3>
-          <Input value={this.state.name} onChange={this.handleName} placeholder='Subcategory Name:' /><br />
-          <h3>Category to which it belongs:</h3>
-          <Select
-            name="categoryName"
-            value={this.state.catName}
-            onChange={(x) => this.setState({ catName: x.target.value })}
-            placeholder="Select a subcategory:"
-          >
-            <option value="Select" >
-              Select a category:
+           
+            <h3>Subcategory Name:</h3>
+            <Input id="name" value={this.state.name} onChange={this.handleName} placeholder='Subcategory Name:'/><br/>
+            <h3>Category to which it belongs:</h3>
+            <Select
+                name="categoryName"
+                value={this.state.catName}
+                onChange={(x)=>this.setState({catName:x.target.value})}
+                placeholder="Select a subcategory:"
+              >
+                <option value="Select" > 
+                  Select a category:
                 </option>
             {this.state.categoryNames.map(x =>
               <option value={x.name_category} key={x.name_category}>
