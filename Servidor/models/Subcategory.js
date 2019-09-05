@@ -2,10 +2,9 @@ const Sequelize = require('sequelize');
 const db = require('../config/database');
 const Book  = require( './Book');
 
-
 const Subcategory = db.define ('subcategory',{
     name_subcategory:{
-        type: Sequelize.STRING(15),
+        type: Sequelize.TEXT,
         primaryKey: true 
     },
 
@@ -17,12 +16,10 @@ const Subcategory = db.define ('subcategory',{
 },{
     freezeTableName: true,
     timestamps: false,
-
 })
 
 
 Subcategory.hasMany(Book,{ foreignKey: 'name_subcategory'});
 Book.belongsTo(Subcategory,{ foreignKey: 'name_subcategory',source:'name_subcategory'});
-
 
 module.exports = Subcategory;

@@ -74,34 +74,38 @@ export const mainListItemsAdmin = (
   </div>);
 
 
-
 export const secondaryListItemsAdmin = (
   <div>
-    <ListSubheader inset>Saved reports</ListSubheader>
-    <ListItem button>
+    <ListSubheader inset>Reports</ListSubheader>
+    <ListItem button component={Link} to="/Admin_page/trending">
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Current month" />
+      <ListItemText primary="Trending products" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Last quarter" />
+      <ListItemText primary="Sales" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
+      <ListItemText primary="Inventories" />
     </ListItem>
+  </div>
+);
+
+export const sessionItem = (
+  <div>
     <ListSubheader inset>Session</ListSubheader>
     <ListItem  component={Link}to={`/home/`} button>
       <ListItemIcon>
         <ExitToAppIcon />
       </ListItemIcon>
-      <ListItemText primary="Sign off" />
+      <ListItemText primary="Sign out" />
     </ListItem>
   </div>
 );

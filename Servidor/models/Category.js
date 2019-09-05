@@ -5,7 +5,7 @@ const Subcategory = require('./Subcategory') ;
 
 const Category = db.define ('category',{
     name_category:{
-        type: Sequelize.STRING(15),
+        type: Sequelize.TEXT,
         primaryKey: true 
     },
     description:{
@@ -21,4 +21,4 @@ const Category = db.define ('category',{
 Category.hasMany(Subcategory,{ foreignKey: 'name_category'});
 Subcategory.belongsTo(Category,{ foreignKey: 'name_category',source:'name_category'});
 
-module.exports = Category;  
+module.exports = Category;

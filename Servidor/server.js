@@ -37,6 +37,7 @@ app.use('/Category', require('./routes/Category'));
 app.use('/Subcategory', require('./routes/Subcategory'));
 app.use('/Book',require('./routes/Book'));
 app.use('/Client',require('./routes/Client'));
+app.use('/Report',require('./routes/Report'));
 
 
 /////////////////////////////////////////////////////
