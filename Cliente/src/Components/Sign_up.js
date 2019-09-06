@@ -233,7 +233,7 @@ export default function SignInSide() {
                 required
                 fullWidth
                 label="Last name"
-                id="outlined-required"
+                id="lastname"
                 name='last_name'
                 onChange={(x) => state['last_name'] = x.target.value}
               />
@@ -258,7 +258,7 @@ export default function SignInSide() {
                 required
                 fullWidth
                 label="Credit card number"
-                id="outlined-required"
+                id="creditcard"
                 name='credit_card_number'
                 onChange={(x) => state['credit_card_number'] = x.target.value}
               />
@@ -270,7 +270,7 @@ export default function SignInSide() {
                 required
                 fullWidth
                 label="Phone number"
-                id="outlined-required"
+                id="phonenumber"
                 name='phone_number'
                 onChange={(x) => state['phone_number'] = x.target.value}
               />
@@ -282,7 +282,7 @@ export default function SignInSide() {
                 required
                 fullWidth
                 label="Address"
-                id="outlined-required"
+                id="address"
                 name='address'
                 onChange={(x) => state['address'] = x.target.value}
               />
@@ -294,7 +294,7 @@ export default function SignInSide() {
                 fullWidth
                 label="ID type"
                 className={classes.textField}
-                value={values.type_id}
+                value={state.type_id}
                 onChange={handleChangeList('type_id')}
                 SelectProps={{
                   MenuProps: {
@@ -318,7 +318,7 @@ export default function SignInSide() {
                 variant="outlined"
                 margin="normal"
                 label="Identification"
-                id="outlined-required"
+                id="identification"
                 name='id'
                 onChange={(x) => state['id'] = x.target.value}
               />
@@ -344,7 +344,7 @@ export default function SignInSide() {
                   fullWidth
                   margin="normal"
                   id="date-picker-dialog"
-                  label="Date picker dialog"
+                  label="Date birth"
                   format="yyyy-MM-dd"
                   value={selectedDate}
                   onChange={handleDateChange}
@@ -357,10 +357,10 @@ export default function SignInSide() {
               {/*--Gender--*/}
               <TextField
                 fullWidth
-                id="outlined-select-currency"
+                id="gender"
                 select
                 label="Gender"
-                value={values.gender}
+                value={state.gender}
                 onChange={handleChangeList('gender')}
                 SelectProps={{
                   MenuProps: {
