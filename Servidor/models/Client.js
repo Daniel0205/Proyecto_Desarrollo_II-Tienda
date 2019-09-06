@@ -1,6 +1,8 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database')
 
+const Message = require('./Message')
+
 const Client = db.define ('client',{
     username:{
         type: Sequelize.TEXT,
@@ -22,7 +24,7 @@ const Client = db.define ('client',{
         type: Sequelize.STRING(2),
         allowNull: false             
     },
-    id:{
+    idsdf:{
         type: Sequelize.BIGINT,
         allowNull: false             
     },
@@ -59,6 +61,10 @@ const Client = db.define ('client',{
     freezeTableName: true,
     timestamps: false
 })
+
+
+Client.hasMany(Message,{ foreignKey: 'username'});
+Message.belongsTo(Client,{ foreignKey: 'username',source:'username'});
 
 
 
