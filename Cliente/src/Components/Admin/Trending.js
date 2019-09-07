@@ -1,7 +1,10 @@
+import 'date-fns';
 import React from 'react';
 import { Button } from '@material-ui/core'
 import { JsonToTable } from "react-json-to-table";
 import { HorizontalBar } from 'react-chartjs-2';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 
 var data;
@@ -12,12 +15,17 @@ export default class Trending extends React.Component {
         this.state = {
             query: [],
             table: [],
-            chartData: []
+            chartData: [],
+            initDate: new Date(),
+            finalDate: new Date()
         }
 
         this.getpro = this.getpro.bind(this);
         this.resJsonToTable = this.resJsonToTable.bind(this);
         this.resJsonToChart = this.resJsonToChart.bind(this);
+        this.handleInitDateChange = this.handleInitDateChange.bind(this);
+        this.handleFinalDateChange = this.handleFinalDateChange.bind(this);
+        this.filterDateRanges = this.filterDateRanges.bind(this);
     }
 
     getpro() {
@@ -36,12 +44,12 @@ export default class Trending extends React.Component {
     que llega desde el sevidor */
     resJsonToTable() {
 
-        var json = this.state.query;
-        var table = [];
+        let json = this.filterDateRanges();
+        let table = [];
 
         for (let index = 0; index < json.length; index++) {
 
-            var newjson = {};
+            let newjson = {};
             newjson.Item = index;
             newjson.Bill = json[index]['id_bill'];
             newjson.Date = json[index]['date'];
@@ -68,11 +76,77 @@ export default class Trending extends React.Component {
             }]
         }
         //Agregar datos recibidos del servidor
-        for (let index = 0; index < this.state.query.length; index++) {
+        let json = this.filterDateRanges();
+        for (let index = 0; index < json.length; index++) {
             data.labels[index] = "item" + index.toString();
-            data.datasets[0]['data'][index] = this.state.query[index]['bill_books'][0]['quantity'];
+            data.datasets[0]['data'][index] = json[index]['bill_books'][0]['quantity'];
         }
         this.setState({ chartData: data });
+    }
+
+
+    //Funciones para almacenar las fechas seleccionadas
+    handleInitDateChange(date) { this.setState({ initDate: date }) }
+    handleFinalDateChange(date) { this.setState({ finalDate: date }) }
+
+
+    //Funcion para filtrar por rangos las fechas a mostar
+    filterDateRanges() {
+
+        let filteredQuery = [];
+        let result = [];
+
+        //final date
+        let fDay = parseInt(this.state.finalDate.toString().substring(8, 10));
+        let fMonth = this.state.finalDate.getMonth() + 1;
+        let fYear = this.state.finalDate.getFullYear();
+
+        for (let index = 0; index < this.state.query.length; index++) {
+
+            if (parseInt((this.state.query[index]['date']).substring(0, 4), 10) < fYear) {
+                filteredQuery.push(this.state.query[index]);
+            }
+            else if (parseInt((this.state.query[index]['date']).substring(0, 4), 10) === fYear) {
+
+                if (parseInt((this.state.query[index]['date']).substring(5, 7), 10) < fMonth) {
+                    filteredQuery.push(this.state.query[index]);
+                }
+                else if (parseInt((this.state.query[index]['date']).substring(5, 7), 10) === fMonth) {
+
+                    if (parseInt((this.state.query[index]['date']).substring(8, 10), 10) <= fDay) {
+                        filteredQuery.push(this.state.query[index]);
+                    }
+                }
+            }
+
+        }
+
+        //initial date
+        let iDay = parseInt(this.state.initDate.toString().substring(8, 10));
+        let iMonth = this.state.initDate.getMonth() + 1;
+        let iYear = this.state.initDate.getFullYear();
+
+        for (let index = 0; index < filteredQuery.length; index++) {
+
+            if (parseInt((filteredQuery[index]['date']).substring(0, 4), 10) > iYear) {
+                result.push(filteredQuery[index]);
+            }
+            else if (parseInt((filteredQuery[index]['date']).substring(0, 4), 10) === iYear) {
+
+                if (parseInt((filteredQuery[index]['date']).substring(5, 7), 10) > iMonth) {
+                    result.push(filteredQuery[index]);
+                }
+                else if (parseInt((filteredQuery[index]['date']).substring(5, 7), 10) === iMonth) {
+
+                    if (parseInt((filteredQuery[index]['date']).substring(8, 10), 10) >= iDay) {
+                        result.push(filteredQuery[index]);
+                    }
+                }
+            }
+
+        }
+
+        return result;
     }
 
 
@@ -91,13 +165,49 @@ export default class Trending extends React.Component {
         return (
             <div className="trending">
                 <h1>Trending</h1>
-                <Button onClick={() => {
+                {/*--Fecha inicial--*/}
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                        //fullWidth
+                        margin="normal"
+                        id="date-picker-dialog"
+                        label="INITIAL DATE"
+                        format="yyyy-MM-dd"
+                        value={this.state.initDate}
+                        onChange={this.handleInitDateChange}
+                        KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                        }}
+                    />
+                </MuiPickersUtilsProvider>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {/*--Fecha inicial--*/}
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                        //fullWidth
+                        margin="normal"
+                        id="date-picker-dialog"
+                        label="FINAL DATE"
+                        format="yyyy-MM-dd"
+                        value={this.state.finalDate}
+                        onChange={this.handleFinalDateChange}
+                        KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                        }}
+                    />
+                </MuiPickersUtilsProvider>
+
+                <br />
+                <br />
+                <Button variant="contained" color="primary" onClick={() => {
                     this.setState({ table: "" });
                     this.getpro();
                 }}>
-                    Click
+                    Show Report
                     </Button>
-                <br />
+
+                <br /><br />
                 <JsonToTable json={this.state.table} />
                 <br />
                 < HorizontalBar data={this.state.chartData}
