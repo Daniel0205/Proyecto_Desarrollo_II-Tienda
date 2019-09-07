@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
+
 const DistributionPoint = require( './DistributionPoint');
 const Book = require('./Book')
 
