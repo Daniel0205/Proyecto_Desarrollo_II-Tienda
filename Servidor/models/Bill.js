@@ -5,6 +5,7 @@ const BillBook = require( './BillBook')
 const Client = require( './Client')
 const Book = require( './Book')
 
+
 const Bill = db.define ('bill',{
     id_bill:{
         type: Sequelize.BIGINT,

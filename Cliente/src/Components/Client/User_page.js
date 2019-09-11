@@ -18,7 +18,12 @@ import Shopping_car from './Shopping_car'
 import Buy_list from './Buy_list'
 import Contact_us from './Contact_us'
 import { Route } from 'react-router-dom'
-
+import { Select } from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
+import {getPoint} from '../../store/point/reducer';
+import updatePoint from '../../store/point/action';
+import {connect} from 'react-redux';
+import { getUsername } from "../../store/username/reducer";
 
 const drawerWidth = 240;
 
@@ -111,11 +116,12 @@ const useStyles = makeStyles(theme => ({
 
 
 
-export default function User_page(props) {
 
+const User_page = (props) => {
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [dp, setDp] = React.useState([]);
 
 
   const handleDrawerOpen = () => {
@@ -125,6 +131,28 @@ export default function User_page(props) {
     setOpen(false);
   };
 
+  const handleChange = (event) => {
+    updatePoint( event.target.value)
+  }
+
+
+  if(dp.length===0){
+ 
+    fetch("/DistributionPoint/consult", {
+      method: "GET",
+    })
+      .then(res => res.json())
+      .then(res => {
+        
+        if(res.bool){
+          props.updatePoint(res.data[0].name_dp)
+          console.log(props.dp)
+          setDp(res.data); 
+        }
+      })
+  }
+
+  console.log(dp)
 
 
   return (
@@ -142,9 +170,17 @@ export default function User_page(props) {
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            Dashboard
+            Welcome {props.username}
             </Typography>
-          
+            <Typography component="h6" variant="h6" color="inherit"  >
+            Distribution Point:     
+            </Typography>
+            <Select
+              value={props.dp}
+              onChange={handleChange}
+              >
+              {dp.map((x,i) =>   <MenuItem key={i} value={x.name_dp}>{x.name_dp}</MenuItem>)}
+            </Select>
         </Toolbar>
       </AppBar>
 
@@ -180,3 +216,13 @@ export default function User_page(props) {
     </div>);
 
 }
+
+const mapStateToProps= state => {
+  return {
+    dp: getPoint(state),
+    username: getUsername(state)
+  }
+}
+
+
+export default  connect (mapStateToProps,{updatePoint})(User_page);

@@ -2,16 +2,43 @@ const express = require('express');
 const router = express.Router();
 const db  =require('../config/database')
 const Bill = require('../models/Bill')
+const BillBook = require('../models/BillBook')
+const Book = require('../models/Book')
 
 /////////////////////////////////////////////////////
 ////////////CONSULTAS DE LAS VENTAS//////////////////
 /////////////////////////////////////////////////////
 
 //insertar una venta
-router.post("/insertBill",function(req,res){
+router.post("/buy",function(req,res){
 
-    Bill.create(req.body).then(x => res.json(x))
-    .catch(err => console.log(err));
+
+    console.log(req.body)
+
+    Bill.create({
+        username:req.body.username,
+        date: db.fn('NOW')
+    })
+    .then(x =>{
+        BillBook.bulkCreate(
+            req.body.books.map((z)=>{
+                return({
+                    id_bill:x.id_bill,
+                    isbn:z.isbn,
+                    name_dp:z.name_dp,
+                    quantity:z.quantity
+                })
+            })
+        ).then(x => 
+            res.json({bool:true})
+        )
+        .catch(err => {
+            res.json({bool:false})
+            console.log(err)});
+    })
+    .catch(err => {
+        res.json({bool:false})
+        console.log(err)});
   
   })
   
@@ -27,37 +54,46 @@ router.post("/getBills",function(req,res){
   
 //Consultar una venta
 
+
 router.post("/getBill",function(req,res){
 
+    var aux = []
+
     Bill.findAll({where: {
-        id_bill: req.body.id_bill
+        username: req.body.username
     }})
-    .then(x =>  res.json(x))
-    .catch(err => console.log(err));
+    .then(x =>{
+        
+        if(x.length==0){res.json(aux)}
+        for (let i = 0; i < x.length; i++) {
+      
+            BillBook.findAll({
+                attributes: ['quantity','isbn','name_dp'],
+                where:{id_bill:x[i].id_bill},
+                include: [{model:Book, attributes: ['title']}]
+            })
+            .then(z=>{
+                var bill = {
+                    id_bill: x[i].id_bill,
+                    date: x[i].date,
+                    products: z.map(x=>{
+                        return({
+                            quantity:x.quantity,
+                            isbn:x.isbn,
+                            name_dp:x.name_dp,
+                            title:x.book.title})  
+                    })
+                }
+         
+                aux.push(bill)
 
-})
-  
-//Modificar una venta
-
-router.put("/updateBill", function(req,res){
-
-    let index = req.body.id_bill;
-    delete req.body.id_bill
-
-    Bill.update(req.body,{where: {
-        id_bill: index
-    }}).then(x => res.json(x))
-    .catch(err => console.log(err));
-
-})
-
-//Eliminar una venta
-
-router.delete("/deleteClient/:idbill", function(req,res){
-
-    Bill.destroy({where: {
-        id_bill: req.params.idbill
-    }}).then(x => res.json(x))
+     
+                if(i+1===x.length) {res.json(aux)}
+            })
+            .catch(err => console.log(err));        
+        }
+        
+    })
     .catch(err => console.log(err));
 
 })
