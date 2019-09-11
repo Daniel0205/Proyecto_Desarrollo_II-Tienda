@@ -23,7 +23,8 @@ const Inventory = db.define ('inventario',{
     timestamps: false
 })
 
-DistributionPoint.hasOne(Inventory,{foreingkey: 'id_dp'});
+Inventory.hasMany(DistributionPoint,{foreingkey: 'id_dp'});
+
 Book.hasMany(Inventory,{foreingkey: 'isbn', sourcekey:'isbn'});
 
 module.exports = Inventory;

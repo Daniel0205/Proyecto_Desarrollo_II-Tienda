@@ -12,7 +12,7 @@ import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItemsAdmin, secondaryListItemsAdmin } from '../../listItems';
+import { mainListItemsAdmin, secondaryListItemsAdmin, sessionItem } from '../../listItems';
 import { makeStyles } from '@material-ui/core/styles';
 import Activate_Client from '../Activate_Client/Activate_Client';
 import Products from '../Products';
@@ -20,6 +20,7 @@ import Categories from '../Categories';
 import Subcategories from '../Subcategories';
 import Message from '../Message';
 import Bill from '../Bill';
+import Trending from '../Trending';
 import { Route } from 'react-router-dom'
 
 
@@ -92,9 +93,9 @@ const useStyles = makeStyles(theme => ({
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    height: '100vh',
+    //height: '100vh',
     overflow: 'auto',
-    padding: '60px 15px 25px 15px',
+    padding: '60px 30px 0px 30px',
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -168,6 +169,8 @@ export default function Admin_page(props) {
         <List onSelect={e => console.log(e)} component="nav">{mainListItemsAdmin}</List>
         <Divider />
         <List>{secondaryListItemsAdmin}</List>
+        <Divider />
+        <List>{sessionItem}</List>
       </Drawer>
 
       <main className={classes.content}>
@@ -178,6 +181,7 @@ export default function Admin_page(props) {
         <Route path="/Admin_page/products" component={Products} />
         <Route path="/Admin_page/message" component={Message} />
         <Route path="/Admin_page/bill" component={Bill} />
+        <Route path="/Admin_page/trending" component={Trending} />
       </main>
     </div>);
 

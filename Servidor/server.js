@@ -35,14 +35,15 @@ app.use('/Category', require('./routes/Category'));
 app.use('/Subcategory', require('./routes/Subcategory'));
 app.use('/Book',require('./routes/Book'));
 app.use('/Client',require('./routes/Client'));
+app.use('/Report',require('./routes/Report'));
 app.use('/Inventory',require('./routes/Inventory'));
 app.use('/Message',require('./routes/Message'));
 app.use('/Critics',require('./routes/Critics'));
 app.use('/Bill',require('./routes/Bill'));
 app.use('/BillBook',require('./routes/BillBook'));
 app.use('/DistributionPoint',require('./routes/DistributionPoint'));
-
 app.use('/images',express.static('images'));
+
 
 /////////////////////////////////////////////////////
 ////////////CONFIGURACION DEL PUERTO ////////////////

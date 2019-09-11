@@ -3,6 +3,8 @@ const db = require('../config/database');
 
 const BillBook = require( './BillBook')
 const Client = require( './Client')
+const Book = require( './Book')
+
 
 const Bill = db.define ('bill',{
     id_bill:{
@@ -15,7 +17,7 @@ const Bill = db.define ('bill',{
         primaryKey: true 
     },
     date:{
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         allowNull: false     
     }
 },{
@@ -24,5 +26,8 @@ const Bill = db.define ('bill',{
 })
 
 Bill.hasMany(Client,{foreingkey: 'username', sourcekey:'username'});
+
+Bill.hasMany(BillBook,{ foreignKey: 'id_bill'});
+BillBook.belongsTo(Bill,{ foreignKey: 'id_bill',source:'id_bill'});
 
 module.exports = Bill;

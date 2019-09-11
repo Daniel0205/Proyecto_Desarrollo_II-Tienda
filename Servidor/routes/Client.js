@@ -74,17 +74,6 @@ router.post("/deactivate", function (req, res) {
         })
 })
 
-/*
-//////PRUEBA
-const session = require("express-session");
-
-router.use(session({
-    secret: 'Sup3R$ecR3t',
-    resave: true,
-    saveUninitialized: true
-}));
-*/
-
 //Modificar los datos de un producto especifico de la base de datos
 router.post("/", function (req, res) {
     let { username, password } = req.body;
