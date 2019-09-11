@@ -43,6 +43,7 @@ app.use('/Bill',require('./routes/Bill'));
 app.use('/BillBook',require('./routes/BillBook'));
 app.use('/DistributionPoint',require('./routes/DistributionPoint'));
 app.use('/images',express.static('images'));
+app.use('/videos',express.static('videos'));
 
 
 /////////////////////////////////////////////////////

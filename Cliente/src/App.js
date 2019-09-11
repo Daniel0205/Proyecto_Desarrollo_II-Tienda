@@ -12,6 +12,7 @@ import updateType from './store/type/action'
 import updateUsername from './store/username/action'
 
 
+
 class  App extends Component {
 
 
@@ -26,7 +27,7 @@ class  App extends Component {
         
                   {/* --- Enlace a la ruta de la pagina de bienvenida --- */}
                   <TypoGraphy variant="h6" >
-                    [ <Link to={`/home/`} style={{ textDecoration: 'none', color: 'white' }}> Home</Link>]
+                     <Link to={`/home/`} style={{ textDecoration: 'none', color: 'white' }}> Home</Link>
                   </TypoGraphy>
         
                   {/* --- Enlace a la ruta para el login --- */}
