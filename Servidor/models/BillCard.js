@@ -9,7 +9,7 @@ const BillCard = db.define ('bill_card',{},{
     timestamps: false
 })
 
-Bill_card.removeAttribute('id');
+BillCard.removeAttribute('id');
 
 
-module.exports = Bill;
+module.exports = BillCard;

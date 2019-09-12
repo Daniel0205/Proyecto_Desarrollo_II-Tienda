@@ -3,7 +3,6 @@ const db = require('../config/database')
 
 const Message = require( './Message')
 const Critics = require( './Critics')
-const Bill = require( './Bill')
 const Card = require( './Card')
 
 const Client = db.define ('client',{

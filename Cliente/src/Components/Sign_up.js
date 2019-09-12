@@ -74,7 +74,7 @@ var state = {
   username: '',
   first_name: '',
   last_name: '',
-  date_birth: '',
+  date_birth: '2015-05-05',
   type_id: 'CC',
   id: '',
   gender: 'N',
@@ -82,7 +82,7 @@ var state = {
   phone_number: '',
   address: '',
   email: '',
-  credit_card_number: '',
+  card: [{credit_card_number:'',type:'C'}],
   state: true
 };
 
@@ -121,14 +121,31 @@ const Gender = [
 ];
 
 
+const Card = [
+  {
+    value: 'D',
+    label: 'Debit',
+  },
+  {
+    value: 'C',
+    label: 'Credit',
+  }
+];
+
+
 
 export default function SignInSide() {
 
-  const classes = useStyles();
-
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [selectedDate, setSelectedDate] = React.useState( '2015-05-05');
   const [RedirectToLogin, setRedirectToLogin] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [num, setNum] = React.useState(1);
+  const [values, setValues] = React.useState({});
+  const [, updateState] = React.useState();
+  const forceUpdate = React.useCallback(() => updateState({}), []);
+
+  const classes = useStyles();
+
 
   function SnackbarSuccess() {
     const classes = useStyles1();
@@ -147,9 +164,57 @@ export default function SignInSide() {
     state['date_birth'] = format(date, "yyyy-MM-dd");
   }
 
+  function getFields(number) {
+    
+    var card=[]
+    for (let i = 0; i < number; i++) {
+      card.push(
+        <div key={i}>
+        <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label={"Credit card number "+(i+1)}
+                id={i.toString()}
+                name='Credit card number'
+                onChange={(x) => state.card[x.target.id].credit_card_number = x.target.value}
+              />
+        <TextField
+                fullWidth
+                id={i.toString()}
+                select
+                label={"Type"+(i+1)}
+                value={state.card[i].type+i}
+                onChange={(x) =>{
+                  state.card[x.target.value[1]].type = x.target.value[0]
+                  forceUpdate()
+                }}
+                SelectProps={{
+                  MenuProps: {
+                    className: classes.menu,
+                  },
+                }}
+                margin="normal"
+                variant="outlined"
+              >
+                {Card.map(option => (
+                  <MenuItem key={option.value} value={option.value+i}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+        </div>
+      )
+      
+    }
+
+    return card
+  }
+
   function handleClick(e) {
 
-    console.log(state);
+    
     fetch("/Client/insert", {
       method: "POST",
       headers: {
@@ -160,7 +225,8 @@ export default function SignInSide() {
     })
       .then(res => res.json())
       .then(res => {
-        if (res[0]) {
+        
+        if (res.bool) {
           console.log("Creado")
 
           //Mensaje de creacion de cuenta
@@ -175,15 +241,15 @@ export default function SignInSide() {
   }
 
 
-  const [values, setValues] = React.useState({});
+  
   const handleChangeList = name => event => {
     setValues({ ...values, [name]: event.target.value });
     state[name] = event.target.value;
   };
 
 
-  if (!RedirectToLogin) {
 
+  if (!RedirectToLogin) {
     return (
 
       <Grid container component="main" className={classes.root}>
@@ -255,13 +321,21 @@ export default function SignInSide() {
               <TextField
                 variant="outlined"
                 margin="normal"
+                type="number"
+                inputProps={{min:"1", max:"3"}}
+                value={num}
                 required
                 fullWidth
                 label="Credit card number"
                 id="creditcard"
                 name='credit_card_number'
-                onChange={(x) => state['credit_card_number'] = x.target.value}
+                onChange={(x) =>{
+                  if(state.card.length<x.target.value)state.card.push({credit_card_number:'',type:'C'})
+                  else state.card.splice(state.card.length-1,1)
+                  setNum(x.target.value)}}
               />
+
+              {getFields(num)}
 
               {/*--Phone number--*/}
               <TextField

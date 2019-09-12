@@ -22,4 +22,4 @@ const Card = db.define ('card',{
 Card.hasMany(BillBook,{ foreignKey: 'credit_card_number'});
 BillBook.belongsTo(Card,{ foreignKey: 'credit_card_number',source:'credit_card_number'});
 
-module.exports = Bill;
+module.exports = Card;
