@@ -11,6 +11,10 @@ const Card = db.define ('card',{
     type:{
         type: Sequelize.STRING(1),
         allowNull: false     
+    },
+    entity:{
+        type: Sequelize.TEXT,
+        allowNull: false     
     }
 },{
     freezeTableName: true,

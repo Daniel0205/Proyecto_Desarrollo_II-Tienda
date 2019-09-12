@@ -13,23 +13,9 @@ const Card  = require('../models/Card');
 //Insertar productos en la base de datos
 router.post("/insert", function (req, res) {
 
-    //delete req.body.tipo
-    console.log(req.body)
 
     Client.create(req.body)
-        .then(x => {
-            Card.bulkCreate(
-                req.body.card.map(z=>{
-                    return {
-                        username: x.username,
-                        credit_card_number: z.credit_card_number, 
-                        type: z.type
-                    }
-                })
-            )
-            .then(x=>res.json({ bool: true }))
-            .catch(err => res.json({ bool: false }))
-        })
+        .then(x => res.json({ bool: true }))
         .catch(err => res.json({ bool: false }));
 
 })

@@ -21,6 +21,7 @@ CREATE TABLE card(
    username         TEXT REFERENCES client(username),
    credit_card_number   BIGINT PRIMARY KEY,
    type              CHAR(1) NOT NULL,
+   entity            TEXT NOT NULL,
    CHECK (type IN ('D','C'))
 );
 
@@ -89,7 +90,9 @@ CREATE TABLE bill(
 DROP TABLE IF EXISTS bill_card CASCADE;
 CREATE TABLE bill_card(
    id_bill          BIGINT REFERENCES bill(id_bill),
-   credit_card_number   BIGINT REFERENCES card(credit_card_number)
+   credit_card_number   BIGINT REFERENCES card(credit_card_number),
+   dues                 INT NOT NULL,
+   porcent          INT NOT NULL
 );
 
 DROP TABLE IF EXISTS distribution_point CASCADE;
@@ -219,8 +222,8 @@ UPDATE inventory SET availability=500 WHERE name_dp='Cali';
 UPDATE inventory SET availability=400 WHERE name_dp='Medellin';
 UPDATE inventory SET availability=600 WHERE name_dp='Barranquilla';
 
-INSERT INTO card(credit_card_number,username,type) VALUES 
-  (333,'dan','C'),(444,'dan','D'),(555,'helat','C'),(666,'jonpe','C'),(777,'josette','D'),(888,'clehar','C');
+INSERT INTO card(credit_card_number,username,type,entity) VALUES 
+  (333,'dan','C','VISA'),(444,'dan','D','VISA'),(555,'helat','C','VISA'),(666,'jonpe','C','VISA'),(777,'josette','D','VISA'),(888,'clehar','C','VISA');
 		  
 
 INSERT INTO bill(date)VALUES 
@@ -231,12 +234,12 @@ INSERT INTO bill(date)VALUES
    ('2018-10-01');	
    
 INSERT INTO bill_card VALUES
-	(1,333),
-	(1,444),
-	(3,555),
-	(4,666),
-	(5,777),
-   (2,888);
+	(1,333,3,50),
+	(1,444,1,50),
+	(3,555,2,100),
+	(4,666,3,100),
+	(5,777,1,100),
+   (2,888,4,100);
 
 	
 INSERT INTO bill_book VALUES 
