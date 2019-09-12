@@ -11,11 +11,19 @@ CREATE TABLE client(
    gender       CHAR(1) NOT NULL,
    address	    TEXT NOT NULL,
    email 	    TEXT NOT NULL,	
-   credit_card_number   BIGINT,
    state 	    BOOLEAN NOT NULL,	
    CHECK (type_id IN ('CC', 'TI','RC','TP')),
    CHECK (gender IN ('M','F','N'))
 );
+
+DROP TABLE IF EXISTS card CASCADE;
+CREATE TABLE card(
+   username         TEXT REFERENCES client(username),
+   credit_card_number   BIGINT PRIMARY KEY,
+   type              CHAR(1) NOT NULL,
+   CHECK (type IN ('D','C'))
+);
+
 
 DROP TABLE IF EXISTS admin CASCADE;
 CREATE TABLE admin(
@@ -75,8 +83,13 @@ CREATE TABLE critics(
 DROP TABLE IF EXISTS bill CASCADE;
 CREATE TABLE bill(
    id_bill          SERIAL PRIMARY KEY,
-   username		    TEXT REFERENCES client(username),
    date		    DATE NOT NULL
+);
+
+DROP TABLE IF EXISTS bill_card CASCADE;
+CREATE TABLE bill_card(
+   id_bill          BIGINT REFERENCES bill(id_bill),
+   credit_card_number   BIGINT REFERENCES card(credit_card_number)
 );
 
 DROP TABLE IF EXISTS distribution_point CASCADE;
@@ -179,13 +192,13 @@ INSERT INTO subcategory VALUES
 
 
 INSERT INTO client(
-	username, first_name, last_name, date_birth, type_id, id, password, phone_number,gender, address, email, credit_card_number, state)
+	username, first_name, last_name, date_birth, type_id, id, password, phone_number,gender, address, email, state)
 	VALUES 
-	 ('dan', 'Darren', 'Haan', '2000-06-23', 'CC', 116554391, '1234', 3146884001,'M', 'Cl 5 5N-45', 'dar.han@gmail.com' , 333, true), 
-	 ('helat', 'Helaine', 'Trussell', '2001-04-20', 'CC', 1757886571, '1234', 3006884001, 'F','Cra 66 5-44', 'helat@gmail.com' , 332, true), 
-	 ('jonpe', 'Jonah', 'Petti', '1998-01-20', 'CC', 2757886001, '1234', 5006667001, 'M','Avn 6n 8-144', 'jonah-p@gmail.com' , 331, true),
-	 ('josette', 'Josette', 'Drouin', '1990-12-22', 'CC', 7757000001, '1234', 7006667099, 'F','Cll 66 7-14', 'josette_D@gmail.com' , 330, true),
-	 ('clehar', 'Clement ', 'Harrelson', '1995-11-22', 'CC', 4447000001, '1234', 5009967092, 'N','Cra 56 7-184', 'clehar@gmail.com' , 329, true);
+	 ('dan', 'Darren', 'Haan', '2000-06-23', 'CC', 116554391, '1234', 3146884001,'M', 'Cl 5 5N-45', 'dar.han@gmail.com' , true), 
+	 ('helat', 'Helaine', 'Trussell', '2001-04-20', 'CC', 1757886571, '1234', 3006884001, 'F','Cra 66 5-44', 'helat@gmail.com' , true), 
+	 ('jonpe', 'Jonah', 'Petti', '1998-01-20', 'CC', 2757886001, '1234', 5006667001, 'M','Avn 6n 8-144', 'jonah-p@gmail.com' , true),
+	 ('josette', 'Josette', 'Drouin', '1990-12-22', 'CC', 7757000001, '1234', 7006667099, 'F','Cll 66 7-14', 'josette_D@gmail.com' , true),
+	 ('clehar', 'Clement ', 'Harrelson', '1995-11-22', 'CC', 4447000001, '1234', 5009967092, 'N','Cra 56 7-184', 'clehar@gmail.com' , true);
 	
 INSERT INTO book VALUES
    (9788476588871,'Humanidades',2008,'Para la antropología histórica, la complejidad y el caracter','Antropología: Historia, Cultura, Filosofia','Christoph Wulf', 331, 50000, 84000,'Anthropos','1','Español','G','20','images/9788476588871.jpg'),
@@ -206,34 +219,33 @@ UPDATE inventory SET availability=500 WHERE name_dp='Cali';
 UPDATE inventory SET availability=400 WHERE name_dp='Medellin';
 UPDATE inventory SET availability=600 WHERE name_dp='Barranquilla';
 
---INSERT INTO bill VALUES 
---   (1000001,'dan',NOW()),
---   (1000002,'jonpe',NOW()),
---   (1000003,'helat',NOW());
+INSERT INTO card(credit_card_number,username,type) VALUES 
+  (333,'dan','C'),(444,'dan','D'),(555,'helat','C'),(666,'jonpe','C'),(777,'josette','D'),(888,'clehar','C');
 		  
 
-INSERT INTO bill VALUES 
-   (1000001,'dan', '2019-09-01' ),
-   (1000002,'jonpe','2019-08-10'),
-   (1000003,'helat','2019-01-01'),
-   (1000004,'jonpe','2018-12-10'),
-   (1000005,'helat','2018-10-01');		  
+INSERT INTO bill(date)VALUES 
+   ('2019-09-01' ),
+   ('2019-08-10'),
+   ('2019-01-01'),
+   ('2018-12-10'),
+   ('2018-10-01');	
+   
+INSERT INTO bill_card VALUES
+	(1,333),
+	(1,444),
+	(3,555),
+	(4,666),
+	(5,777),
+   (2,888);
 
---INSERT INTO bill_book VALUES 
---   (1000001,9788476588871,2),
---   (1000001,9788422626114,3),
---   (1000001,9788497321907,1),
---   (1000002,9788431326968,2),
---   (1000002,9788490227565,1),
---   (1000003,9789707290624,1);
 	
 INSERT INTO bill_book VALUES 
-   (1000001,9788476588871,'Cali',2),
-   (1000001,9788422626114,'Cali',3),
-   (1000001,9788497321907,'Medellin',1),
-   (1000002,9788431326968,'Medellin',2),
-   (1000002,9788490227565,'Barranquilla',1),
-   (1000003,9789707290624,'Barranquilla',1);
+   (1,9788476588871,'Cali',2),
+   (1,9788422626114,'Cali',3),
+   (1,9788497321907,'Medellin',1),
+   (2,9788431326968,'Medellin',2),
+   (2,9788490227565,'Barranquilla',1),
+   (3,9789707290624,'Barranquilla',1);
 
 INSERT INTO critics VALUES
    ('dan',9788422626114,'No me gusto',2),
