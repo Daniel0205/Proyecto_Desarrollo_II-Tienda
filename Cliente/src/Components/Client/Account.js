@@ -72,7 +72,7 @@ class Account extends React.Component {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res[0])
+        console.log(res)
         this.setState(res[0])
       })
   }

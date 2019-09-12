@@ -37,6 +37,7 @@ router.get("/consult", (req, res) => {
 
 //consulta todas las subcategorias en la base de datos
 router.post("/get", (req, res) => {
+    console.log()
     Client.findAll({ where: req.body })
         .then(x => res.json(x))
         .catch(err => {

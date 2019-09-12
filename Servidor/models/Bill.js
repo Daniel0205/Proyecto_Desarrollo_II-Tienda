@@ -2,8 +2,6 @@ const Sequelize = require('sequelize');
 const db = require('../config/database');
 
 const BillBook = require( './BillBook')
-const Client = require( './Client')
-const Book = require( './Book')
 
 
 const Bill = db.define ('bill',{
@@ -25,7 +23,6 @@ const Bill = db.define ('bill',{
     timestamps: false
 })
 
-Bill.hasMany(Client,{foreingkey: 'username', sourcekey:'username'});
 
 Bill.hasMany(BillBook,{ foreignKey: 'id_bill'});
 BillBook.belongsTo(Bill,{ foreignKey: 'id_bill',source:'id_bill'});

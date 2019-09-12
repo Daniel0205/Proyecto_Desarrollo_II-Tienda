@@ -3,9 +3,10 @@ const db = require('../config/database');
 const Client =require('./Client')
 
 const Message = db.define ('message',{
-    username:{
-        type: Sequelize.TEXT,
-        primaryKey: true 
+    id_message:{
+        type: Sequelize.BIGINT,
+        primaryKey: true,
+        autoIncrement: true
     },
     description:{
         type: Sequelize.TEXT,
@@ -21,6 +22,5 @@ const Message = db.define ('message',{
     timestamps: false
 })
 
-Message.hasMany(Client,{foreingkey: 'username'});
 
 module.exports = Message;

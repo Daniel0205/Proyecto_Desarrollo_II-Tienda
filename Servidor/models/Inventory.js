@@ -4,7 +4,7 @@ const db = require('../config/database');
 const DistributionPoint = require( './DistributionPoint');
 const Book = require('./Book')
 
-const Inventory = db.define ('inventario',{
+const Inventory = db.define ('inventory',{
     id_dp:{
         type: Sequelize.INTEGER,
         primaryKey: true 
@@ -23,7 +23,7 @@ const Inventory = db.define ('inventario',{
     timestamps: false
 })
 
-Inventory.hasMany(DistributionPoint,{foreingkey: 'id_dp'});
+DistributionPoint.hasMany(Inventory,{foreingkey: 'name_dp'});
 
 Book.hasMany(Inventory,{foreingkey: 'isbn', sourcekey:'isbn'});
 

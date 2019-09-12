@@ -1,20 +1,20 @@
 const initialState = {car: [
     {
-        isbn:'1',
+        isbn:'9788476588871',
         title:'Libro1',
         quantity:9,
         distribution_point:'Cali',
         limit:10
     },
     {
-        isbn:'3',
+        isbn:'9788476588871',
         title:'Libro2',
         quantity:2,
         distribution_point:'Medellin',
         limit:10
     },
     {
-        isbn:'2',
+        isbn:'9788476588871',
         title:'Libro1',
         quantity:9,
         distribution_point:'Bogota',

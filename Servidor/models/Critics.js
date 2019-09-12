@@ -27,7 +27,6 @@ const Critics = db.define ('critics',{
     timestamps: false
 })
 
-Critics.hasMany(Client,{foreingkey: 'username'});
-Book.hasMany(Critics,{foreingkey: 'isbn'});
+
 
 module.exports = Critics;

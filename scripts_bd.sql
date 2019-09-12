@@ -25,6 +25,7 @@ CREATE TABLE admin(
 
 DROP TABLE IF EXISTS message CASCADE;
 CREATE TABLE message(
+   id_message    SERIAL PRIMARY KEY,
    username         TEXT REFERENCES client(username),
    description	    TEXT NOT NULL,	
    solved	    boolean NOT NULL
@@ -39,9 +40,8 @@ CREATE TABLE category(
 DROP TABLE IF EXISTS subcategory CASCADE;
 CREATE TABLE subcategory(
    name_subcategory	TEXT PRIMARY KEY,
-   name_category	TEXT,
-   description	    TEXT NOT NULL,
-CONSTRAINT fk_category FOREIGN KEY (name_category) REFERENCES category (name_category) ON DELETE CASCADE
+   name_category	TEXT REFERENCES category (name_category) ,
+   description	    TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS book CASCADE;
@@ -101,8 +101,8 @@ CREATE TABLE distribution_point(
    telephone 	  INT NOT NULL
 );
 
-DROP TABLE IF EXISTS inventario CASCADE;
-CREATE TABLE inventario(
+DROP TABLE IF EXISTS inventory CASCADE;
+CREATE TABLE inventory(
    name_dp        TEXT REFERENCES distribution_point(name_dp),
    ISBN		    BIGINT REFERENCES book(ISBN),
    availability	    INT NOT NULL
@@ -115,7 +115,7 @@ DECLARE
 	   row distribution_point%rowtype;
 BEGIN
 	FOR row IN (SELECT name_dp FROM distribution_point) LOOP
-		INSERT INTO inventario(name_dp,isbn,availability) VALUES(row.name_dp,NEW.isbn,10);
+		INSERT INTO inventory(name_dp,isbn,availability) VALUES(row.name_dp,NEW.isbn,10);
 	END LOOP;
 	RETURN NEW;
 END;
@@ -128,7 +128,7 @@ CREATE OR REPLACE FUNCTION updateProducto() RETURNS TRIGGER AS $$
 
 BEGIN
 
-	UPDATE inventario SET availability=availability-new.quantity WHERE isbn=new.isbn AND name_dp=new.name_dp;
+	UPDATE inventory SET availability=availability-new.quantity WHERE isbn=new.isbn AND name_dp=new.name_dp;
 	
 	RETURN NEW;
 END;
@@ -202,9 +202,9 @@ INSERT INTO distribution_point VALUES
    ('Medellin','Calle 25 #12-80',3214000),
    ('Barranquilla','Carrera 38 #45-20',3215300);
 
-UPDATE inventario SET availability=500 WHERE name_dp='Cali';
-UPDATE inventario SET availability=400 WHERE name_dp='Medellin';
-UPDATE inventario SET availability=600 WHERE name_dp='Barranquilla';
+UPDATE inventory SET availability=500 WHERE name_dp='Cali';
+UPDATE inventory SET availability=400 WHERE name_dp='Medellin';
+UPDATE inventory SET availability=600 WHERE name_dp='Barranquilla';
 
 INSERT INTO bill VALUES 
    (1000001,'dan',NOW()),
@@ -212,12 +212,12 @@ INSERT INTO bill VALUES
    (1000003,'helat',NOW());
 
 INSERT INTO bill_book VALUES 
-   (1000001,9788476588871,2),
-   (1000001,9788422626114,3),
-   (1000001,9788497321907,1),
-   (1000002,9788431326968,2),
-   (1000002,9788490227565,1),
-   (1000003,9789707290624,1);
+   (1000001,9788476588871,'Cali',2),
+   (1000001,9788422626114,'Cali',3),
+   (1000001,9788497321907,'Medellin',1),
+   (1000002,9788431326968,'Medellin',2),
+   (1000002,9788490227565,'Barranquilla',1),
+   (1000003,9789707290624,'Barranquilla',1);
 
 INSERT INTO critics VALUES
    ('dan',9788422626114,'No me gusto',2),
@@ -225,7 +225,9 @@ INSERT INTO critics VALUES
    ('jonpe',9788490227565,'No me gusto',3),
    ('helat',9789707290624,'Me gusto',4);
 
-INSERT INTO message VALUES
-   ('dan','La pagina no me carga los libros',false),
-   ('helat','Muy buena la pagina, sigan asi',false),
-   ('josette','No se donde puedo ver mis compras',false);
+INSERT INTO message(
+	username,description,solved)
+	VALUES
+	('dan','La pagina no me carga los libros',false),
+	('helat','Muy buena la pagina, sigan asi',false),
+	('josette','No se donde puedo ver mis compras',false);

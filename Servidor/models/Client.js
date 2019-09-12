@@ -1,6 +1,10 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database')
 
+const Message = require( './Message')
+const Critics = require( './Critics')
+const Bill = require( './Bill')
+
 const Client = db.define ('client',{
     username:{
         type: Sequelize.TEXT,
@@ -60,6 +64,15 @@ const Client = db.define ('client',{
     timestamps: false
 })
 
+
+Client.hasMany(Message,{ foreignKey: 'username'});
+Message.belongsTo(Client,{ foreignKey: 'username',source:'username'});
+
+Client.hasMany(Critics,{ foreignKey: 'username'});
+Critics.belongsTo(Client,{ foreignKey: 'username',source:'username'});
+
+Client.hasMany(Bill,{ foreignKey: 'username'});
+Bill.belongsTo(Client,{ foreignKey: 'username',source:'username'});
 
 
 module.exports = Client;
