@@ -206,18 +206,36 @@ UPDATE inventario SET availability=500 WHERE name_dp='Cali';
 UPDATE inventario SET availability=400 WHERE name_dp='Medellin';
 UPDATE inventario SET availability=600 WHERE name_dp='Barranquilla';
 
-INSERT INTO bill VALUES 
-   (1000001,'dan',NOW()),
-   (1000002,'jonpe',NOW()),
-   (1000003,'helat',NOW());
+--INSERT INTO bill VALUES 
+--   (1000001,'dan',NOW()),
+--   (1000002,'jonpe',NOW()),
+--   (1000003,'helat',NOW());
+		  
 
+INSERT INTO bill VALUES 
+   (1000001,'dan', '2019-09-01' ),
+   (1000002,'jonpe','2019-08-10'),
+   (1000003,'helat','2019-01-01'),
+   (1000004,'jonpe','2018-12-10'),
+   (1000005,'helat','2018-10-01');		  
+
+--INSERT INTO bill_book VALUES 
+--   (1000001,9788476588871,2),
+--   (1000001,9788422626114,3),
+--   (1000001,9788497321907,1),
+--   (1000002,9788431326968,2),
+--   (1000002,9788490227565,1),
+--   (1000003,9789707290624,1);
+	
 INSERT INTO bill_book VALUES 
-   (1000001,9788476588871,2),
-   (1000001,9788422626114,3),
-   (1000001,9788497321907,1),
-   (1000002,9788431326968,2),
-   (1000002,9788490227565,1),
-   (1000003,9789707290624,1);
+   (1000001,9788476588871, 'Cali', 2),
+   (1000001,9788422626114, 'Cali', 3),
+   (1000001,9788497321907, 'Medellin', 1),
+   (1000002,9788431326968, 'Medellin', 2),
+   (1000002,9788490227565, 'Barranquilla', 4),
+   (1000003,9789707290624, 'Barranquilla',5),
+   (1000004,9788490227565, 'Medellin', 8),
+   (1000005,9789707290624, 'Cali',10);
 
 INSERT INTO critics VALUES
    ('dan',9788422626114,'No me gusto',2),
