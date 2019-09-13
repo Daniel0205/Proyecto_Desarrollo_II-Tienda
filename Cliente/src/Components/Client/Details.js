@@ -34,7 +34,7 @@ export default class Details extends React.Component {
 
     render(){  
         
-        let path = "http://localhost:3001/"+ this.props.inf.image;
+        let path = "http://localhost:3001/"+ this.props.inf.imagepath;
 
         return (
         <div className="Details">

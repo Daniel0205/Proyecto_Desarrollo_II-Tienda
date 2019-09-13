@@ -203,7 +203,11 @@ INSERT INTO client(
 	 ('jonpe', 'Jonah', 'Petti', '1998-01-20', 'CC', 2757886001, '1234', 5006667001, 'M','Avn 6n 8-144', 'jonah-p@gmail.com' , true),
 	 ('josette', 'Josette', 'Drouin', '1990-12-22', 'CC', 7757000001, '1234', 7006667099, 'F','Cll 66 7-14', 'josette_D@gmail.com' , true),
 	 ('clehar', 'Clement ', 'Harrelson', '1995-11-22', 'CC', 4447000001, '1234', 5009967092, 'N','Cra 56 7-184', 'clehar@gmail.com' , true);
-	
+INSERT INTO distribution_point VALUES 
+   ('Cali','Calle 13 #100-00',3212100),
+   ('Medellin','Calle 25 #12-80',3214000),
+   ('Barranquilla','Carrera 38 #45-20',3215300);	
+
 INSERT INTO book VALUES
    (9788476588871,'Humanidades',2008,'Para la antropología histórica, la complejidad y el caracter','Antropología: Historia, Cultura, Filosofia','Christoph Wulf', 331, 50000, 84000,'Anthropos','1','Español','G','20','images/9788476588871.jpg'),
    (9788497321907,'Humanidades',2003,'Es un texto que pretende aportar una formación metodológica','Métodos de investigación en Ciencias Humanas y Sociales','José Losada', 246, 35000, 50000,'Paraninfo','4','Español','B','20','images/9788497321907.jpg'),
@@ -214,10 +218,7 @@ INSERT INTO book VALUES
    (9789588843056,'Salud',2014,'El hospital como organización -- Economía y financiamiento de la salud','Administración de servicios de salud','Humberto Blanco', 229, 20800, 60200,'CIB','2','Español','B','20','images/9789588843056.jpg'),
    (9789707290624,'Salud',2004,'Fundamentos del sistema nervioso -- Tejido nervioso y su conformación celular','Neuroanatomía clínica','Stephen Waxman', 417, 95400, 180500,'Manual Moderno','13','Español','G','20','images/9789707290624.jpg');
 
-INSERT INTO distribution_point VALUES 
-   ('Cali','Calle 13 #100-00',3212100),
-   ('Medellin','Calle 25 #12-80',3214000),
-   ('Barranquilla','Carrera 38 #45-20',3215300);
+
 
 UPDATE inventory SET availability=500 WHERE name_dp='Cali';
 UPDATE inventory SET availability=400 WHERE name_dp='Medellin';
