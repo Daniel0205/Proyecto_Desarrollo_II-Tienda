@@ -37,7 +37,7 @@ router.get("/consult", (req, res) => {
 router.post("/get", (req, res) => {
     console.log()
     Client.findAll({ where: req.body ,
-        include: [{model:Card}]
+        include: [{model:Card,where:{active:true}}]
     })
         .then(x => res.json(x))
         .catch(err => {

@@ -41,7 +41,7 @@ class Account extends React.Component {
       State: true,
       cards:[],
       tipo: "inicio",
-      newCard:{credit_card_number:'',type:'',entity:''}
+      newCard:{credit_card_number:'',type:'C',entity:''}
     }
 
     this.modCliente = this.modCliente.bind(this);
@@ -50,6 +50,7 @@ class Account extends React.Component {
     this.cambioPagina = this.cambioPagina.bind(this);
     this.actualizarDatos = this.actualizarDatos.bind(this);
     this.deleteCard = this.deleteCard.bind(this);
+    this.addCard = this.addCard.bind(this);
     this.consultClient()
   }
 
@@ -124,8 +125,6 @@ class Account extends React.Component {
   }
 
   deleteCard = i => event => {
-    console.log(i)
-    console.log(this.state)
 
     fetch("/Card/delete", {
       method: "POST",
@@ -137,11 +136,40 @@ class Account extends React.Component {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res)
-        this.setState(res[0])
+        if(res[0].bool){
+          var aux=this.state.cards
+          aux.splice(i,1) 
+          this.setState({cards:aux})
+        }
       })
   } 
 
+  addCard(){
+
+    fetch("/Card/add", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        credit_card_number: this.state.newCard.credit_card_number,
+        type: this.state.newCard.type,
+        entity:this.state.newCard.entity,
+        active:true,
+        username:this.props.username
+      })
+    })
+      .then(res => res.json())
+      .then(res => {
+        if(res.bool){ 
+          var aux= this.state.cards;
+          aux.push(res.card)
+
+          this.setState({cards:aux,newCard:{credit_card_number:'',type:'C',entity:''}})
+        }
+      })
+  } 
 
 
   actualizarDatos(e) {
@@ -334,7 +362,7 @@ class Account extends React.Component {
                 id={this.state.length}
                 onChange={(x) => this.setState({newCard:{...this.state.newCard,entity:x.target.value}})}
               />
-              <Button color="inherit"  onClick={this.add}>
+              <Button color="inherit"  onClick={this.addCard}>
                   <AddBoxIcon />
               </Button>
               </CardContent>
