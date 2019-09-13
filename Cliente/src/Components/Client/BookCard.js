@@ -47,7 +47,7 @@ export default function BookCard(props) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <IconButton aria-label="Add to cart">
+        <IconButton aria-label="Add to cart" onClick={()=>props.car(props.isbn)}>
           <AddShoppingCartRoundedIcon />
         </IconButton>
         <IconButton aria-label="Add a comment">
