@@ -4,6 +4,8 @@ import Details from './Details';
 import {Grid} from "@material-ui/core";
 import {connect} from 'react-redux';
 import {getPoint} from '../../store/point/reducer';
+import {getCar} from '../../store/shopping_car/reducer';
+import updateCar from '../../store/shopping_car/action';
 
 class Store extends React.Component {
 
@@ -48,52 +50,76 @@ class Store extends React.Component {
         <Grid container spacing={4} justify="center">
         {this.state.book.map(prove => (
           <Grid item key={prove.isbn}>
-            <BookCard isbn={prove.isbn} title={prove.title} callback={this.handleViewMore.bind(this)} sypnosis={prove.sypnosis} image={prove.imagepath} price={prove.price}/>
+            <BookCard isbn={prove.isbn} title={prove.title} callback={this.handleViewMore.bind(this)} 
+            car={this.addCar.bind(this)}  sypnosis={prove.sypnosis} image={prove.imagepath} price={prove.price}/>
           </Grid>
         ))}
         </Grid>
         {this.viewDetails()}
       </div>
       );
-    }
-
-    handleViewMore (identifier) {
-      console.log(identifier)
-
-      for(var i=0 ; i< this.state.book.length ; i++){
-      
-        if(identifier === this.state.book[i].isbn){    
-          this.setState({   
-            selectedBook: true,                
-            itemNumber: i              
-          })            
-        }        
-      }
-
-    }
-
-    closeViewMore(){
-      this.setState({
-        selectedBook: false
-      })
-    }
-
-    viewDetails () {
-      console.log(this.state.itemNumber)
-      if(this.state.selectedBook){
-        return(
-          <Details callback={this.closeViewMore.bind(this)} inf={this.state.book[this.state.itemNumber]} />
-        )
-      }
-  
-    }
   }
+
+  addCar(identifier){
+    var aux = this.state.book.find(x=>{
+      return x.isbn===identifier
+    })
+
+    var aux1=this.props.car
+    aux1.push({
+      isbn:identifier,
+      title:aux.title,
+      quantity:1,
+      distribution_point:aux.inventories[0].name_dp,
+      limit:aux.inventories[0].availability
+  })
+
+  console.log(aux1)
+
+    this.props.updateCar(aux1)
+    
+  }
+
+
+
+  handleViewMore (identifier) {
+    console.log(identifier)
+
+    for(var i=0 ; i< this.state.book.length ; i++){
+    
+      if(identifier === this.state.book[i].isbn){    
+        this.setState({   
+          selectedBook: true,                
+          itemNumber: i              
+        })            
+      }        
+    }
+
+  }
+
+  closeViewMore(){
+    this.setState({
+      selectedBook: false
+    })
+  }
+
+  viewDetails () {
+    console.log(this.state.itemNumber)
+    if(this.state.selectedBook){
+      return(
+        <Details callback={this.closeViewMore.bind(this)} inf={this.state.book[this.state.itemNumber]} />
+      )
+    }
+
+  }
+}
 
 const mapStateToProps= state => {
   console.log( getPoint(state))
   return {
-    dp: getPoint(state)
+    dp: getPoint(state),
+    car: getCar(state),
   }
 }
 
-export default connect (mapStateToProps)(Store);
+export default connect (mapStateToProps,{updateCar})(Store);
