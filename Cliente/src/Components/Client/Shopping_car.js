@@ -9,6 +9,7 @@ import {getUsername} from '../../store/username/reducer';
 import updateCar from '../../store/shopping_car/action';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
+import CheckPayment from './CheckPayment';
 
 
 
@@ -16,17 +17,28 @@ class Shopping_car extends React.Component {
   constructor(props){
     super(props)
 
+    this.state={
+      activate: false
+    }
+
     this.update= this.update.bind(this);
     this.delete= this.delete.bind(this);
     this.buy= this.buy.bind(this);
     this.showCar= this.showCar.bind(this);
+    this.payment= this.payment.bind(this);
+    this.abc = this.abc.bind(this)
   }
 
   buy(){
+
+    this.setState({   
+      activate: true            
+    })
+    /*
     fetch ("/Bill/buy", {
       method: 'POST',
       headers: {
-        Accept: "application/json, text/plain, */*",
+        Accept: "application/json, text/plain, * /*",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
@@ -52,6 +64,13 @@ class Shopping_car extends React.Component {
         console.log("NO entro")
       }
     });
+    */
+  }
+
+  payment(){
+    return(
+      <CheckPayment />
+    );
   }
 
 
@@ -72,11 +91,23 @@ class Shopping_car extends React.Component {
     this.props.updateCar(aux)
     this.forceUpdate();
   } 
+
+  abc(){
+    
+    if(this.state.activate === true){
+      return(
+        <CheckPayment />
+      )
+    }
+  }
   
   showCar(){
    
     if(this.props.car.length!==0){
-      var aux =this.props.car.map( (x,i)=>
+      
+      return(
+        <div>
+          {this.props.car.map( (x,i)=>
                     <Card key={i} >
                       <CardContent>
                         <Typography  color="textSecondary" gutterBottom>
@@ -101,9 +132,11 @@ class Shopping_car extends React.Component {
                           <DeleteIcon />
                       </IconButton>
                     </Card>  
-                    );
-      aux.push(<Button key="boton" onClick={this.buy}>To buy</Button>)
-      return aux
+                    )}
+            <Button key="boton" onClick={this.buy}>To buy</Button>
+            {this.abc()}
+        </div>
+      )
     }
     else return (<p>You have no items in your shopping cart</p>)
   }
@@ -113,7 +146,6 @@ class Shopping_car extends React.Component {
     return (
     <div>
       {this.showCar()}
-       
     </div>);
   } 
 }

@@ -3,6 +3,7 @@ const router = express.Router();
 const bd = require('../config/database');
 const Client = require('../models/Client');
 const Admin = require('../models/Admin');
+const Card  = require('../models/Card');
 
 
 /////////////////////////////////////////////////////
@@ -12,13 +13,10 @@ const Admin = require('../models/Admin');
 //Insertar productos en la base de datos
 router.post("/insert", function (req, res) {
 
-    //delete req.body.tipo
 
     Client.create(req.body)
-        .then(x => res.json([{ bool: true }]))
-        .catch(err => {
-            res.json([{ bool: false }])
-        });
+        .then(x => res.json({ bool: true }))
+        .catch(err => res.json({ bool: false }));
 
 })
 //consulta todas los usuarios en la base de datos
@@ -37,8 +35,10 @@ router.get("/consult", (req, res) => {
 
 //consulta todas las subcategorias en la base de datos
 router.post("/get", (req, res) => {
-    console.log()
-    Client.findAll({ where: req.body })
+
+    Client.findAll({ where: req.body ,
+        include: [{model:Card,where:{active:true}}]
+    })
         .then(x => res.json(x))
         .catch(err => {
             console.log(err)

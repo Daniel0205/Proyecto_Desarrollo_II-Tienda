@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
 
-const BillBook = require( './BillBook')
+const BillBook = require( './BillBook');
+const BillCard = require( './BillCard');
 
 
 const Bill = db.define ('bill',{
@@ -9,10 +10,6 @@ const Bill = db.define ('bill',{
         type: Sequelize.BIGINT,
         primaryKey: true,
         autoIncrement: true
-    },
-    username:{
-        type: Sequelize.TEXT,
-        primaryKey: true 
     },
     date:{
         type: Sequelize.DATEONLY,
@@ -26,5 +23,8 @@ const Bill = db.define ('bill',{
 
 Bill.hasMany(BillBook,{ foreignKey: 'id_bill'});
 BillBook.belongsTo(Bill,{ foreignKey: 'id_bill',source:'id_bill'});
+
+Bill.hasMany(BillCard,{ foreignKey: 'id_bill'});
+BillCard.belongsTo(Bill,{ foreignKey: 'id_bill',source:'id_bill'});
 
 module.exports = Bill;

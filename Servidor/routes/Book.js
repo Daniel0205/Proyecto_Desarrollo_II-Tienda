@@ -3,6 +3,7 @@ const fileUpload = require('express-fileupload');
 const router = express.Router();
 const db  =require('../config/database')
 const Book = require('../models/Book')
+const Inventory = require('../models/Inventory')
 
 
 /////////////////////////////////////////////////////
@@ -48,14 +49,16 @@ router.post("/insert", function(req,res){
 })
 
 //Consultar productos de la base de datos
-router.post('/get', function(req,res){
+router.post('/getAll', function(req,res){
 
-    Book.findAll({where: {
-        isbn: req.body.isbn
-    }})
-    .then(x =>  res.json(x))
-    .catch(err => console.log(err));
-
+    Book.findAll({
+        include: [{model:Inventory,where:{name_dp:req.body.dp}}]
+    })
+    .then(x => res.json({bool:true,book:x}))
+    .catch(err => {
+        console.log(err)
+        res.json({ bool: false })
+    });
 })
 
 //Modificar los datos de un producto especifico de la base de datos

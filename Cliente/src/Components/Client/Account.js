@@ -4,12 +4,31 @@ import {getUsername} from '../../store/username/reducer'
 import {connect} from 'react-redux'
 import updateUsername from '../../store/username/action'
 import updateType from '../../store/type/action'
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+import TextField from "@material-ui/core/TextField";
+import MenuItem from '@material-ui/core/MenuItem';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+
+const type = [
+  {
+    value: 'C',
+    label: 'Credit',
+  },
+  {
+    value: 'D',
+    label: 'Debit',
+  }
+];
 
 class Account extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(this.props)
+    
     this.state = {
       username:this.props.username,
       first_name: '',
@@ -19,9 +38,10 @@ class Account extends React.Component {
       phone_number: '',
       address: '',
       email: '',
-      credit_card_number: '',
       State: true,
-      tipo: "inicio"
+      cards:[],
+      tipo: "inicio",
+      newCard:{credit_card_number:'',type:'C',entity:''}
     }
 
     this.modCliente = this.modCliente.bind(this);
@@ -29,10 +49,10 @@ class Account extends React.Component {
     this.deleteClient = this.deleteClient.bind(this);
     this.cambioPagina = this.cambioPagina.bind(this);
     this.actualizarDatos = this.actualizarDatos.bind(this);
+    this.deleteCard = this.deleteCard.bind(this);
+    this.addCard = this.addCard.bind(this);
     this.consultClient()
   }
-
-
 
   modCliente() {
     fetch("/Client/update", {
@@ -104,6 +124,52 @@ class Account extends React.Component {
       )
   }
 
+  deleteCard = i => event => {
+
+    fetch("/Card/delete", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({credit_card_number:this.state.cards[i].credit_card_number})
+    })
+      .then(res => res.json())
+      .then(res => {
+        if(res[0].bool){
+          var aux=this.state.cards
+          aux.splice(i,1) 
+          this.setState({cards:aux})
+        }
+      })
+  } 
+
+  addCard(){
+
+    fetch("/Card/add", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        credit_card_number: this.state.newCard.credit_card_number,
+        type: this.state.newCard.type,
+        entity:this.state.newCard.entity,
+        active:true,
+        username:this.props.username
+      })
+    })
+      .then(res => res.json())
+      .then(res => {
+        if(res.bool){ 
+          var aux= this.state.cards;
+          aux.push(res.card)
+
+          this.setState({cards:aux,newCard:{credit_card_number:'',type:'C',entity:''}})
+        }
+      })
+  } 
 
 
   actualizarDatos(e) {
@@ -155,11 +221,6 @@ class Account extends React.Component {
           email: e.target.value
         })
         break;
-      case 'credit_card_number':
-        this.setState({
-          credit_card_number: e.target.value
-        })
-        break;
       case 'State':
         this.setState({
           State: e.target.value
@@ -196,9 +257,6 @@ class Account extends React.Component {
             <label>E-mail:</label>
             <Input id='email' type="text" placeholder='email*' onChange={this.actualizarDatos} value={this.state.email}></Input><br />
 
-            <label >Credit card number:</label>
-            <Input id='credit_card_number' type="text" placeholder='credit_card_number*' onChange={this.actualizarDatos} value={this.state.credit_card_number}></Input><br />
-
             <label >Password:</label>
             <Input id='password' type="password" placeholder='password*' onChange={this.actualizarDatos} value={this.state.password}></Input><br />
 
@@ -233,9 +291,6 @@ class Account extends React.Component {
             <label >E-mail:</label>
             <Input id='email' type="text" disabled placeholder='email*' onChange={this.actualizarDatos} value={this.state.email}></Input><br />
 
-            <label >Credit card number:</label>
-            <Input id='credit_card_number' type="text" disabled placeholder='credit_card_number*' onChange={this.actualizarDatos} value={this.state.credit_card_number}></Input><br />
-
             <label >Password:</label>
             <Input id='password' type="password" disabled placeholder='password*' onChange={this.actualizarDatos} value={this.state.password}></Input><br />
 
@@ -249,19 +304,86 @@ class Account extends React.Component {
             <Button id='delete' onClick={this.deleteClient} >Confirm</Button>
           </div>
         );
+
+      case "card":
+
+          return (
+            <div>
+              {this.state.cards.map((x,i) => 
+                <Card key={i}>
+                <CardContent>
+                  <Typography name={i}  gutterBottom>
+                    credit card number: #{x.credit_card_number}
+                  </Typography>
+                  <Typography name={i}  gutterBottom>
+                    Type: {x.type}
+                  </Typography>
+                  <Typography name={i.toString()}  gutterBottom>
+                    Entity: {x.entity}
+                  </Typography>      
+                </CardContent>
+                <IconButton color="inherit"  onClick={this.deleteCard(i)}>
+                          <DeleteIcon />
+                  </IconButton>
+              </Card>)}
+              <Card >
+                <CardContent>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="Credit card number"
+                id={this.state.length}
+                onChange={(x) => this.setState({newCard:{...this.state.newCard,credit_card_number:x.target.value}})}
+              />
+              <TextField
+                fullWidth
+                id="gender"
+                select
+                label="Type"
+                value={this.state.newCard.type}
+                onChange={(x) => this.setState({newCard:{...this.state.newCard,type:x.target.value}})}
+                margin="normal"
+                variant="outlined"
+              >
+                {type.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="Entity"
+                id={this.state.length}
+                onChange={(x) => this.setState({newCard:{...this.state.newCard,entity:x.target.value}})}
+              />
+              <Button color="inherit"  onClick={this.addCard}>
+                  <AddBoxIcon />
+              </Button>
+              </CardContent>
+              </Card>
+            </div>
+
+          );
       default:
         break;
     }
   }
 
   render() {
-
+    console.log(this.state)
     return (
       <div className='botons'>
 
         <Button onClick={() => this.setState({ tipo: "modify" })}>Modify information</Button><br />
         <Button onClick={() => this.setState({ tipo: "consult" })}>Consult information</Button><br />
         <Button onClick={() => this.setState({ tipo: "delete" })}>Delete profile</Button><br />
+        <Button onClick={() => this.setState({ tipo: "card" })}>Add payment </Button><br />
         {this.cambioPagina()}
       </div>
     );
