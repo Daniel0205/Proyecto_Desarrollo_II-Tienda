@@ -11,6 +11,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from "@material-ui/core/TextField";
 import MenuItem from '@material-ui/core/MenuItem';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 
 const type = [
   {
@@ -37,9 +38,8 @@ class Account extends React.Component {
       phone_number: '',
       address: '',
       email: '',
-      credit_card_number: '',
       State: true,
-      card:[],
+      cards:[],
       tipo: "inicio",
       newCard:{credit_card_number:'',type:'',entity:''}
     }
@@ -49,10 +49,9 @@ class Account extends React.Component {
     this.deleteClient = this.deleteClient.bind(this);
     this.cambioPagina = this.cambioPagina.bind(this);
     this.actualizarDatos = this.actualizarDatos.bind(this);
+    this.deleteCard = this.deleteCard.bind(this);
     this.consultClient()
   }
-
-
 
   modCliente() {
     fetch("/Client/update", {
@@ -124,13 +123,23 @@ class Account extends React.Component {
       )
   }
 
-  deleteCard(event){
-    var aux=this.props.car
-    
-    aux.splice(event.target.name,1)
-    console.log(aux)
-    this.props.updateCar(aux)
-    this.forceUpdate();
+  deleteCard = i => event => {
+    console.log(i)
+    console.log(this.state)
+
+    fetch("/Card/delete", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({credit_card_number:this.state.cards[i].credit_card_number})
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.log(res)
+        this.setState(res[0])
+      })
   } 
 
 
@@ -184,11 +193,6 @@ class Account extends React.Component {
           email: e.target.value
         })
         break;
-      case 'credit_card_number':
-        this.setState({
-          credit_card_number: e.target.value
-        })
-        break;
       case 'State':
         this.setState({
           State: e.target.value
@@ -225,9 +229,6 @@ class Account extends React.Component {
             <label>E-mail:</label>
             <Input id='email' type="text" placeholder='email*' onChange={this.actualizarDatos} value={this.state.email}></Input><br />
 
-            <label >Credit card number:</label>
-            <Input id='credit_card_number' type="text" placeholder='credit_card_number*' onChange={this.actualizarDatos} value={this.state.credit_card_number}></Input><br />
-
             <label >Password:</label>
             <Input id='password' type="password" placeholder='password*' onChange={this.actualizarDatos} value={this.state.password}></Input><br />
 
@@ -262,9 +263,6 @@ class Account extends React.Component {
             <label >E-mail:</label>
             <Input id='email' type="text" disabled placeholder='email*' onChange={this.actualizarDatos} value={this.state.email}></Input><br />
 
-            <label >Credit card number:</label>
-            <Input id='credit_card_number' type="text" disabled placeholder='credit_card_number*' onChange={this.actualizarDatos} value={this.state.credit_card_number}></Input><br />
-
             <label >Password:</label>
             <Input id='password' type="password" disabled placeholder='password*' onChange={this.actualizarDatos} value={this.state.password}></Input><br />
 
@@ -286,19 +284,19 @@ class Account extends React.Component {
               {this.state.cards.map((x,i) => 
                 <Card key={i}>
                 <CardContent>
-                  <Typography   gutterBottom>
+                  <Typography name={i}  gutterBottom>
                     credit card number: #{x.credit_card_number}
                   </Typography>
-                  <Typography   gutterBottom>
+                  <Typography name={i}  gutterBottom>
                     Type: {x.type}
                   </Typography>
-                  <Typography   gutterBottom>
+                  <Typography name={i.toString()}  gutterBottom>
                     Entity: {x.entity}
                   </Typography>      
                 </CardContent>
-                <IconButton color="inherit" onClick={this.delete}>
+                <IconButton color="inherit"  onClick={this.deleteCard(i)}>
                           <DeleteIcon />
-                      </IconButton>
+                  </IconButton>
               </Card>)}
               <Card >
                 <CardContent>
@@ -336,9 +334,9 @@ class Account extends React.Component {
                 id={this.state.length}
                 onChange={(x) => this.setState({newCard:{...this.state.newCard,entity:x.target.value}})}
               />
-              <IconButton color="inherit" onClick={this.add}>
-                  <DeleteIcon />
-              </IconButton>
+              <Button color="inherit"  onClick={this.add}>
+                  <AddBoxIcon />
+              </Button>
               </CardContent>
               </Card>
             </div>

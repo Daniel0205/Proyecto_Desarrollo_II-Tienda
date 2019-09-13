@@ -22,6 +22,7 @@ CREATE TABLE card(
    credit_card_number   BIGINT PRIMARY KEY,
    type              CHAR(1) NOT NULL,
    entity            TEXT NOT NULL,
+   active            BOOL NOT NULL,
    CHECK (type IN ('D','C'))
 );
 
@@ -222,8 +223,8 @@ UPDATE inventory SET availability=500 WHERE name_dp='Cali';
 UPDATE inventory SET availability=400 WHERE name_dp='Medellin';
 UPDATE inventory SET availability=600 WHERE name_dp='Barranquilla';
 
-INSERT INTO card(credit_card_number,username,type,entity) VALUES 
-  (333,'dan','C','VISA'),(444,'dan','D','VISA'),(555,'helat','C','VISA'),(666,'jonpe','C','VISA'),(777,'josette','D','VISA'),(888,'clehar','C','VISA');
+INSERT INTO card(credit_card_number,username,type,entity,active) VALUES 
+  (333,'dan','C','VISA',true),(444,'dan','D','VISA',true),(555,'helat','C','VISA',true),(666,'jonpe','C','VISA',true),(777,'josette','D','VISA',true),(888,'clehar','C','VISA',true);
 		  
 
 INSERT INTO bill(date)VALUES 
