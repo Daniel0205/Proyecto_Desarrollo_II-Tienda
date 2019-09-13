@@ -18,6 +18,13 @@ import Shopping_car from './Shopping_car'
 import Buy_list from './Buy_list'
 import Contact_us from './Contact_us'
 import { Route } from 'react-router-dom'
+import { Select } from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
+import {getPoint} from '../../store/point/reducer';
+import updatePoint from '../../store/point/action';
+import {connect} from 'react-redux';
+import { getUsername } from "../../store/username/reducer";
+import { Player } from 'video-react';
 
 
 const drawerWidth = 240;
@@ -111,11 +118,12 @@ const useStyles = makeStyles(theme => ({
 
 
 
-export default function User_page(props) {
 
+const User_page = (props) => {
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [dp, setDp] = React.useState([]);
 
 
   const handleDrawerOpen = () => {
@@ -125,10 +133,33 @@ export default function User_page(props) {
     setOpen(false);
   };
 
+  const handleChange = (event) => {
+    props.updatePoint( event.target.value)
+  }
+
+
+  if(dp.length===0){
+ 
+    fetch("/DistributionPoint/consult", {
+      method: "GET",
+    })
+      .then(res => res.json())
+      .then(res => {
+        
+        if(res.bool){
+          props.updatePoint(res.data[0].name_dp)
+          console.log(props.dp)
+          setDp(res.data); 
+        }
+      })
+  }
+
+  console.log(dp)
 
 
   return (
     <div className={classes.root}>
+      
       <CssBaseline />
       <AppBar className={clsx(classes.appBar, open && classes.appBarShift)} id="menuD">
         <Toolbar className={classes.toolbar}>
@@ -142,9 +173,17 @@ export default function User_page(props) {
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            Dashboard
+            Welcome {props.username}
             </Typography>
-          
+            <Typography component="h6" variant="h6" color="inherit"  >
+            Distribution Point:     
+            </Typography>
+            <Select
+              value={props.dp}
+              onChange={handleChange}
+              >
+              {dp.map((x,i) =>   <MenuItem key={i} value={x.name_dp}>{x.name_dp}</MenuItem>)}
+            </Select>
         </Toolbar>
       </AppBar>
 
@@ -168,9 +207,22 @@ export default function User_page(props) {
         <Divider />
         <List>{secondaryListItemsClient}</List>
       </Drawer>
-
+      
+  
       <main className={classes.content}>
         <div className={classes.toolbar} />
+        <Route path="/User_page/home" component={()=>
+        <div>
+          <link
+            rel="stylesheet"
+            href="https://video-react.github.io/assets/video-react.css"
+          />
+          <Player
+          playsInline
+          autoPlay 
+          src="http://localhost:3000/videos/Home.mp4" />
+        </div>
+          } />
         <Route path="/User_page/buy_list" component={Buy_list} />
         <Route path="/User_page/account" component={Account} />
         <Route path="/User_page/shopping_car" component={Shopping_car} />
@@ -180,3 +232,13 @@ export default function User_page(props) {
     </div>);
 
 }
+
+const mapStateToProps= state => {
+  return {
+    dp: getPoint(state),
+    username: getUsername(state)
+  }
+}
+
+
+export default  connect (mapStateToProps,{updatePoint})(User_page);

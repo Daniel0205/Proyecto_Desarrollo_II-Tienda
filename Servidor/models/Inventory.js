@@ -1,18 +1,8 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
 
-const DistributionPoint = require( './DistributionPoint');
-const Book = require('./Book')
 
-const Inventory = db.define ('inventario',{
-    id_dp:{
-        type: Sequelize.INTEGER,
-        primaryKey: true 
-    },
-    isbn:{
-        type: Sequelize.BIGINT,
-        primaryKey: true 
-    },
+const Inventory = db.define ('inventory',{
     availability:{
         type: Sequelize.INTEGER,
         allowNull: false     
@@ -23,7 +13,6 @@ const Inventory = db.define ('inventario',{
     timestamps: false
 })
 
-Inventory.hasMany(DistributionPoint,{foreingkey: 'id_dp'});
-Inventory.hasMany(Book,{foreingkey: 'isbn', sourcekey:'isbn'});
+Inventory.removeAttribute('id');
 
 module.exports = Inventory;

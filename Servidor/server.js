@@ -6,8 +6,6 @@ const fileUpload = require('express-fileupload');
 const app = express();
 app.use(fileUpload())
 
-const Pool = require('pg-pool');
-
 
 ////////////////////////////////////////////
 //////////CONFIGURACION DEL ORM ////////////
@@ -37,13 +35,17 @@ app.use('/Category', require('./routes/Category'));
 app.use('/Subcategory', require('./routes/Subcategory'));
 app.use('/Book',require('./routes/Book'));
 app.use('/Client',require('./routes/Client'));
+app.use('/Report',require('./routes/Report'));
 app.use('/Inventory',require('./routes/Inventory'));
 app.use('/Message',require('./routes/Message'));
 app.use('/Critics',require('./routes/Critics'));
 app.use('/Bill',require('./routes/Bill'));
 app.use('/BillBook',require('./routes/BillBook'));
-
+app.use('/Card',require('./routes/Card'));
+app.use('/DistributionPoint',require('./routes/DistributionPoint'));
 app.use('/images',express.static('images'));
+app.use('/videos',express.static('videos'));
+
 
 /////////////////////////////////////////////////////
 ////////////CONFIGURACION DEL PUERTO ////////////////

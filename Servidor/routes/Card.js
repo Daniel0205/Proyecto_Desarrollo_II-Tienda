@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const BillBook = require('../models/BillBook')
+const Card = require('../models/Card')
 
 /////////////////////////////////////////////////////
 ///////CONSULTAS DE LOS PODUCTOS DE VENTAS///////////
@@ -9,7 +9,7 @@ const BillBook = require('../models/BillBook')
 //insertar un producto a un venta
 router.post("/insert",function(req,res){
 
-    BillBook.create(req.body)
+    Card.create(req.body)
     .then(x => res.json(x))
     .catch(err => console.log(err));
   
@@ -17,9 +17,9 @@ router.post("/insert",function(req,res){
 
 //Consultar un producto en una venta especifica
 
-router.post("/getBillBookv",function(req,res){
+router.post("/getCardv",function(req,res){
 
-    BillBook.findAll({where: {
+    Card.findAll({where: {
         id_bill: req.body.id_bill
     }})
     .then(x =>  res.json(x))
@@ -28,9 +28,9 @@ router.post("/getBillBookv",function(req,res){
 })
 
 //Consultar las ventas de un producto especifico
-router.post("/getBillBookp",function(req,res){
+router.post("/getCardp",function(req,res){
 
-    BillBook.findAll({where: {
+    Card.findAll({where: {
         isbn: req.body.isbn
     }})
     .then(x =>  res.json(x))
@@ -46,7 +46,7 @@ router.put("/update", function(req,res){
     delete req.body.id_bill
     delete req.body.isbn
 
-    BillBook.update(req.body,{where: {
+    Card.update(req.body,{where: {
         id_bill: idb,
         isbn: idx
     }}).then(x => res.json(x))

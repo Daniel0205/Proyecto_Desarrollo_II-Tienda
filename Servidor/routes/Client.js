@@ -3,6 +3,7 @@ const router = express.Router();
 const bd = require('../config/database');
 const Client = require('../models/Client');
 const Admin = require('../models/Admin');
+const Card  = require('../models/Card');
 
 
 /////////////////////////////////////////////////////
@@ -12,13 +13,10 @@ const Admin = require('../models/Admin');
 //Insertar productos en la base de datos
 router.post("/insert", function (req, res) {
 
-    //delete req.body.tipo
 
     Client.create(req.body)
-        .then(x => res.json([{ bool: true }]))
-        .catch(err => {
-            res.json([{ bool: false }])
-        });
+        .then(x => res.json({ bool: true }))
+        .catch(err => res.json({ bool: false }));
 
 })
 //consulta todas los usuarios en la base de datos
@@ -37,7 +35,10 @@ router.get("/consult", (req, res) => {
 
 //consulta todas las subcategorias en la base de datos
 router.post("/get", (req, res) => {
-    Client.findAll({ where: req.body })
+    console.log()
+    Client.findAll({ where: req.body ,
+        include: [{model:Card}]
+    })
         .then(x => res.json(x))
         .catch(err => {
             console.log(err)
@@ -74,17 +75,6 @@ router.post("/deactivate", function (req, res) {
         })
 })
 
-/*
-//////PRUEBA
-const session = require("express-session");
-
-router.use(session({
-    secret: 'Sup3R$ecR3t',
-    resave: true,
-    saveUninitialized: true
-}));
-*/
-
 //Modificar los datos de un producto especifico de la base de datos
 router.post("/", function (req, res) {
     let { username, password } = req.body;
@@ -94,7 +84,7 @@ router.post("/", function (req, res) {
         where: { username: username ,password: password }
     })
     .then(x => {
-        console.log("NO ENCONTRO")
+        
         if (x===null){
             Admin.findOne({
                 attributes: ['username'],

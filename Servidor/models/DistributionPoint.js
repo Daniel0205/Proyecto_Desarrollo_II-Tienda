@@ -1,15 +1,13 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
+
+const BillBook = require('./BillBook')
 const Inventory = require('./Inventory')
 
 const DistributionPoint = db.define ('distribution_point',{
-    id_dp:{
-        type: Sequelize.INTEGER,
-        primaryKey: true 
-    },
     name_dp:{
         type: Sequelize.TEXT,
-        allowNull: false  
+        primaryKey: true 
     },
     address:{
         type: Sequelize.TEXT,
@@ -25,6 +23,14 @@ const DistributionPoint = db.define ('distribution_point',{
     timestamps: false
 })
 
-//DistributionPoint.hasMany(Inventory,{foreingkey: 'id_dp', sourcekey:'id_dp'});
+
+
+DistributionPoint.hasMany(BillBook,{ foreignKey: 'name_dp'});
+BillBook.belongsTo(DistributionPoint,{ foreignKey: 'name_dp',source:'name_dp'});
+
+
+DistributionPoint.hasMany(Inventory,{ foreignKey: 'name_dp'});
+Inventory.belongsTo(DistributionPoint,{ foreignKey: 'name_dp',source:'name_dp'});
+
 
 module.exports = DistributionPoint;

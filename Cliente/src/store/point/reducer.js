@@ -1,8 +1,9 @@
-const initialState = {point: ""};
+const initialState = {point: "---"};
 
 export default (state= initialState,action)=>{
-    if(action.point === 'UPDATE_POINT'){
-        
+    console.log(action.type)
+    if(action.type === 'UPDATE_POINT'){
+        console.log("entreo")
         return {
             ...state,
             point: action.payload    

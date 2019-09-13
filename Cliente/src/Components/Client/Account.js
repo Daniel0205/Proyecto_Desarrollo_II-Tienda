@@ -4,12 +4,30 @@ import {getUsername} from '../../store/username/reducer'
 import {connect} from 'react-redux'
 import updateUsername from '../../store/username/action'
 import updateType from '../../store/type/action'
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+import TextField from "@material-ui/core/TextField";
+import MenuItem from '@material-ui/core/MenuItem';
+
+const type = [
+  {
+    value: 'C',
+    label: 'Credit',
+  },
+  {
+    value: 'D',
+    label: 'Debit',
+  }
+];
 
 class Account extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(this.props)
+    
     this.state = {
       username:this.props.username,
       first_name: '',
@@ -21,7 +39,9 @@ class Account extends React.Component {
       email: '',
       credit_card_number: '',
       State: true,
-      tipo: "inicio"
+      card:[],
+      tipo: "inicio",
+      newCard:{credit_card_number:'',type:'',entity:''}
     }
 
     this.modCliente = this.modCliente.bind(this);
@@ -72,7 +92,7 @@ class Account extends React.Component {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res[0])
+        console.log(res)
         this.setState(res[0])
       })
   }
@@ -103,6 +123,15 @@ class Account extends React.Component {
       }
       )
   }
+
+  deleteCard(event){
+    var aux=this.props.car
+    
+    aux.splice(event.target.name,1)
+    console.log(aux)
+    this.props.updateCar(aux)
+    this.forceUpdate();
+  } 
 
 
 
@@ -249,19 +278,86 @@ class Account extends React.Component {
             <Button id='delete' onClick={this.deleteClient} >Confirm</Button>
           </div>
         );
+
+      case "card":
+
+          return (
+            <div>
+              {this.state.cards.map((x,i) => 
+                <Card key={i}>
+                <CardContent>
+                  <Typography   gutterBottom>
+                    credit card number: #{x.credit_card_number}
+                  </Typography>
+                  <Typography   gutterBottom>
+                    Type: {x.type}
+                  </Typography>
+                  <Typography   gutterBottom>
+                    Entity: {x.entity}
+                  </Typography>      
+                </CardContent>
+                <IconButton color="inherit" onClick={this.delete}>
+                          <DeleteIcon />
+                      </IconButton>
+              </Card>)}
+              <Card >
+                <CardContent>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="Credit card number"
+                id={this.state.length}
+                onChange={(x) => this.setState({newCard:{...this.state.newCard,credit_card_number:x.target.value}})}
+              />
+              <TextField
+                fullWidth
+                id="gender"
+                select
+                label="Type"
+                value={this.state.newCard.type}
+                onChange={(x) => this.setState({newCard:{...this.state.newCard,type:x.target.value}})}
+                margin="normal"
+                variant="outlined"
+              >
+                {type.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="Entity"
+                id={this.state.length}
+                onChange={(x) => this.setState({newCard:{...this.state.newCard,entity:x.target.value}})}
+              />
+              <IconButton color="inherit" onClick={this.add}>
+                  <DeleteIcon />
+              </IconButton>
+              </CardContent>
+              </Card>
+            </div>
+
+          );
       default:
         break;
     }
   }
 
   render() {
-
+    console.log(this.state)
     return (
       <div className='botons'>
 
         <Button onClick={() => this.setState({ tipo: "modify" })}>Modify information</Button><br />
         <Button onClick={() => this.setState({ tipo: "consult" })}>Consult information</Button><br />
         <Button onClick={() => this.setState({ tipo: "delete" })}>Delete profile</Button><br />
+        <Button onClick={() => this.setState({ tipo: "card" })}>Add payment </Button><br />
         {this.cambioPagina()}
       </div>
     );

@@ -2,10 +2,8 @@ import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-// import Link from "@material-ui/core/Link";
 import { Link } from 'react-router-dom'
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
@@ -16,21 +14,24 @@ import { makeStyles } from "@material-ui/core/styles";
 import Background from "../Images/books.jpg";
 import updateUsername from '../store/username/action'
 import updateType from '../store/type/action'
-import {connect} from "react-redux"
+import { connect } from "react-redux"
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
-
-//import { Redirect } from 'react-router-dom'
 
 var logged = false;
 var username = "", password = "";
 
-function MadeWithLove() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Darko Library ®"}
-    </Typography>
-  );
-}
+
+ValidatorForm.addValidationRule(
+  "isValidName", (string) => /[a-zA-Z \u00E0-\u00FC]/g.test(string)
+);
+ValidatorForm.addValidationRule(
+  "isValidLengthName", (string) => /\b[a-zA-Z \u00E0-\u00FC]{1,20}\b/g.test(string)
+);
+ValidatorForm.addValidationRule(
+  "isValidLengthDescription", (string) => /\b[a-zA-Z \u00E0-\u00FC]{1,50}\b/g.test(string)
+);
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,40 +62,44 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInSide = ({updateUsername,updateType}) =>{
+const SignInSide = ({ updateUsername, updateType }) => {
 
   const classes = useStyles();
 
-  function handleClick(e) { 
-    if(!logged)
-    e.preventDefault();
-    fetch ("/Client", {
+  function handleClick(e) {
+    if (!logged)
+      e.preventDefault();
+    fetch("/Client", {
       method: 'POST',
       headers: {
         Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({username,password})
+      body: JSON.stringify({ username, password })
     })
-    .then(res => res.json())
-    .then(res => {
-      if(res.bool){
-        console.log(res)
-        updateUsername(res.username);
-        updateType(res.type)
-      }
-      else{
-        console.log("NO entro")
-      }
-    });
-    
+      .then(res => res.json())
+      .then(res => {
+        if (res.bool) {
+          console.log(res)
+          updateUsername(res.username);
+          updateType(res.type)
+        }
+        else {
+          console.log("NO entro")
+        }
+      });
+
   }
 
-  function handleChange(e) {  
+  function handleChange(e) {
     if (e.target.name === 'username')
       username = e.target.value;
     if (e.target.name === 'password')
       password = e.target.value;
+  }
+
+  function handleSubmit() {
+    handleClick();
   }
 
   return (
@@ -109,11 +114,10 @@ const SignInSide = ({updateUsername,updateType}) =>{
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} noValidate>
-            <TextField
+          <ValidatorForm onSubmit={handleSubmit} className={classes.form}>
+            <TextValidator
               variant="outlined"
               margin="normal"
-              required
               fullWidth
               id="username"
               label="Username"
@@ -121,9 +125,10 @@ const SignInSide = ({updateUsername,updateType}) =>{
               autoComplete="username"
               autoFocus
               onChange={e => handleChange(e)}
-              onSubmit={e => e}
+             // validators={["required", "isValidName", "isValidLengthName"]}
+              //errorMessages={["Required field username!", "Invalid format!", "Invalid lentgth!"]}
             />
-            <TextField
+            <TextValidator
               variant="outlined"
               margin="normal"
               required
@@ -134,18 +139,20 @@ const SignInSide = ({updateUsername,updateType}) =>{
               id="password"
               autoComplete="current-password"
               onChange={e => handleChange(e)}
+              //validators={[""]}
+              //errorMessages={[""]}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
             <Button
-              
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit} 
-              onClick={handleClick} 
+              className={classes.submit}
+              type="submit"
+              onClick={handleClick}
             >
               Sign In
             </Button>
@@ -157,9 +164,11 @@ const SignInSide = ({updateUsername,updateType}) =>{
               </Grid>
             </Grid>
             <Box mt={5}>
-              <MadeWithLove />
+              <Typography variant="body2" color="textSecondary" align="center">
+                {"Darko Library ®"}
+              </Typography>
             </Box>
-          </form>
+          </ValidatorForm >
         </div>
       </Grid>
     </Grid>
@@ -167,4 +176,4 @@ const SignInSide = ({updateUsername,updateType}) =>{
 }
 
 
-export default  connect (null, {updateUsername,updateType}) (SignInSide);
+export default connect(null, { updateUsername, updateType })(SignInSide);
