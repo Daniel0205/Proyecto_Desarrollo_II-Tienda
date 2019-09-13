@@ -85,6 +85,7 @@ class Shopping_car extends React.Component {
 
   delete(event){
     var aux=this.props.car
+    console.log(event.target)
     
     aux.splice(event.target.name,1)
     console.log(aux)
