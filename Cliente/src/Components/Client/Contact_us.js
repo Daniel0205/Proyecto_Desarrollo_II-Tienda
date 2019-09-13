@@ -11,6 +11,7 @@ constructor(props){
   console.log(this.props)
   this.state={
     username: this.props.username,
+    matter: this.props.matter,
     description: '',
     solved: false
   }
@@ -29,6 +30,7 @@ mensaje(){
     body: JSON.stringify({
       username: this.props.username,
       description: this.state.description,
+      matter: this.state.matter,
       solved: false
     })
   })
@@ -46,6 +48,7 @@ mensaje(){
   render(){
     return (<div>
       <h1>Contact_us</h1>
+      <Input id='reason' onChange={(x)=>this.setState({matter:x.currentTarget.value})}type="text" placeholder='matter*' fullWidth></Input><br />
             <Input id='msm' onChange={(x)=>this.setState({description:x.currentTarget.value})}type="text" placeholder='message*' fullWidth></Input><br />
             <Button id='send' fullWidth onClick={this.mensaje} color="primary">Send</Button>
       </div>);

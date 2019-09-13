@@ -25,7 +25,7 @@ router.post("/send", function(req,res){
 router.post('/get', function(req,res){
 
     Message.findAll({
-        attributes: ['id_message','username','description','solved']
+        attributes: ['id_message','username','matter','description','solved']
     })
     .then(x =>  res.json([{Message: x}]))
     .catch(err => {

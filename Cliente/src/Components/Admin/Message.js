@@ -1,9 +1,21 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
+import { makeStyles } from '@material-ui/core/styles';
+import { red } from '@material-ui/core/colors';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
+
+const useStyles = makeStyles(theme => ({
+  card: {
+    maxWidth: 345,
+  },
+  avatar: {
+    backgroundColor: red[500],
+  },
+}));
 
  class Message extends React.Component {
 
@@ -14,9 +26,11 @@ import Typography from '@material-ui/core/Typography';
       id_message:this.props.id_message,
       username:'',
       description: '',
+      matter: '',
       solved: false,
-  
+      mms: []
     }
+    
 
     this.obtenerMensaje = this.obtenerMensaje.bind(this);
     this.obtenerMensaje()
@@ -37,34 +51,57 @@ import Typography from '@material-ui/core/Typography';
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res[0])
-        this.setState(res[0])
+       
+        this.setState({mms: res[0].Message})
       })
+
+      console.log('Prueba: ..... ',this.state.mms)
+  }
+
+  handleClick(e){
+
+    
   }
 
   render(){
-    return (<div>
-      <h1>Messages</h1>
+    console.log(this.state)
+    return (
 
-      <Card>
+      <div>
+
+      {this.state.mms.map((msm,i) => (
+          
+        
+        <Card key={i}>
         <CardContent>
+          <Avatar aria-label="mes" background = "red">
+          {msm.id_message}
+          </Avatar>
         <Typography  color="textSecondary" gutterBottom>
-          Mensaje enviado por ...
+          Send by ...
+          {msm.username}
         </Typography>
         <Typography variant="h5" component="h2">
-          Asunto del mensaje       
+          
+         {msm.matter}
         </Typography>
         
         <Typography color="textSecondary">
-          mensaje
+        {msm.description}
         </Typography>
 
-        <CardActions>
-          <Button size="small" onClick={this.obtenerMensaje}>Read more</Button>
-        </CardActions>
+        <Button basic color="primary">
+            Solved
+          </Button>
+          <Button basic color="secondary">
+            Decline
+          </Button>
+
         </CardContent>
       </Card>
 
+        ))}
+        
       </div>);
   }
 }

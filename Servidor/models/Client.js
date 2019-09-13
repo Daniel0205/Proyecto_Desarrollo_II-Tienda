@@ -1,13 +1,9 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database')
 
-<<<<<<< HEAD
-const Message = require('./Message')
-=======
 const Message = require( './Message')
 const Critics = require( './Critics')
 const Card = require( './Card')
->>>>>>> 65fa08ebe27d99e285806d0fc19734378a94921b
 
 const Client = db.define ('client',{
     username:{
