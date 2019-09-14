@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
-const Client =require('./Client')
 
 const Message = db.define ('message',{
     id_message:{
@@ -10,7 +9,11 @@ const Message = db.define ('message',{
     },
     description:{
         type: Sequelize.TEXT,
-        primaryKey: true 
+        allowNull: false 
+    },
+    matter:{
+        type: Sequelize.TEXT,
+        allowNull: false
     },
     solved:{
         type: Sequelize.BOOLEAN,

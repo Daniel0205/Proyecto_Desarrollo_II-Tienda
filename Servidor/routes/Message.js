@@ -9,9 +9,9 @@ const Message = require('../models/Message')
 /////////////////////////////////////////////////////
 
 //Insertar mensaje enviado a los administradores
-router.post("/insert", function(req,res){
+router.post("/send", function(req,res){
 
-    delete req.body.tipo
+  console.log(req.body)
 
     Message.create(req.body)
     .then(x => res.json([{bool:true}]))
@@ -19,16 +19,20 @@ router.post("/insert", function(req,res){
         console.log(err)
         res.json([{bool:false}])
     });
-  
 })
 
 //Consultar mensajes enviado a los administradores
 router.post('/get', function(req,res){
 
-    Message.findAll()
-    .then(x =>  res.json(x))
-    .catch(err => console.log(err));
+    Message.findAll({
+        attributes: ['id_message','username','matter','description','solved']
+    })
+    .then(x =>  res.json([{Message: x}]))
+    .catch(err => {
+        console.log(err)
+        res.json({bool: false})
+    });
 
-})
+});
 
 module.exports =router;
