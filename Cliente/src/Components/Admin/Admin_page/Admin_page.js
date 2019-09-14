@@ -21,7 +21,8 @@ import Subcategories from '../Subcategories';
 import Message from '../Message';
 import Bill from '../Bill';
 import Trending from '../Trending';
-import { Route } from 'react-router-dom'
+import Low_stocks from '../Low_stocks';
+import { Route } from 'react-router-dom';
 
 
 const drawerWidth = 240;
@@ -182,6 +183,7 @@ export default function Admin_page(props) {
         <Route path="/Admin_page/message" component={Message} />
         <Route path="/Admin_page/bill" component={Bill} />
         <Route path="/Admin_page/trending" component={Trending} />
+        <Route path="/Admin_page/low_stocks" component={Low_stocks} />
       </main>
     </div>);
 
