@@ -26,7 +26,7 @@ const Client = db.define ('client',{
         type: Sequelize.STRING(2),
         allowNull: false             
     },
-    id:{
+    idsdf:{
         type: Sequelize.BIGINT,
         allowNull: false             
     },
@@ -68,6 +68,10 @@ Message.belongsTo(Client,{ foreignKey: 'username',source:'username'});
 
 Client.hasMany(Critics,{ foreignKey: 'username'});
 Critics.belongsTo(Client,{ foreignKey: 'username',source:'username'});
+
+
+Client.hasMany(Message,{ foreignKey: 'username'});
+Message.belongsTo(Client,{ foreignKey: 'username',source:'username'});
 
 
 

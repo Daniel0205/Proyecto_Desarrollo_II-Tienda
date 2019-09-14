@@ -32,7 +32,7 @@ router.get("/consult", (req, res) => {
             res.json({ bool: false })
         });
 });
-
+ 
 //consulta todas las subcategorias en la base de datos
 router.post("/get", (req, res) => {
 
