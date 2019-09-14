@@ -76,6 +76,7 @@ export const mainListItemsAdmin = (
 
 export const secondaryListItemsAdmin = (
   <div>
+
     <ListSubheader inset>Reports</ListSubheader>
     <ListItem button component={Link} to="/Admin_page/trending">
       <ListItemIcon>
@@ -83,12 +84,14 @@ export const secondaryListItemsAdmin = (
       </ListItemIcon>
       <ListItemText primary="Trending products" />
     </ListItem>
-    <ListItem button>
+
+    <ListItem button component={Link} to="/Admin_page/low_stocks">
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Sales" />
+      <ListItemText primary="Low stocks" />
     </ListItem>
+
     <ListItem button>
       <ListItemIcon>
         <AssignmentIcon />
