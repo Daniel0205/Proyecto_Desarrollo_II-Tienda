@@ -47,9 +47,18 @@ router.post("/buy",function(req,res){
 //Consultar las ventas
 
 router.post("/getBills",function(req,res){
-
-    Bill.findAll()
-    .then(x =>  res.json(x))
+    Bill.findAll({ 
+        
+        include: [
+            {
+                model: Book, 
+            },
+            {
+                model: Card, 
+                required:true,                
+            }
+          ]})
+    .then(x =>res.json(x)) 
     .catch(err => console.log(err));
 
 })
@@ -59,18 +68,17 @@ router.post("/getBills",function(req,res){
 
 router.post("/getBill",function(req,res){
 
-    console.log(req.body)
-
-    
     Bill.findAll({ 
-        where:{id_bill:1},
+        
         include: [
-         
             {
                 model: Book, 
-                required:true, 
-                 
-                
+                               
+            },
+            {
+                model: Card, 
+                required:true,                
+                where:req.body,
             }
           ]})
     .then(x =>res.json(x)) 
