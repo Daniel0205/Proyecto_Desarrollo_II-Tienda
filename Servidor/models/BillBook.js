@@ -3,10 +3,7 @@ const db = require('../config/database');
 
 
 const BillBook = db.define ('bill_book',{
-    id_bill:{
-        type: Sequelize.BIGINT,
-        primaryKey: true 
-    },
+
     quantity:{
         type: Sequelize.INTEGER,
         allowNull: false     
@@ -16,6 +13,7 @@ const BillBook = db.define ('bill_book',{
     timestamps: false
 })
 
+BillBook.removeAttribute('id');
 
 
 

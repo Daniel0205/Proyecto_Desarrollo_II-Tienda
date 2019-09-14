@@ -74,7 +74,7 @@ var state = {
   username: '',
   first_name: '',
   last_name: '',
-  date_birth: '',
+  date_birth: '2015-05-05',
   type_id: 'CC',
   id: '',
   gender: 'N',
@@ -82,7 +82,6 @@ var state = {
   phone_number: '',
   address: '',
   email: '',
-  credit_card_number: '',
   state: true
 };
 
@@ -121,14 +120,16 @@ const Gender = [
 ];
 
 
-
 export default function SignInSide() {
+
+  const [selectedDate, setSelectedDate] = React.useState( '2015-05-05');
+  const [RedirectToLogin, setRedirectToLogin] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [values, setValues] = React.useState({});
+
 
   const classes = useStyles();
 
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
-  const [RedirectToLogin, setRedirectToLogin] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
 
   function SnackbarSuccess() {
     const classes = useStyles1();
@@ -147,9 +148,10 @@ export default function SignInSide() {
     state['date_birth'] = format(date, "yyyy-MM-dd");
   }
 
+
   function handleClick(e) {
 
-    console.log(state);
+    
     fetch("/Client/insert", {
       method: "POST",
       headers: {
@@ -160,7 +162,8 @@ export default function SignInSide() {
     })
       .then(res => res.json())
       .then(res => {
-        if (res[0]) {
+        
+        if (res.bool) {
           console.log("Creado")
 
           //Mensaje de creacion de cuenta
@@ -175,15 +178,15 @@ export default function SignInSide() {
   }
 
 
-  const [values, setValues] = React.useState({});
+  
   const handleChangeList = name => event => {
     setValues({ ...values, [name]: event.target.value });
     state[name] = event.target.value;
   };
 
 
-  if (!RedirectToLogin) {
 
+  if (!RedirectToLogin) {
     return (
 
       <Grid container component="main" className={classes.root}>
@@ -249,18 +252,6 @@ export default function SignInSide() {
                 name="password"
                 type="password"
                 onChange={(x) => state['password'] = x.target.value}
-              />
-
-              {/*--Credit card number--*/}
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                label="Credit card number"
-                id="creditcard"
-                name='credit_card_number'
-                onChange={(x) => state['credit_card_number'] = x.target.value}
               />
 
               {/*--Phone number--*/}

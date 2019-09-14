@@ -115,11 +115,11 @@ export const sessionItem = (
 
 export const mainListItemsClient = (
   <div>
-    <ListItem button>
+    <ListItem button component={Link} to="/User_page/home">
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
-      <ListItemText primary="Dashboard" />
+      <ListItemText primary="Home" />
     </ListItem>
 
     <ListItem button component={Link} to="/User_page/store">
@@ -164,7 +164,7 @@ export const secondaryListItemsClient = (
       <ListItemIcon>
         <ExitToAppIcon />
       </ListItemIcon>
-      <ListItemText primary="Sign off" />
+      <ListItemText primary="Sign out" />
     </ListItem>
 
   </div>

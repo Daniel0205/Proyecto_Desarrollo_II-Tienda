@@ -24,6 +24,8 @@ import {getPoint} from '../../store/point/reducer';
 import updatePoint from '../../store/point/action';
 import {connect} from 'react-redux';
 import { getUsername } from "../../store/username/reducer";
+import { Player } from 'video-react';
+
 
 const drawerWidth = 240;
 
@@ -132,7 +134,7 @@ const User_page = (props) => {
   };
 
   const handleChange = (event) => {
-    updatePoint( event.target.value)
+    props.updatePoint( event.target.value)
   }
 
 
@@ -157,6 +159,7 @@ const User_page = (props) => {
 
   return (
     <div className={classes.root}>
+      
       <CssBaseline />
       <AppBar className={clsx(classes.appBar, open && classes.appBarShift)} id="menuD">
         <Toolbar className={classes.toolbar}>
@@ -204,9 +207,22 @@ const User_page = (props) => {
         <Divider />
         <List>{secondaryListItemsClient}</List>
       </Drawer>
-
+      
+  
       <main className={classes.content}>
         <div className={classes.toolbar} />
+        <Route path="/User_page/home" component={()=>
+        <div>
+          <link
+            rel="stylesheet"
+            href="https://video-react.github.io/assets/video-react.css"
+          />
+          <Player
+          playsInline
+          autoPlay 
+          src="http://localhost:3000/videos/Home.mp4" />
+        </div>
+          } />
         <Route path="/User_page/buy_list" component={Buy_list} />
         <Route path="/User_page/account" component={Account} />
         <Route path="/User_page/shopping_car" component={Shopping_car} />
