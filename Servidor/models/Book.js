@@ -1,8 +1,10 @@
+ 
 const Sequelize = require('sequelize');
 const db = require('../config/database')
 
 const BillBook  = require( './BillBook')
-
+const Critics = require( './Critics')
+const Inventory = require('./Inventory')
 
 const Book = db.define ('book',{
     isbn:{
@@ -69,5 +71,12 @@ const Book = db.define ('book',{
 
 Book.hasMany(BillBook,{ foreignKey: 'isbn'});
 BillBook.belongsTo(Book,{ foreignKey: 'isbn',source:'isbn'});
+
+
+Book.hasMany(Critics,{ foreignKey: 'isbn'});
+Critics.belongsTo(Book,{ foreignKey: 'isbn',source:'isbn'});
+
+Book.hasMany(Inventory,{ foreignKey: 'isbn'});
+Inventory.belongsTo(Book,{ foreignKey: 'isbn',source:'isbn'});
 
 module.exports = Book;

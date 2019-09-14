@@ -2,12 +2,14 @@ const Sequelize = require('sequelize');
 const db = require('../config/database');
 
 
-const BillBook = db.define ('bill_book',{
-    id_bill:{
-        type: Sequelize.BIGINT,
-        primaryKey: true 
+
+
+const BillCard = db.define ('bill_card',{
+    dues:{
+        type: Sequelize.INTEGER,
+        allowNull: false     
     },
-    quantity:{
+    porcent:{
         type: Sequelize.INTEGER,
         allowNull: false     
     }
@@ -15,9 +17,6 @@ const BillBook = db.define ('bill_book',{
     freezeTableName: true,
     timestamps: false
 })
+BillCard.removeAttribute('id');
 
-
-
-
-
-module.exports = BillBook;
+module.exports = BillCard;
