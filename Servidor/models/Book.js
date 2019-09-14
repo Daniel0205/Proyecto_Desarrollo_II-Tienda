@@ -4,6 +4,7 @@ const db = require('../config/database')
 const BillBook  = require( './BillBook')
 const Critics = require( './Critics')
 const Inventory = require('./Inventory')
+const Bill = require('./Bill')
 
 const Book = db.define ('book',{
     isbn:{
@@ -67,9 +68,9 @@ const Book = db.define ('book',{
     timestamps: false,
 
 })
-
-Book.hasMany(BillBook,{ foreignKey: 'isbn'});
-BillBook.belongsTo(Book,{ foreignKey: 'isbn',source:'isbn'});
+  
+Bill.belongsToMany(Book, {through:BillBook,foreignKey: 'id_bill'});
+Book.belongsToMany(Bill, {through:BillBook,foreignKey: 'isbn'});
 
 
 Book.hasMany(Critics,{ foreignKey: 'isbn'});

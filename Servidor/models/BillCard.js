@@ -2,8 +2,6 @@ const Sequelize = require('sequelize');
 const db = require('../config/database');
 
 
-
-
 const BillCard = db.define ('bill_card',{
     dues:{
         type: Sequelize.INTEGER,

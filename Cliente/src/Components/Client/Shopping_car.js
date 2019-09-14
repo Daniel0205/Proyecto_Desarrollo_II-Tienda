@@ -26,7 +26,8 @@ class Shopping_car extends React.Component {
     this.buy= this.buy.bind(this);
     this.showCar= this.showCar.bind(this);
     this.payment= this.payment.bind(this);
-    this.abc = this.abc.bind(this)
+    this.closePayment= this.closePayment.bind(this);
+    this.act = this.act.bind(this)
   }
 
   buy(){
@@ -92,13 +93,18 @@ class Shopping_car extends React.Component {
     this.forceUpdate();
   } 
 
-  abc(){
-    
-    if(this.state.activate === true){
+  act(){
+    if(this.state.activate){
       return(
-        <CheckPayment />
+        <CheckPayment callback={this.closePayment.bind(this)}/>
       )
     }
+  }
+
+  closePayment(){
+    this.setState({
+      activate: false
+    })
   }
   
   showCar(){
@@ -134,7 +140,7 @@ class Shopping_car extends React.Component {
                     </Card>  
                     )}
             <Button key="boton" onClick={this.buy}>To buy</Button>
-            {this.abc()}
+            {this.act()}
         </div>
       )
     }
