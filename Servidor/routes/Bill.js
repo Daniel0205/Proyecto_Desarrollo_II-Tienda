@@ -4,6 +4,8 @@ const db  =require('../config/database')
 const Bill = require('../models/Bill')
 const BillBook = require('../models/BillBook')
 const Book = require('../models/Book')
+const BillCard = require('../models/BillCard')
+const Card = require('../models/Card')
 
 /////////////////////////////////////////////////////
 ////////////CONSULTAS DE LAS VENTAS//////////////////
@@ -57,43 +59,25 @@ router.post("/getBills",function(req,res){
 
 router.post("/getBill",function(req,res){
 
-    var aux = []
+    console.log(req.body)
 
-    Bill.findAll({where: {
-        username: req.body.username
-    }})
-    .then(x =>{
+    
+    Bill.findAll({ 
         
-        if(x.length==0){res.json(aux)}
-        for (let i = 0; i < x.length; i++) {
-      
-            BillBook.findAll({
-                attributes: ['quantity','isbn','name_dp'],
-                where:{id_bill:x[i].id_bill},
-                include: [{model:Book, attributes: ['title']}]
-            })
-            .then(z=>{
-                var bill = {
-                    id_bill: x[i].id_bill,
-                    date: x[i].date,
-                    products: z.map(x=>{
-                        return({
-                            quantity:x.quantity,
-                            isbn:x.isbn,
-                            name_dp:x.name_dp,
-                            title:x.book.title})  
-                    })
-                }
+        include: [
          
-                aux.push(bill)
+            {
+                model: BillCard, 
+                required:true, 
+                include: [
+                {
+                    model:Card,
+                    where: req.body,
 
-     
-                if(i+1===x.length) {res.json(aux)}
-            })
-            .catch(err => console.log(err));        
-        }
-        
-    })
+                }]
+            }
+          ]})
+    .then(x =>res.json(x)) 
     .catch(err => console.log(err));
 
 })

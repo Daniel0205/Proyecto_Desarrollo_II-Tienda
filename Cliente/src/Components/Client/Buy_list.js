@@ -24,7 +24,7 @@ function createTable(rows){
             <TableCell align="right">Quantity</TableCell>
             <TableCell align="right">Distribution Point</TableCell>
           </TableRow>
-        </TableHead>
+        </TableHead>9
         <TableBody>
           {rows.map((row,i) => (
             <TableRow key={i}>
