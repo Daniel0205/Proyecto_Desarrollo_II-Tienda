@@ -127,6 +127,7 @@ class Low_stocks extends React.Component {
 
         <TextField
           value={this.state.quantity}
+          label="Max quantity"
           id="outlined-dense"
           defaultValue="0"
           margin="dense"
