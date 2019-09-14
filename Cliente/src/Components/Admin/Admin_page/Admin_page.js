@@ -23,6 +23,8 @@ import Bill from '../Bill';
 import Trending from '../Trending';
 import Low_stocks from '../Low_stocks';
 import { Route } from 'react-router-dom';
+import { Link } from 'react-router-dom'
+
 
 
 const drawerWidth = 240;
@@ -146,7 +148,7 @@ export default function Admin_page(props) {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Dashboard
             </Typography>
-          <IconButton color="inherit">
+          <IconButton color="inherit"component={Link} to="/Admin_page/message" >
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>

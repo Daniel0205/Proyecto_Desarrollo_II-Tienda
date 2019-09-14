@@ -25,7 +25,8 @@ router.post("/send", function(req,res){
 router.post('/get', function(req,res){
 
     Message.findAll({
-        attributes: ['id_message','username','matter','description','solved']
+        attributes: ['id_message','username','matter','description','solved'],
+        where:{solved:false},
     })
     .then(x =>  res.json([{Message: x}]))
     .catch(err => {
@@ -34,5 +35,19 @@ router.post('/get', function(req,res){
     });
 
 });
+
+//Modificar los datos de un producto especifico de la base de datos
+router.post("/update", function(req,res){
+    console.log(req.body)
+
+    Message.update({solved:true},
+        {where: {id_message:req.body.id_message}})
+    .then(x => res.json([{bool:true}]))
+    .catch(err => {
+        console.log(err)
+        res.json([{bool:false}])
+    });
+})
+
 
 module.exports =router;

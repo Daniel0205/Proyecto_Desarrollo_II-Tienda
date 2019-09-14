@@ -11,7 +11,7 @@ constructor(props){
   console.log(this.props)
   this.state={
     username: this.props.username,
-    matter: this.props.matter,
+    matter: '',
     description: '',
     solved: false
   }
@@ -37,19 +37,25 @@ mensaje(){
 
   .then(res => res.json())
   .then(res => {
-    console.log(res)
-    this.setState(res[0])
+    if(res[0]){
+      this.setState({
+        matter: '',
+        description: '',
+        solved: false
+      },alert("send succesfully!"))
+    }
+    else{
+      alert("Dont send succesfully!")
+    }
   })
-
-  alert("send succesfully!")
 }
 
 
   render(){
     return (<div>
       <h1>Contact_us</h1>
-      <Input id='reason' onChange={(x)=>this.setState({matter:x.currentTarget.value})}type="text" placeholder='matter*' fullWidth></Input><br />
-            <Input id='msm' onChange={(x)=>this.setState({description:x.currentTarget.value})}type="text" placeholder='message*' fullWidth></Input><br />
+      <Input id='reason' value={this.state.matter} onChange={(x)=>this.setState({matter:x.currentTarget.value})}type="text" placeholder='matter*' fullWidth></Input><br />
+            <Input id='msm' value={this.state.description} onChange={(x)=>this.setState({description:x.currentTarget.value})}type="text" placeholder='message*' fullWidth></Input><br />
             <Button id='send' fullWidth onClick={this.mensaje} color="primary">Send</Button>
       </div>);
   } 
