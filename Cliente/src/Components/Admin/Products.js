@@ -23,7 +23,10 @@ export default class Products extends React.Component {
       recommended_age:'',
       tipo: 'inicio',
       source: null,
-      file : null 
+      file : null ,
+      quantity:1,
+      dp:'Select',
+      isbnDp:''
     }
 
 
@@ -342,6 +345,22 @@ export default class Products extends React.Component {
             <Button  onClick={this.deletepro}>Delete product</Button>
           </div>
         );
+      case "addInventory":
+        return(
+          <div>
+            <hr/>
+            <p>Select the product you want to add :</p>
+            <Input name="isbn" type="text" placeholder='ISBN*' 
+            onChange={(x)=>this.setState({isbnDp:x.target.value})} value={this.state.isbnDp}/> <br/>
+            <p>Select distribution point :</p>
+            <Input name="dp" type="text" placeholder='distribution point*' 
+            onChange={(x)=>this.setState({dp:x.target.value})} value={this.state.dp}/> <br/>
+            <p>Select the quantity :</p>
+            <Input name="quatity" type="number" placeholder='quatity' min="1" 
+            onChange={(x)=>this.setState({quantity:x.target.value})}  value={this.state.quantity}/> <br/>
+            <Button  onClick={this.deletepro}>add product</Button>
+          </div>
+        );
       default:
         break;
     }
@@ -355,6 +374,7 @@ export default class Products extends React.Component {
         <Button onClick={() => this.setState({tipo: "obtener"})}>CONSULT PRODUCTS</Button>
         <Button onClick={() => this.setState({tipo: "actualizar"})}>UPDATE PRODUCTS</Button>
         <Button onClick={() => this.setState({tipo: "eliminar"})}>DELETE PRODUCTS</Button>
+        <Button onClick={() => this.setState({tipo: "addInventory"})}>ADD PRODUCTS TO INVENTORY</Button>
         {this.action()}
       </div>
       );

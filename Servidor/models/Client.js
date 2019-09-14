@@ -26,7 +26,7 @@ const Client = db.define ('client',{
         type: Sequelize.STRING(2),
         allowNull: false             
     },
-    idsdf:{
+    id:{
         type: Sequelize.BIGINT,
         allowNull: false             
     },
