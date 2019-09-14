@@ -46,7 +46,7 @@ router.post("/buy",function(req,res){
   
 //Consultar las ventas
 
-router.post("/getBills",function(req,res){
+router.get("/getBills",function(req,res){
     Bill.findAll({ 
         
         include: [
