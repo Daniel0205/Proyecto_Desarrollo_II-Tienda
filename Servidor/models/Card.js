@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../config/database');
 
 const BillCard = require('./BillCard')
+const Bill = require('./Bill')
 
 const Card = db.define ('card',{
     credit_card_number:{
@@ -25,9 +26,9 @@ const Card = db.define ('card',{
     timestamps: false
 })
 
+Bill.belongsToMany(Card, {through:BillCard,foreignKey: 'id_bill'});
+Card.belongsToMany(Bill, {through:BillCard,foreignKey: 'credit_card_number'});
 
 
-Card.hasMany(BillCard,{ foreignKey: 'credit_card_number'});
-BillCard.belongsTo(Card,{ foreignKey: 'credit_card_number',source:'credit_card_number'});
 
 module.exports = Card;

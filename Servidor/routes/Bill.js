@@ -63,23 +63,19 @@ router.post("/getBill",function(req,res){
 
     
     Bill.findAll({ 
-        
+        where:{id_bill:1},
         include: [
          
             {
-                model: BillCard, 
+                model: Book, 
                 required:true, 
-                include: [
-                {
-                    model:Card,
-                    where: req.body,
-
-                }]
+                 
+                
             }
           ]})
     .then(x =>res.json(x)) 
     .catch(err => console.log(err));
 
 })
-
+ 
 module.exports =router;
