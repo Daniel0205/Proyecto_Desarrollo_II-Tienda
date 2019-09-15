@@ -34,19 +34,34 @@ router.post('/get', function(req,res){
 })
 
 //Modificar los datos de un producto especifico de la base de datos
-router.put("/update", function(req,res){
-    delete req.body.tipo
-
+router.post("/update", function(req,res){
+    console.log(req.body)
     let index = req.body.isbn;
-    let index2 = req.body.id_dp;
+    let index2 = req.body.name_dp;
     delete req.body.isbn
     delete req.body.id_dp
 
-    Inventory.update(req.body,{where: {
+    Inventory.findOne({where: {
         isbn: index,
-        id_dp: index2
+        name_dp: index2
     }})
-    .then(x => res.json([{bool:true}]))
+    .then(x =>{ 
+
+        console.log(req.body.quantity)
+        console.log(req.body.quantity+x.availability)
+        var aux=req.body.quantity+x.availability
+        Inventory.update({availability:aux},
+        {where: {
+            isbn: index,
+            name_dp: index2
+        }})
+        .then(x => res.json([{bool:true}]))
+        .catch(err => {
+            console.log(err)
+            res.json([{bool:false}])
+        });
+        
+    })
     .catch(err => {
         console.log(err)
         res.json([{bool:false}])
