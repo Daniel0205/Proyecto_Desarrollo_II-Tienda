@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Card = require('../models/Card')
 
-//Insertar productos en la base de datos
+//Insertar tarjeta en la base de datos
 router.post("/add", function (req, res) {
     console.log(req.body)
 
@@ -12,6 +12,17 @@ router.post("/add", function (req, res) {
         .then(x => res.json({ bool: true, card:x }))
         .catch(err => res.json({ bool: false }));
 
+})
+
+//Obtener las tarjetas de la base de datos
+router.post('/getAll', function(req,res){
+
+    Card.findAll()
+    .then(x =>  res.json(x))
+    .catch(err => {
+        console.log(err)
+        res.json({bool:false})
+      })
 })
 
 //Eliminar una tarjeta especifico de la base de datos
