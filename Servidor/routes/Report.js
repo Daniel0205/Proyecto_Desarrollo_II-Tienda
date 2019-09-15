@@ -46,7 +46,7 @@ router.get("/consult", (req, res) => {
 //consulta todas los usuarios en la base de datos
 router.post("/low_stocks", (req, res) => {
 
-let quantity = req.body.quantity;
+    let quantity = req.body.quantity;
 
     Inventory.findAll(
         {
@@ -73,9 +73,25 @@ let quantity = req.body.quantity;
 });
 
 
-router.get("/distributionpoint", (req, res) => {
+router.post("/sales", (req, res) => {
 
-    DistributionPoint.findAll({ attributes: ['name_dp'] }
+    Bill.findAll(
+        {
+            where: {
+                date: {
+                    [Op.lte]: '2019-10-30',
+                    [Op.gte]: '2017-02-03'
+                }
+            },
+            include: [{
+                model: Book,
+                required: true,
+                attributes: {
+                    exclude:
+                        ['publication_year', 'synopsis', 'number_of_pages',
+                            'lang', 'cover_type', ' recommended_age', 'imagepath']
+                }}]
+        }
     )
         .then(x => res.json(x))
         .catch(err => {
