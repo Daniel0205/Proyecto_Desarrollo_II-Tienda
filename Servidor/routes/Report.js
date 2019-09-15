@@ -75,12 +75,15 @@ router.post("/low_stocks", (req, res) => {
 
 router.post("/sales", (req, res) => {
 
+    let initDate = req.body.initDate;
+    let finalDate = req.body.finalDate;
+
     Bill.findAll(
         {
             where: {
                 date: {
-                    [Op.lte]: '2019-10-30',
-                    [Op.gte]: '2017-02-03'
+                    [Op.lte]: finalDate,
+                    [Op.gte]: initDate
                 }
             },
             include: [{

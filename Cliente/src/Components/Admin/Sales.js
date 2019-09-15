@@ -4,6 +4,21 @@ import { Button } from '@material-ui/core'
 import { JsonToTable } from "react-json-to-table";
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Divider from '@material-ui/core/Divider';
+
+
+
+const Products = [{
+    Item: "-", Distribution_Point: "-", Date: "-", Isbn: "-",
+    Title: "-", Author: "-", Editorial: "-", Ed: "-",
+    Subcategory: "-", Cost: "-", Price: "-", Qty: "-"
+}]
+
+var selectedProducts = [];
 
 
 
@@ -13,8 +28,10 @@ export default class Sales extends React.Component {
         this.state = {
             query: [],
             table: [],
-            initDate: new Date(),
-            finalDate: new Date()
+            initDate: new Date('2018-01-02'),
+            finalDate: new Date(),
+            selectedProduct: "All",
+            backUp: [],
         }
 
         this.showResult = this.showResult.bind(this);
@@ -22,6 +39,7 @@ export default class Sales extends React.Component {
         this.handleInitDateChange = this.handleInitDateChange.bind(this);
         this.handleFinalDateChange = this.handleFinalDateChange.bind(this);
         this.DateRanges = this.DateRanges.bind(this);
+        this.onSelect = this.onSelect.bind(this);
     }
 
     showResult() {
@@ -30,11 +48,11 @@ export default class Sales extends React.Component {
             headers: {
                 Accept: "application/json, text/plain, */*",
                 "Content-Type": "application/json"
-              },
-              body: JSON.stringify({
-                name: this.state.name,
-                description: this.state.description
-              })
+            },
+            body: JSON.stringify({
+                initDate: this.state.initDate,
+                finalDate: this.state.finalDate
+            })
         })
             .then(res => res.json())
             .then(res => {
@@ -62,6 +80,8 @@ export default class Sales extends React.Component {
             }
         }
 
+        selectedProducts = [];
+
         //Extraer la informacion de cada libro
         for (let index = 0; index < books.length; index++) {
 
@@ -73,29 +93,44 @@ export default class Sales extends React.Component {
             newjson.Title = books[index]['title'];
             newjson.Author = books[index]['author'];
             newjson.Editorial = books[index]['editorial'];
-            newjson.Ed = books[index]['edition']+'°';
+            newjson.Ed = books[index]['edition'] + '°';
             newjson.Subcategory = books[index]['name_subcategory'];
             newjson.Cost = '$' + books[index]['cost'];
             newjson.Price = '$' + books[index]['price'];
             newjson.Qty = books[index]['bill_book']['quantity'];
 
-            TotalSales += books[index]['price']*books[index]['bill_book']['quantity'];
-            TotalProfit += (books[index]['price']-books[index]['cost'])
-            *books[index]['bill_book']['quantity'];
+            TotalSales += books[index]['price'] * books[index]['bill_book']['quantity'];
+            TotalProfit += (books[index]['price'] - books[index]['cost'])
+                * books[index]['bill_book']['quantity'];
 
             table.push(newjson);
+
+            //Select Products
+            selectedProducts.push('item'+index+' - '+books[index]['title']);
+            //
         }
 
-        this.setState({table: {
+        //Activa mostar la tabla
+        this.setState({
+            table: {
                 Products: table,
-                '':'', 
-                'Total Sales': '$' + TotalSales, 
+                '': '',
+                'Total Sales': '$' + TotalSales,
+                'Total Profit': '$' + TotalProfit
+            }
+        });
+
+        //Backup
+        //Activa mostar la tabla
+        this.setState({
+            backUp: {
+                Products: table,
+                '': '',
+                'Total Sales': '$' + TotalSales,
                 'Total Profit': '$' + TotalProfit
             }
         });
     }
-
-
 
 
     //Funciones para almacenar las fechas seleccionadas
@@ -103,32 +138,51 @@ export default class Sales extends React.Component {
     handleFinalDateChange(date) { this.setState({ finalDate: date }) }
 
 
-    //Funcion para 
+    onSelect(event){
+        let selectedItem = event.target.value;
+        this.setState({ selectedProduct: selectedItem });
+        if (selectedProducts.length > 0) {
+    
+            if (typeof this.state.backUp.Products[selectedItem] !== "undefined") {
+
+                let qty = this.state.backUp.Products[selectedItem].Qty;
+                let price = this.state.backUp.Products[selectedItem].Price;
+                let cost = this.state.backUp.Products[selectedItem].Cost;
+                price = parseInt(price.substring(1) , 10);
+                cost = parseInt(cost.substring(1) , 10);
+                
+                this.setState({
+                    table: {
+                        Product: this.state.backUp.Products[selectedItem],
+                        '': '',
+                        'Total Sale': '$' + (qty*price),
+                        'Total Profit': '$' + (price-cost)*qty
+                    }
+                });
+
+            }
+            else {
+                this.setState({ table: this.state.backUp });
+            }
+        }
+    }
+
+
+    //Funcion para sacar los datos del query a la bd 
     DateRanges() {
-
         let result = [];
-
         for (let index = 0; index < this.state.query.length; index++) {
             result.push(this.state.query[index]);
         }
- 
         return result;
     }
 
 
     componentDidMount() {
-        this.setState({
-            table:
-            {
-                Products:
-                    [{
-                        Item: "-",  Distribution_Point: "-",Date: "-", Isbn: "-", 
-                        Title: "-", Author: "-", Editorial: "-", Ed: "-", 
-                        Subcategory: "-", Cost: "-", Price: "-", Qty: "-"
-                    }]
-            }
-        });
+        this.setState({ table: Products });
+        this.setState({ backUp: Products });
     }
+
 
     render() {
 
@@ -167,24 +221,48 @@ export default class Sales extends React.Component {
                         }}
                     />
                 </MuiPickersUtilsProvider>
-
                 <br />
+                
                 <br />
                 <Button variant="contained" color="primary" onClick={() => {
                     this.setState({ table: "" });
+                    this.setState({ backUp: "" });
                     this.showResult();
-                    console.log("query: ", this.state.query)
-                }}>
-                    Show Report
-                    </Button>
+                }}> Show Report </Button>
+                <br /><br />
+
+                <br /><br />
+                <Divider/>
+                <br />
+
+                <FormControl>
+                    <InputLabel shrink htmlFor="age-label-placeholder">
+                        FILTER PRODUCT  </InputLabel>
+                    <Select
+                        style={{ maxWidth: '510px', minWidth: '510px' }}
+                        value={this.state.selectedProduct}
+                        onChange={this.onSelect}
+                        name="product"
+                        displayEmpty
+                        >
+                            
+                        <MenuItem key='' value=''> All </MenuItem>
+                        {selectedProducts.map((color, index) =>
+                            <MenuItem key={index} value={index}> {color}</MenuItem>
+                        )}
+
+                    </Select>
+                </FormControl>
 
                 <br /><br />
                 <JsonToTable json={this.state.table} />
-                <br />
+                <br /><br /><br />
+
             </div>
         );
     }
 
 }
+
 
 
