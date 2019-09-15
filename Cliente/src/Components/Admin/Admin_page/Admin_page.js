@@ -11,7 +11,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItemsAdmin, secondaryListItemsAdmin, sessionItem } from '../../listItems';
 import { makeStyles } from '@material-ui/core/styles';
 import Activate_Client from '../Activate_Client/Activate_Client';
@@ -23,7 +22,8 @@ import Bill from '../Bill';
 import Trending from '../Trending';
 import Low_stocks from '../Low_stocks';
 import { Route } from 'react-router-dom';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import EmailIcon from '@material-ui/icons/Email';
 
 
 
@@ -150,7 +150,7 @@ export default function Admin_page(props) {
             </Typography>
           <IconButton color="inherit"component={Link} to="/Admin_page/message" >
             <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
+              <EmailIcon />
             </Badge>
           </IconButton>
         </Toolbar>

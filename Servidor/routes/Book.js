@@ -22,7 +22,7 @@ router.post("/insert", function(req,res){
               
         EDFile = req.files.EDFile;
         path = `./images/${EDFile.name}`;
-        imgRoute = `/images/${EDFile.name}`
+        imgRoute = `images/${EDFile.name}`
         req.body.imagepath = imgRoute;
     }
     
@@ -62,8 +62,21 @@ router.post('/getAll', function(req,res){
 })
 
 //Modificar los datos de un producto especifico de la base de datos
-router.put("/update", function(req,res){
-    delete req.body.tipo
+router.post("/update", function(req,res){
+
+    delete req.body.tipo;
+    delete req.body.source;
+    let path = '';
+    let EDFile = null;
+
+    if (Object.keys(req.files.EDFile).length != 0) {
+              
+        EDFile = req.files.EDFile;
+        path = `./images/${EDFile.name}`;
+        imgRoute = `images/${EDFile.name}`
+        req.body.imagepath = imgRoute;
+    }
+    
 
     let index = req.body.isbn;
     delete req.body.isbn
@@ -71,7 +84,19 @@ router.put("/update", function(req,res){
     Book.update(req.body,{where: {
         isbn: index
     }})
-    .then(x => res.json([{bool:true}]))
+    .then(x => {
+        if(EDFile != null){
+            EDFile.mv(path, function(err) {
+                if (err){
+                    return res.status(500).send(err);
+                }else{
+                    console.log('File uploaded!');
+                }
+            });
+        }
+
+        res.json([{bool:true}]);
+    })
     .catch(err => {
         console.log(err)
         res.json([{bool:false}])
@@ -80,6 +105,7 @@ router.put("/update", function(req,res){
 
 //Eliminar un producto especifico de la base de datos
 router.delete('/delete', function(req,res){
+
 
     Book.destroy({where: {
         isbn: req.body.isbn
