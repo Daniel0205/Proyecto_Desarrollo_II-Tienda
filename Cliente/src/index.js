@@ -28,10 +28,7 @@ const routing = (
             <Route exact path="/home" component={Home} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/sign_up" component={Sign_up} />
-
             <Route path="/Admin_page" component={Admin_page} />       
-
-
             <Route path="/user_page" component={User_page} />
 
         </Router>

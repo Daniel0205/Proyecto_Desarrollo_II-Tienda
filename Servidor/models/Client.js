@@ -70,5 +70,9 @@ Client.hasMany(Critics,{ foreignKey: 'username'});
 Critics.belongsTo(Client,{ foreignKey: 'username',source:'username'});
 
 
+Client.hasMany(Message,{ foreignKey: 'username'});
+Message.belongsTo(Client,{ foreignKey: 'username',source:'username'});
+
+
 
 module.exports = Client;

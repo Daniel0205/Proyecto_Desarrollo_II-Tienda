@@ -15,6 +15,6 @@ const BillCard = db.define ('bill_card',{
     freezeTableName: true,
     timestamps: false
 })
-BillCard.removeAttribute('id');
+
 
 module.exports = BillCard;

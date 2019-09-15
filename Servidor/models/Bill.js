@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../config/database');
 
 
+
 const Bill = db.define ('bill',{
     id_bill:{
         type: Sequelize.BIGINT,
@@ -16,16 +17,5 @@ const Bill = db.define ('bill',{
     freezeTableName: true,
     timestamps: false
 })
-/*
-
-Bill.hasMany(BillBook,{ foreignKey: 'id_bill'});
-BillBook.belongsTo(Bill,{ foreignKey: 'id_bill',source:'id_bill'});
-
-Bill.hasMany(BillCard,{ foreignKey: 'id_bill'});
-BillCard.belongsTo(Bill,{ foreignKey: 'id_bill',source:'id_bill'});
-*/  
-
-
-
 
 module.exports = Bill;

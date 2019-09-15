@@ -35,8 +35,9 @@ CREATE TABLE admin(
 
 DROP TABLE IF EXISTS message CASCADE;
 CREATE TABLE message(
-   id_message    SERIAL PRIMARY KEY,
+   id_message     SERIAL PRIMARY KEY,
    username         TEXT REFERENCES client(username),
+   matter          TEXT NOT NULL,
    description	    TEXT NOT NULL,	
    solved	    boolean NOT NULL
 );
@@ -259,8 +260,8 @@ INSERT INTO critics VALUES
    ('helat',9789707290624,'Me gusto',4);
 
 INSERT INTO message(
-	username,description,solved)
+	username,matter,description,solved)
 	VALUES
-	('dan','La pagina no me carga los libros',false),
-	('helat','Muy buena la pagina, sigan asi',false),
-	('josette','No se donde puedo ver mis compras',false);
+	('dan','falla en libros','La pagina no me carga los libros',false),
+	('helat','best app','Muy buena la pagina, sigan asi',false),
+	('josette','falla compras','No se donde puedo ver mis compras',false);

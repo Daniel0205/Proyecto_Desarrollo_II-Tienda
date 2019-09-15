@@ -25,8 +25,10 @@ class Admin_page extends Component {
 
       .then(res => res.json())
       .then(res => {
-        this.setState({ algo: { Client: [] } });
-        this.setState({ algo: res[0] });
+        if(res[0].bool){
+          this.setState({ algo: { Client: [] } });
+          this.setState({ algo: res[0] });
+        }
       });
 
   }
@@ -48,6 +50,7 @@ class Admin_page extends Component {
         this.setState({ algo: { Client: [] } });
       })
       .then(() => {
+        console.log("safsadf")
         this.getClient()
       });
   }

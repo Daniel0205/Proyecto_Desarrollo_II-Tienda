@@ -145,7 +145,8 @@ export default class Trending extends React.Component {
             }
 
         }
-
+        //ordenado desc. por cantidad
+        result = result.sort((a, b) => b.bill_books[0].quantity - a.bill_books[0].quantity);
         return result;
     }
 
