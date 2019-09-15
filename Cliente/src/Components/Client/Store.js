@@ -71,10 +71,11 @@ class Store extends React.Component {
       title:aux.title,
       quantity:1,
       distribution_point:aux.inventories[0].name_dp,
-      limit:aux.inventories[0].availability
+      limit:aux.inventories[0].availability,
+      price:aux.price
   })
-
-  console.log(aux1)
+  console.log(this.state)
+  console.log(aux)
 
     this.props.updateCar(aux1)
     
