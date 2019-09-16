@@ -4,6 +4,7 @@ import {IconButton} from '@material-ui/core';
 import AddCommentRoundedIcon from '@material-ui/icons/AddCommentRounded';
 import AddShoppingCartRoundedIcon from '@material-ui/icons/AddShoppingCartRounded';
 import "./Details.css";
+import Comments from './Comments';
 
 const styles = 
 {
@@ -100,7 +101,7 @@ export default class Details extends React.Component {
 
                 <CardContent>
                     <div>
-                        <h2>Holaaaa</h2>
+                        <Comments isbn={this.props.inf.isbn}/>
                     </div>
                 </CardContent>
 
