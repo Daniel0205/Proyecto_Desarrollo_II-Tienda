@@ -31,9 +31,26 @@ router.post("/buy",function(req,res){
                     quantity:z.quantity
                 })
             })
-        ).then(x => 
-            res.json({bool:true})
-        )
+        ).then(p => {
+            console.log(p)
+            console.log(x)
+            BillCard.bulkCreate(
+                req.body.cards.map((z)=>{
+                    return({
+                        id_bill:x.id_bill,
+                        credit_card_number:z.credit_card_number,
+                        dues:z.dues,
+                        porcent:z.porcent
+                    })
+                })
+            ).then(x => 
+                res.json({bool:true})
+            )
+            .catch(err => {
+                res.json({bool:false})
+                console.log(err)});
+
+        })
         .catch(err => {
             res.json({bool:false})
             console.log(err)});
