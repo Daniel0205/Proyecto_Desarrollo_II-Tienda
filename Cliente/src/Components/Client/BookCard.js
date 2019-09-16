@@ -42,7 +42,7 @@ export default function BookCard(props) {
             $ {props.price}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {props.sypnosis}
+            {props.synopsis}
           </Typography>
         </CardContent>
       </CardActionArea>

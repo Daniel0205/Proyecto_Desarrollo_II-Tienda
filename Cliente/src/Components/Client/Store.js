@@ -51,7 +51,7 @@ class Store extends React.Component {
         {this.state.book.map(prove => (
           <Grid item key={prove.isbn}>
             <BookCard isbn={prove.isbn} title={prove.title} callback={this.handleViewMore.bind(this)} 
-            car={this.addCar.bind(this)}  sypnosis={prove.sypnosis} image={prove.imagepath} price={prove.price}/>
+            car={this.addCar.bind(this)}  synopsis={prove.synopsis} image={prove.imagepath} price={prove.price}/>
           </Grid>
         ))}
         </Grid>

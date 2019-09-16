@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardContent, Typography, CardHeader} from '@material-ui/core';
+import {Card, CardContent, Typography, CardHeader, Divider} from '@material-ui/core';
 import {IconButton} from '@material-ui/core';
 import AddCommentRoundedIcon from '@material-ui/icons/AddCommentRounded';
 import AddShoppingCartRoundedIcon from '@material-ui/icons/AddShoppingCartRounded';
@@ -64,7 +64,7 @@ export default class Details extends React.Component {
                             Sypnosis
                         </Typography>
                         <Typography variant="p" gutterBottom>
-                            La Segunda Guerra Mundial fue un conflicto militar global que se desarrolló entre 1939 y 1945. En este se vieron implicadas la mayor parte de las naciones del mundo, de hecho en el momento de la caída del Reich alemán solo ocho Estados del mundo eran oficialmente neutrales (Afganistán, España, Irlanda, Mongolia, Nepal, Portugal, Suecia y Suiza)1​, incluidas todas las grandes potencias, agrupadas en dos alianzas militares enfrentadas: los aliados de la Segunda Guerra Mundial y las potencias del eje. Fue la mayor contienda bélica de la historia, con más de cien millones de militares movilizados y un estado de «guerra total» en que los grandes contendientes destinaron toda su capacidad económica, militar y científica al servicio del esfuerzo bélico, borrando la distinción entre recursos civiles y militares. Marcada por hechos de enorme repercusión que incluyeron la muerte masiva de civiles, el Holocausto, los bombardeos intensivos sobre ciudades y el uso, por única vez, de armas nucleares en un conflicto militar, la Segunda Guerra Mundial fue el más mortífero en la historia con un resultado de entre 50 y 70 millones de víctimas, el 2,5% de la población mundial.2​
+                            {this.props.inf.synopsis}
                         </Typography>
                         <Typography variant="h6" gutterBottom>
                             Details 
@@ -93,8 +93,19 @@ export default class Details extends React.Component {
                         <Typography variant="p" gutterBottom>
                             Cover: {this.props.inf.cover_type}
                         </Typography> <br/>
-                    </div>     
+                    </div>   
                 </CardContent>
+
+                <Divider variant="middle" />
+
+                <CardContent>
+                    <div>
+                        <h2>Holaaaa</h2>
+                    </div>
+                </CardContent>
+
+                
+
             </Card>
             <button className="close" onClick={() => {this.props.callback()}} > X </button>
         </div>
