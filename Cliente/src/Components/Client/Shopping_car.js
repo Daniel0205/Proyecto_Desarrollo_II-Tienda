@@ -39,6 +39,38 @@ class Shopping_car extends React.Component {
 
   doBuy(e){
     console.log(e)
+    console.log(this.state)
+
+    fetch ("/Bill/buy", {
+      method: 'POST',
+      headers: {
+        Accept: "application/json, text/plain, * /*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username:this.props.username,
+        books:this.props.car.map((z)=>{
+          console.log(z)
+          return({
+              isbn:z.isbn,
+              name_dp:z.distribution_point,
+              quantity:z.quantity
+          })
+        }),
+        cards:e
+      })
+    })
+    .then(res => res.json())
+    .then(res => {
+      if(res.bool){
+        console.log(res)
+        this.props.updateCar([])
+        this.forceUpdate();
+      }
+      else{
+        console.log("NO entro")
+      }
+    });
   }
 
   calculateTotal(){

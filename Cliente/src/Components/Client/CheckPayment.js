@@ -105,6 +105,9 @@ export default class CheckPayment extends React.Component {
   }
 
   changePorcent = number => event=>{
+    console.log(number)
+
+    console.log(event)
     var aux= this.state.used.findIndex((z)=>{
       return z.credit_card_number===number})
 
