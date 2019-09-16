@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card, CardContent, Typography, CardActions, Button, CardHeader,List, ListItem,Checkbox,ListItemText,ListItemIcon,TextField,InputAdornment} from '@material-ui/core';
 import { Link } from 'react-router-dom'
-
+/*
 const styles = 
 {
     media: {
@@ -11,7 +11,7 @@ const styles =
         paddingLeft: '10%'
     }
   };
-
+*/
 export default class CheckPayment extends React.Component {
 
   constructor(props) {
@@ -24,27 +24,53 @@ export default class CheckPayment extends React.Component {
         username: 'dan',
         credit_card_number: '333',
         entity: 'VISA',
-        type: 'D'
+        type: 'C'
       },{
         username: 'dan',
         credit_card_number: '444',
         entity: 'VISA',
-        type: 'C'
-      }]
+        type: 'D'
+      }],
+      used:[]
     }
 
     this.bringCards = this.bringCards.bind(this)
     this.withoutCards = this.withoutCards.bind(this)
     this.itsCredit = this.itsCredit.bind(this)
-    
+    this.add = this.add.bind(this)
+    this.changePorcent =this.changePorcent.bind(this)
     this.getCards()
+  }
+
+  add = number => event =>{
+    
+    var aux= this.state.used ;
+    
+    if(event.target.checked){
+      aux.push({
+        credit_card_number:number,
+        dues:1,
+        porcent:0
+      })
+    }
+    else{
+      var aux1= this.state.used.findIndex((z)=>{
+        return z.credit_card_number===number})
+      aux.splice(aux1,1)
+    }
+    this.setState({used:aux})
   }
 
   getCards(){
     console.log('Cualquiera')
   }
 
-  itsCredit(typ){
+  itsCredit(typ, number ){
+    
+    var aux= this.state.used.findIndex((z)=>{
+    return z.credit_card_number===number})
+    console.log(aux)
+  
     if(typ==='C'){
       return(
         <TextField
@@ -52,9 +78,15 @@ export default class CheckPayment extends React.Component {
           label="Dues"
           type="number"
           margin="normal"
+          defaultValue={1}
+          disabled = {aux===-1}
           inputProps={{
-            min: "0", max: "100", step: "1" 
+            min: "0", max: "36", step: "1" 
           }}
+          onChange={(e)=>{
+            var aux1=this.state.used;
+            aux1[aux].dues=e.target.value
+            if(aux!==-1)this.setState({used:aux1})}}
         />
       )
       
@@ -65,14 +97,21 @@ export default class CheckPayment extends React.Component {
           label="Dues"
           type="number"
           margin="normal"
-          inputProps={{
-            min: "0", max: "100", step: "1" 
-          }}
           value= {1}
           disabled = {true}
         />
       )
     }
+  }
+
+  changePorcent = number => event=>{
+    var aux= this.state.used.findIndex((z)=>{
+      return z.credit_card_number===number})
+
+    var aux1=this.state.used;
+    aux1[aux].porcent=event.target.value
+
+    if(aux!==-1)this.setState({used:aux1})
   }
 
   bringCards(){
@@ -87,25 +126,26 @@ export default class CheckPayment extends React.Component {
 
               {this.state.cards.map(( card,i) => (
                 <ListItem key={i}>
-                  <ListItemText primary={card.entity} />
                   <ListItemText primary={card.credit_card_number} />
-                  {this.itsCredit(card.type)}
+                  <ListItemText primary={card.entity} />
+                  {this.itsCredit(card.type,card.credit_card_number)}
                   <TextField
                     id="standard-number"
                     label="Percent"
                     type="number"
                     margin="normal"
+                    defaultValue={0}
                     InputProps={{
                       endAdornment: <InputAdornment position="end">%</InputAdornment>,
-                    }}
-                    inputProps={{
                       min: "0", max: "100", step: "1" 
                     }}
+                    onChange={this.changePorcent(card.credit_card_number)}
                   />
                   <ListItemIcon>
                     <Checkbox
                       edge="end"
                       color="primary"
+                      onChange={this.add(card.credit_card_number)}
                     />
                   </ListItemIcon>
                 </ListItem>
@@ -114,7 +154,7 @@ export default class CheckPayment extends React.Component {
             </List>
           </CardContent>
           <CardActions>
-              <Button size="small" color="primary" component={Link} to="/User_page/account">
+              <Button size="small" color="primary" onClick={() => {this.props.buy(this.state.used)}}>
                   Buy
               </Button>
               <Button size="small" color="primary" onClick={() => {this.props.callback()}}>
@@ -148,6 +188,7 @@ export default class CheckPayment extends React.Component {
               </Button>
           </CardActions>
         </Card>
+        <h2>Total: {this.props.total}</h2>
         <button className="close" onClick={() => {this.props.callback()}}> X </button>
       </div>
     )
@@ -155,6 +196,7 @@ export default class CheckPayment extends React.Component {
 
 
   render(){      
+    console.log(this.state)
       return (
         <div>
           {this.bringCards()}

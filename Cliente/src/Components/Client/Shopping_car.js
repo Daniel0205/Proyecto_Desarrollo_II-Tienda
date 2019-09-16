@@ -18,7 +18,8 @@ class Shopping_car extends React.Component {
     super(props)
 
     this.state={
-      activate: false
+      activate: false,
+      total:0
     }
 
     this.update= this.update.bind(this);
@@ -28,6 +29,24 @@ class Shopping_car extends React.Component {
     this.payment= this.payment.bind(this);
     this.closePayment= this.closePayment.bind(this);
     this.act = this.act.bind(this)
+    this.calculateTotal = this.calculateTotal.bind(this); 
+    this.doBuy = this.doBuy.bind(this); 
+  }
+
+  componentDidMount(){
+    this.calculateTotal()
+  }
+
+  doBuy(e){
+    console.log(e)
+  }
+
+  calculateTotal(){
+    var total = 0
+    for (let i = 0; i < this.props.car.length; i++) {
+      total+=this.props.car[i].price*this.props.car[i].quantity
+    }
+    this.setState({total:total})
   }
 
   buy(){
@@ -81,6 +100,7 @@ class Shopping_car extends React.Component {
     aux[event.target.name].quantity=parseInt(event.target.value);
     
     this.props.updateCar(aux)
+    this.calculateTotal()
     
   }
 
@@ -90,13 +110,14 @@ class Shopping_car extends React.Component {
     aux.splice(event.target.name,1)
     console.log(aux)
     this.props.updateCar(aux)
+    this.calculateTotal()
     this.forceUpdate();
   } 
 
   act(){
     if(this.state.activate){
       return(
-        <CheckPayment callback={this.closePayment.bind(this)}/>
+        <CheckPayment callback={this.closePayment.bind(this)} total={this.state.total+this.state.total*0.16} buy={this.doBuy} />
       )
     }
   }
@@ -139,6 +160,8 @@ class Shopping_car extends React.Component {
                       </IconButton>
                     </Card>  
                     )}
+            <h2>Subtotal: {this.state.total}</h2>
+            <h1>Total: {this.state.total+this.state.total*0.16}</h1>
             <Button key="boton" onClick={this.buy}>To buy</Button>
             {this.act()}
         </div>
@@ -148,7 +171,7 @@ class Shopping_car extends React.Component {
   }
 
   render(){ 
-    console.log(this.props)     
+    console.log(this.state)     
     return (
     <div>
       {this.showCar()}
