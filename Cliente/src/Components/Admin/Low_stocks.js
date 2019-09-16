@@ -77,7 +77,7 @@ class Low_stocks extends React.Component {
 
 
 
-  //Funcion para filtrar por rangos las fechas a mostar
+  //Funcion que retorna la consulta en un arreglo
   DateRanges() {
 
     let result = [];
@@ -89,7 +89,6 @@ class Low_stocks extends React.Component {
   }
 
   handleDateChange(number) {
-
     (number.target.value === "") ?
       this.setState({ quantity: 0 }) :
       this.setState({ quantity: number.target.value })
@@ -127,6 +126,7 @@ class Low_stocks extends React.Component {
 
         <TextField
           value={this.state.quantity}
+          label="Max quantity"
           id="outlined-dense"
           defaultValue="0"
           margin="dense"

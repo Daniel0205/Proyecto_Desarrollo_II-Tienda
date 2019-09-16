@@ -92,11 +92,11 @@ export const secondaryListItemsAdmin = (
       <ListItemText primary="Low stocks" />
     </ListItem>
 
-    <ListItem button>
+    <ListItem button component={Link} to="/Admin_page/sales">
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Inventories" />
+      <ListItemText primary="Sales" />
     </ListItem>
   </div>
 );
