@@ -26,6 +26,7 @@ import { Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import EmailIcon from '@material-ui/icons/Email';
 
+import Borrar from '../Borrar'; //borrar
 
 
 const drawerWidth = 240;
@@ -188,6 +189,10 @@ export default function Admin_page(props) {
         <Route path="/Admin_page/trending" component={Trending} />
         <Route path="/Admin_page/low_stocks" component={Low_stocks} />
         <Route path="/Admin_page/sales" component={Sales} />
+
+
+        <Route path="/Admin_page/borrar" component={Borrar} />
+        
       </main>
     </div>);
 

@@ -23,11 +23,13 @@ import { Link } from 'react-router-dom'
 
 export const mainListItemsAdmin = (
   <div>
-    <ListItem button >
-        <ListItemIcon>
+    <ListItem button
+      //Componente temporal para mostrar plantilla
+      component={Link} to="/Admin_page/borrar">
+      <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
-      <ListItemText primary="Dashboard" />
+      <ListItemText primary="Borrar" />
     </ListItem>
 
     <ListItem button component={Link} to="/Admin_page/products">
