@@ -5,6 +5,7 @@ import AddCommentRoundedIcon from '@material-ui/icons/AddCommentRounded';
 import AddShoppingCartRoundedIcon from '@material-ui/icons/AddShoppingCartRounded';
 import "./Details.css";
 import Comments from './Comments';
+import AddComment from './AddComment';
 
 const styles = 
 {
@@ -33,6 +34,34 @@ const styles =
 
 export default class Details extends React.Component {
 
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+          addcoment:false
+        }
+
+        this.checkAddComment = this.checkAddComment.bind(this)
+      }
+
+    closeAddComment(){
+        this.setState({
+            addcoment: false
+        })
+    }
+
+    checkAddComment(){
+        if(this.state.addcoment){
+            return(<AddComment closing={this.closeAddComment.bind(this)} st="Coment2" isbn={this.props.inf.isbn}/>)
+        }
+    }
+
+    handleAddComment(){
+        this.setState({   
+            addcoment: true,                            
+        }) 
+    }
+
     render(){  
         
         let path = "http://localhost:3001/"+ this.props.inf.imagepath;
@@ -48,7 +77,7 @@ export default class Details extends React.Component {
                             <IconButton aria-label="Add to cart">
                                 <AddShoppingCartRoundedIcon />
                             </IconButton>
-                            <IconButton aria-label="Add a comment">
+                            <IconButton aria-label="Add a comment" onClick={() => {this.handleAddComment()}}>
                                 <AddCommentRoundedIcon />
                             </IconButton>
                         </div>
@@ -104,11 +133,9 @@ export default class Details extends React.Component {
                         <Comments isbn={this.props.inf.isbn}/>
                     </div>
                 </CardContent>
-
-                
-
             </Card>
             <button className="close" onClick={() => {this.props.callback()}} > X </button>
+            {this.checkAddComment()}
         </div>
         );
       }

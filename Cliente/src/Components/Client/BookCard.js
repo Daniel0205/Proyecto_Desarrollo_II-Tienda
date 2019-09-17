@@ -27,6 +27,7 @@ export default function BookCard(props) {
   let path = "http://localhost:3001/"+ props.image;
 
   return (
+    <div> 
     <Card className={classes.card}>
       <CardActionArea onClick={() => {props.callback(props.isbn)}}>
         <CardMedia
@@ -50,7 +51,7 @@ export default function BookCard(props) {
         <IconButton aria-label="Add to cart" onClick={()=>props.car(props.isbn)}>
           <AddShoppingCartRoundedIcon />
         </IconButton>
-        <IconButton aria-label="Add a comment">
+        <IconButton aria-label="Add a comment"  onClick={()=>props.addComent(props.isbn)}>
           <AddCommentRoundedIcon />
         </IconButton>
         <Button size="small" onClick={() => {props.callback(props.isbn)}} color="primary" className={classes.button}>
@@ -58,5 +59,7 @@ export default function BookCard(props) {
         </Button>
       </CardActions>
     </Card>
+    </div>
+
   );
 }

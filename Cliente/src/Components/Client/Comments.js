@@ -67,7 +67,6 @@ export default class Comments extends React.Component {
                         <Divider variant="middle" />
                     </div>
                 ))}
- 
             </div>
         );
     }
