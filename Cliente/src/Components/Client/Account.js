@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Input } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import {getUsername} from '../../store/username/reducer'
 import {connect} from 'react-redux'
 import updateUsername from '../../store/username/action'
@@ -12,6 +12,9 @@ import IconButton from '@material-ui/core/IconButton';
 import TextField from "@material-ui/core/TextField";
 import MenuItem from '@material-ui/core/MenuItem';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import DateFnsUtils from '@date-io/date-fns';
+import format from "date-fns/format";
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 const type = [
   {
@@ -24,6 +27,40 @@ const type = [
   }
 ];
 
+const IDType = [
+  {
+    value: 'CC',
+    label: "Citizen's ID",
+  },
+  {
+    value: 'TI',
+    label: 'Identity card',
+  },
+  {
+    value: 'RC',
+    label: 'Civil registration',
+  },
+  {
+    value: 'TP',
+    label: 'Passport',
+  },
+];
+
+const Gender = [
+  {
+    value: 'F',
+    label: 'Female',
+  },
+  {
+    value: 'M',
+    label: 'Male',
+  },
+  {
+    value: 'N',
+    label: 'Undefined',
+  },
+];
+
 class Account extends React.Component {
 
   constructor(props) {
@@ -33,7 +70,10 @@ class Account extends React.Component {
       username:this.props.username,
       first_name: '',
       last_name: '',
-      date_birth: '',
+      date_birth: '2015-05-05',
+      type_id: 'CC',
+      id: '',
+      gender: 'N',
       password: '',
       phone_number: '',
       address: '',
@@ -48,9 +88,10 @@ class Account extends React.Component {
     this.consultClient = this.consultClient.bind(this);
     this.deleteClient = this.deleteClient.bind(this);
     this.cambioPagina = this.cambioPagina.bind(this);
-    this.actualizarDatos = this.actualizarDatos.bind(this);
     this.deleteCard = this.deleteCard.bind(this);
     this.addCard = this.addCard.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this)
+
     this.consultClient()
   }
 
@@ -74,6 +115,13 @@ class Account extends React.Component {
         }
       }
       )
+  }
+
+
+
+  handleDateChange(date) {
+    this.setState({date_birth:format(date, "yyyy-MM-dd")})
+
   }
 
 
@@ -144,6 +192,7 @@ class Account extends React.Component {
       })
   } 
 
+
   addCard(){
 
     fetch("/Card/add", {
@@ -169,68 +218,175 @@ class Account extends React.Component {
           this.setState({cards:aux,newCard:{credit_card_number:'',type:'C',entity:''}})
         }
       })
-  } 
-
-
-  actualizarDatos(e) {
-
-
-    switch (e.target.id) {
-      case 'first_name':
-        this.setState({
-          first_name: e.target.value
-        })
-        break;
-      case 'last_name':
-        this.setState({
-          last_name: e.target.value
-        })
-        break;
-      case 'date_birth':
-        this.setState({
-          date_birth: e.target.value
-        })
-        break;
-      case 'type_Id':
-        this.setState({
-          type_Id: e.target.value
-        })
-        break;
-      case 'id':
-        this.setState({
-          id: e.target.value
-        })
-        break;
-      case 'password':
-        this.setState({
-          password: e.target.value
-        })
-        break;
-      case 'phone_number':
-        this.setState({
-          phone_number: e.target.value
-        })
-        break;
-      case 'address':
-        this.setState({
-          address: e.target.value
-        })
-        break;
-      case 'email':
-        this.setState({
-          email: e.target.value
-        })
-        break;
-      case 'State':
-        this.setState({
-          State: e.target.value
-        })
-        break;
-
-      default:
-        break;
-    }
   }
+  
+  getFields(){
+    return (
+      <div>
+
+              {/*--First name--*/}
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                disabled={this.state.tipo==="consult"}
+                label="First name"
+                value={this.state.first_name}
+                id="firstname"
+                name="first_name"
+                onChange={(x) =>  this.setState({first_name: x.target.value})}
+              />
+
+              {/*--Last name--*/}
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="Last name"
+                disabled={this.state.tipo==="consult"}
+                value={this.state.last_name}
+                id="lastname"
+                name='last_name'
+                onChange={(x) =>  this.setState({last_name: x.target.value})}
+              />
+
+              {/*--Password--*/}
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="Password"
+                disabled={this.state.tipo==="consult"}
+                value={this.state.password}
+                id="password"
+                name="password"
+                type="password"
+                onChange={(x) =>  this.setState({password: x.target.value})}
+              />
+
+              {/*--Phone number--*/}
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="Phone number"
+                disabled={this.state.tipo==="consult"}
+                value={this.state.phone_number}
+                id="phonenumber"
+                name='phone_number'
+                onChange={(x) =>  this.setState({phone_number: x.target.value})}
+              />
+
+              {/*--Address--*/}
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="Address"
+                disabled={this.state.tipo==="consult"}
+                value={this.state.address}
+                id="address"
+                name='address'
+                onChange={(x) =>  this.setState({address: x.target.value})}
+              />
+
+              {/*--Type id--*/}
+              <TextField
+                id="outlined-select-currency"
+                select
+                fullWidth
+                label="ID type"
+                disabled={this.state.tipo==="consult"}
+                value={this.state.type_id}
+                onChange={(x) =>  this.setState({type_id: x.target.value})}
+                margin="normal"
+                variant="outlined"
+              >
+                {IDType.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+
+              {/*--Identification number--*/}
+              <TextField
+                required
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                disabled={this.state.tipo==="consult"}
+                label="Identification"
+                value={this.state.id}
+                id="identification"
+                name='id'
+                onChange={(x) =>  this.setState({id: x.target.value})}
+              />
+
+              {/*--E-mail--*/}
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="E-mail"
+                value={this.state.email}
+                disabled={this.state.tipo==="consult"}
+                id="outlined-email-input"
+                type="email"
+                name="email"
+                onChange={(x) =>  this.setState({email: x.target.value})}
+              //error
+              //id="outlined-error" // para resaltar error
+              />
+
+              {/*--Date birth--*/}
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  fullWidth
+                  margin="normal"
+                  id="date-picker-dialog"
+                  label="Date birth"
+                  format="yyyy-MM-dd"
+                  disabled={this.state.tipo==="consult"}
+                  value={this.state.date_birth}
+                  onChange={this.handleDateChange}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+
+              {/*--Gender--*/}
+              <TextField
+                fullWidth
+                id="gender"
+                select
+                label="Gender"
+                value={this.state.gender}
+                disabled={this.state.tipo==="consult"}
+                onChange={(x) =>  this.setState({gender: x.target.value})}
+                margin="normal"
+                variant="outlined"
+              >
+                {Gender.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+      </div>
+
+
+    )
+  }
+
+
   cambioPagina(e) {
 
     switch (this.state.tipo) {
@@ -238,30 +394,10 @@ class Account extends React.Component {
       case "modify":
         return (
           <div>
+            <hr/>
             <h1>Edit your information:</h1>
-            <label >First name:</label>
-            <Input id='first_name' type="text" placeholder='first_name*' onChange={this.actualizarDatos} value={this.state.first_name}></Input><br />
-
-            <label >Last name:</label>
-            <Input id='last_name' type="text" placeholder='last_name*' onChange={this.actualizarDatos} value={this.state.last_name}></Input><br />
-
-            <label >Birthdate:</label>
-            <Input id='date_birth' type="text" placeholder='date_birth*' onChange={this.actualizarDatos} value={this.state.date_birth}></Input><br />
-
-            <label>Phone number:</label>
-            <Input id='phone_number' type="text" placeholder='phone_number*' onChange={this.actualizarDatos} value={this.state.phone_number}></Input><br />
-
-            <label >Address:</label>
-            <Input id='address' type="text" placeholder='address*' onChange={this.actualizarDatos} value={this.state.address}></Input><br />
-
-            <label>E-mail:</label>
-            <Input id='email' type="text" placeholder='email*' onChange={this.actualizarDatos} value={this.state.email}></Input><br />
-
-            <label >Password:</label>
-            <Input id='password' type="password" placeholder='password*' onChange={this.actualizarDatos} value={this.state.password}></Input><br />
-
-            <Button id='modify' onClick={this.modCliente} >Edit</Button>
-
+              {this.getFields()}
+              <Button id='modify' onClick={this.modCliente} >Edit</Button>
           </div>
         );
 
@@ -270,30 +406,8 @@ class Account extends React.Component {
 
         return (
           <div>
-            <label>Username:</label>
-            <Input id='username' type="text" disabled placeholder='username*' onChange={e => this.setState({ username: e.target.value })} value={this.state.username}></Input><br />
-
-            <label >First name:</label>
-            <Input id='first_name' type="text" disabled placeholder='first_name*' onChange={this.actualizarDatos} value={this.state.first_name}></Input><br />
-
-            <label >Last name:</label>
-            <Input id='last_name' type="text" disabled placeholder='last_name*' onChange={this.actualizarDatos} value={this.state.last_name}></Input><br />
-
-            <label >Birthdate:</label>
-            <Input id='date_birth' type="text" disabled placeholder='date_birth*' onChange={this.actualizarDatos} value={this.state.date_birth}></Input><br />
-
-            <label >Phone number:</label>
-            <Input id='phone_number' type="text" disabled placeholder='phone_number*' onChange={this.actualizarDatos} value={this.state.phone_number}></Input><br />
-
-            <label >Address:</label>
-            <Input id='address' type="text" disabled placeholder='address*' onChange={this.actualizarDatos} value={this.state.address}></Input><br />
-
-            <label >E-mail:</label>
-            <Input id='email' type="text" disabled placeholder='email*' onChange={this.actualizarDatos} value={this.state.email}></Input><br />
-
-            <label >Password:</label>
-            <Input id='password' type="password" disabled placeholder='password*' onChange={this.actualizarDatos} value={this.state.password}></Input><br />
-
+            <hr/>
+            {this.getFields()}
           </div>
         );
 
@@ -301,6 +415,7 @@ class Account extends React.Component {
 
         return (
           <div>
+            <hr/>
             <Button id='delete' onClick={this.deleteClient} >Confirm</Button>
           </div>
         );
@@ -309,6 +424,8 @@ class Account extends React.Component {
 
           return (
             <div>
+              <hr/>
+
               {this.state.cards.map((x,i) => 
                 <Card key={i}>
                 <CardContent>
@@ -378,12 +495,12 @@ class Account extends React.Component {
   render() {
     console.log(this.state)
     return (
-      <div className='botons'>
-
-        <Button onClick={() => this.setState({ tipo: "modify" })}>Modify information</Button><br />
-        <Button onClick={() => this.setState({ tipo: "consult" })}>Consult information</Button><br />
-        <Button onClick={() => this.setState({ tipo: "delete" })}>Delete profile</Button><br />
-        <Button onClick={() => this.setState({ tipo: "card" })}>Add payment </Button><br />
+      <div className='botns'>
+        <h1>Account</h1>
+        <Button onClick={() => this.setState({ tipo: "modify" })}>MODIFY INFORMATION</Button><br />
+        <Button onClick={() => this.setState({ tipo: "consult" })}>CONSULT INFORMATION</Button><br />
+        <Button onClick={() => this.setState({ tipo: "delete" })}>DELETE PROFILE</Button><br />
+        <Button onClick={() => this.setState({ tipo: "card" })}>ADD PAYMENT</Button><br />
         {this.cambioPagina()}
       </div>
     );

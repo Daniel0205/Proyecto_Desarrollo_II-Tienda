@@ -2,7 +2,7 @@ import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import {Input,Button} from '@material-ui/core';
+import {Button} from '@material-ui/core';
 import {connect} from 'react-redux';
 import {getCar} from '../../store/shopping_car/reducer';
 import {getUsername} from '../../store/username/reducer';
@@ -10,7 +10,7 @@ import updateCar from '../../store/shopping_car/action';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import CheckPayment from './CheckPayment';
-
+import TextField from "@material-ui/core/TextField";
 
 
 class Shopping_car extends React.Component {
@@ -184,7 +184,18 @@ class Shopping_car extends React.Component {
                         <Typography>
                           Quantity:
                         </Typography>
-                        <Input type="number" name={i.toString()} onChange={this.update} inputProps={{min:"1",max:x.limit}}   defaultValue={x.quantity}></Input>
+                        <TextField
+                          name={i.toString()}  
+                          variant="outlined"
+                          margin="normal"
+                          required
+                          fullWidth
+                          type="number"
+                          inputProps={{min:"1",max:x.limit}}  
+                          label="Quantity"
+                          onChange={this.update} 
+                          defaultValue={x.quantity}
+                        />
                         
                       </CardContent>
                       <IconButton color="inherit" onClick={this.delete}>

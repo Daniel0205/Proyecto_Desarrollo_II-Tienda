@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Input, Select } from '@material-ui/core';
+import { Button, Select } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-
+import TextField from "@material-ui/core/TextField";
 
 
 export default class Categories extends React.Component {
@@ -170,14 +170,26 @@ export default class Categories extends React.Component {
           return (
             <div className="actualizar-categoria">
               <form>
-                <h3>Category name:</h3>
-                <Input value={this.state.name} onChange={this.handleName} disabled /><br />
-
-                <h3>Description of the category</h3>
-                <Input value={this.state.description}
+                <TextField
+                required
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                label="Category name"
+                disabled
+                value={this.state.name}
+                onChange={this.handleName} 
+                />
+                <TextField
+                  required
+                  fullWidth
+                  variant="outlined"
+                  margin="normal"
+                  label="Description of the category"
+                  
+                  value={this.state.description}
                   onChange={this.handleDescription}
-                  placeholder='Description of the category' /><br />
-
+                />
                 <Button onClick={this.actualizar}>Update</Button>
                 <Button onClick={() => this.setState({ type: "Search" })}>Cancel</Button>
               </form>

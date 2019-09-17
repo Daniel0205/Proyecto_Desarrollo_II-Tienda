@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, Input } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import {getUsername} from '../../store/username/reducer'
 import {connect} from 'react-redux'
+import TextField from "@material-ui/core/TextField";
 
 
 class Contact_us extends React.Component {
@@ -54,9 +55,27 @@ mensaje(){
   render(){
     return (<div>
       <h1>Contact_us</h1>
-      <Input id='reason' value={this.state.matter} onChange={(x)=>this.setState({matter:x.currentTarget.value})}type="text" placeholder='matter*' fullWidth></Input><br />
-            <Input id='msm' value={this.state.description} onChange={(x)=>this.setState({description:x.currentTarget.value})}type="text" placeholder='message*' fullWidth></Input><br />
-            <Button id='send' fullWidth onClick={this.mensaje} color="primary">Send</Button>
+          <TextField
+              id='reason' 
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              onChange={(x)=>this.setState({matter:x.currentTarget.value})}
+              value={this.state.matter}
+              label="Matter"
+            />
+          <TextField
+              id='msm' 
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              onChange={(x)=>this.setState({description:x.currentTarget.value})}
+              value={this.state.description}
+              label="Message"
+            />
+          <Button id='send' fullWidth onClick={this.mensaje} color="primary">Send</Button>
       </div>);
   } 
 }
