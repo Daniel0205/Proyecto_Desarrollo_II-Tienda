@@ -16,33 +16,36 @@ export default class Comments extends React.Component {
         super(props)
     
         this.state = {
-          comments:[{
-            username: 'dan',
-            isbn: 9788422626114,
-            comment: 'No me gusto',
-            score: 2
-          },{
-            username: 'jonpe',
-            isbn: 9788431326968,
-            comment:'Me gusto',
-            score:5
-          },{
-            username: 'helat',
-            isbn: 9789707290624,
-            comment: 'Me gusto',
-            score: 4
-          }]
+          comments:[]
         }
 
-        alert(props.isbn);
-    
+        this.getComments();
       }
 
-    render(){
+    getComments(){
 
+      console.log(this.props.isbn);
+
+      fetch ("/Critics/get", {
+        method: 'POST',
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({isbn:this.props.isbn})
+      })
+      .then(res=>res.json())
+      .then(res => {
+        this.setState({comments:res})}
+      )
+
+    }
+
+    render(){
+      console.log(this.state);
         return(
             <div>
-                <Grid container justify="left" alignItems="center">
+                <Grid container justify="flex-start" alignItems="center">
                     <CommentIcon color="action" fontSize="large"/>
                     <Typography variant="h6" gutterBottom>
                            Comments 
@@ -51,8 +54,8 @@ export default class Comments extends React.Component {
 
                 {this.state.comments.map( (comt,i ) => (
                     <div style={styles.boxes} key={i}>
-                        <Grid container justify="left" alignItems="center">
-                            <AccountCircleIcon color="action" fontSize="medium"/>
+                        <Grid container justify='flex-start' alignItems="center">
+                            <AccountCircleIcon color="action" fontSize="large"/>
                             <Typography variant="body1" gutterBottom>
                                 {comt.username} 
                             </Typography>
@@ -64,11 +67,7 @@ export default class Comments extends React.Component {
                         <Divider variant="middle" />
                     </div>
                 ))}
-
-                
-
-                
-                
+ 
             </div>
         );
     }

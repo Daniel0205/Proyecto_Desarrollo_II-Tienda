@@ -64,34 +64,34 @@ export default class Details extends React.Component {
                         <Typography variant="h6" gutterBottom>
                             Sypnosis
                         </Typography>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             {this.props.inf.synopsis}
                         </Typography>
                         <Typography variant="h6" gutterBottom>
                             Details 
                         </Typography>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             ISBN: {this.props.inf.isbn}
                         </Typography> <br/>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             Subcategory: {this.props.inf.name_subcategory}
                         </Typography> <br/>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             Year of publication: {this.props.inf.publication_year}
                         </Typography> <br/>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             Author: {this.props.inf.author}
                         </Typography> <br/>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             Number of pages: {this.props.inf.number_of_pages}
                         </Typography> <br/>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             Edition: {this.props.inf.edition}
                         </Typography> <br/>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             Editorial: {this.props.inf.editorial}
                         </Typography> <br/>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             Cover: {this.props.inf.cover_type}
                         </Typography> <br/>
                     </div>   
