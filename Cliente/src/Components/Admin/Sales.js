@@ -42,6 +42,7 @@ export default class Sales extends React.Component {
         this.onSelect = this.onSelect.bind(this);
     }
 
+    
     showResult() {
         fetch("/Report/sales", {
             method: "POST",

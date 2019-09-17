@@ -15,23 +15,22 @@ const DistributionPoint = require('../models/DistributionPoint');
 
 
 //consulta todas los usuarios en la base de datos
-router.get("/consult", (req, res) => {
+router.post("/consult", (req, res) => {
+
+    let initDate = req.body.initDate;
+    let finalDate = req.body.finalDate;
 
     Bill.findAll(
         {
-            // where:{
-            //     date: {
-            //         $between: ['2018-07-01', '2019-10-02']
-            //         // $lt: '2019-10-01',
-            //         // $gt: '2017-07-01'
-            //     }
-            // },
+            where: {
+                date: {
+                    [Op.lte]: finalDate,
+                    [Op.gte]: initDate
+                }
+            },
             include: [{
-                model: BillBook,
-                include: [{
-                    model: Book,
-                    attributes: ['title']
-                }]
+                model: Book,
+                attributes: ['title', 'author']
             }]
         }
     )

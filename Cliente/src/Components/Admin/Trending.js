@@ -7,7 +7,12 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 
-var data;
+
+const Products = [{
+    Item: "-", Isbn: "-", Date: "-", Quantity: "-",
+    Title: "-", Author: "-", Distribution_point: "-"
+}]
+
 
 export default class Trending extends React.Component {
     constructor(props) {
@@ -16,27 +21,34 @@ export default class Trending extends React.Component {
             query: [],
             table: [],
             chartData: [],
-            initDate: new Date(),
+            initDate: new Date('2018-01-02'),
             finalDate: new Date()
         }
 
-        this.getpro = this.getpro.bind(this);
+        this.showReport = this.showReport.bind(this);
         this.resJsonToTable = this.resJsonToTable.bind(this);
         this.resJsonToChart = this.resJsonToChart.bind(this);
         this.handleInitDateChange = this.handleInitDateChange.bind(this);
         this.handleFinalDateChange = this.handleFinalDateChange.bind(this);
-        this.filterDateRanges = this.filterDateRanges.bind(this);
     }
 
-    getpro() {
+
+    showReport() {
         fetch("/Report/consult", {
-            method: "GET",
+            method: "POST",
+            headers: {
+                Accept: "application/json, text/plain, */*",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                initDate: this.state.initDate,
+                finalDate: this.state.finalDate
+            })
         })
             .then(res => res.json())
-            .then(res => {
-                this.setState({ query: res },
-                    () => this.resJsonToTable());
-            });
+            .then(res => { this.setState({ query: res }) })
+            .then(() => { this.resJsonToTable() })
+            .then(() => { this.resJsonToChart() });
     }
 
 
@@ -44,29 +56,44 @@ export default class Trending extends React.Component {
     que llega desde el sevidor */
     resJsonToTable() {
 
-        let json = this.filterDateRanges();
+        let json = this.state.query;
+        console.log(json)
         let table = [];
 
-        for (let index = 0; index < json.length; index++) {
+        for (let i = 0; i < json.length; i++) {
 
-            let newjson = {};
-            newjson.Item = index;
-            newjson.Bill = json[index]['id_bill'];
-            newjson.Date = json[index]['date'];
-            newjson.Quantity = json[index]['bill_books'][0]['quantity'];
-            newjson.Title = json[index]['bill_books'][0]['book']['title'];
-            table.push(newjson);
+            if (json[i]['books'].length > 0) {
+                for (let j = 0; j < json[i]['books'].length; j++) {
+
+                    let newjson = {};
+
+                    newjson.Item = '';
+                    newjson.Isbn = json[i]['books'][j]['bill_book']['isbn'];
+                    newjson.Date = json[i]['date'];
+                    newjson.Quantity = json[i]['books'][j]['bill_book']['quantity'];
+                    newjson.Title = json[i]['books'][j]['title'];
+                    newjson.Author = json[i]['books'][j]['author'];
+                    newjson.Distribution_point = json[i]['books'][j]['bill_book']['name_dp'];
+
+                    table.push(newjson);
+                }
+            }
         }
 
+        //ordenado desc. por cantidad
+        table = table.sort((a, b) => b.Quantity - a.Quantity);
+
+        for (let index = 0; index < table.length; index++)
+            table[index].Item = index;
+
         this.setState({ table: { Products: table } });
-        this.resJsonToChart();
     }
 
 
     /*Funcion para actualiazar la grafica con los datos
     que llega desde el sevidor */
     resJsonToChart() {
-        data = {
+        let data = {
             labels: [],
             datasets: [{
                 label: "Sales",
@@ -76,10 +103,10 @@ export default class Trending extends React.Component {
             }]
         }
         //Agregar datos recibidos del servidor
-        let json = this.filterDateRanges();
+        let json = this.state.table.Products;
         for (let index = 0; index < json.length; index++) {
             data.labels[index] = "item" + index.toString();
-            data.datasets[0]['data'][index] = json[index]['bill_books'][0]['quantity'];
+            data.datasets[0]['data'][index] = json[index].Quantity;
         }
         this.setState({ chartData: data });
     }
@@ -90,76 +117,10 @@ export default class Trending extends React.Component {
     handleFinalDateChange(date) { this.setState({ finalDate: date }) }
 
 
-    //Funcion para filtrar por rangos las fechas a mostar
-    filterDateRanges() {
-
-        let filteredQuery = [];
-        let result = [];
-
-        //final date
-        let fDay = parseInt(this.state.finalDate.toString().substring(8, 10));
-        let fMonth = this.state.finalDate.getMonth() + 1;
-        let fYear = this.state.finalDate.getFullYear();
-
-        for (let index = 0; index < this.state.query.length; index++) {
-
-            if (parseInt((this.state.query[index]['date']).substring(0, 4), 10) < fYear) {
-                filteredQuery.push(this.state.query[index]);
-            }
-            else if (parseInt((this.state.query[index]['date']).substring(0, 4), 10) === fYear) {
-
-                if (parseInt((this.state.query[index]['date']).substring(5, 7), 10) < fMonth) {
-                    filteredQuery.push(this.state.query[index]);
-                }
-                else if (parseInt((this.state.query[index]['date']).substring(5, 7), 10) === fMonth) {
-
-                    if (parseInt((this.state.query[index]['date']).substring(8, 10), 10) <= fDay) {
-                        filteredQuery.push(this.state.query[index]);
-                    }
-                }
-            }
-
-        }
-
-        //initial date
-        let iDay = parseInt(this.state.initDate.toString().substring(8, 10));
-        let iMonth = this.state.initDate.getMonth() + 1;
-        let iYear = this.state.initDate.getFullYear();
-
-        for (let index = 0; index < filteredQuery.length; index++) {
-
-            if (parseInt((filteredQuery[index]['date']).substring(0, 4), 10) > iYear) {
-                result.push(filteredQuery[index]);
-            }
-            else if (parseInt((filteredQuery[index]['date']).substring(0, 4), 10) === iYear) {
-
-                if (parseInt((filteredQuery[index]['date']).substring(5, 7), 10) > iMonth) {
-                    result.push(filteredQuery[index]);
-                }
-                else if (parseInt((filteredQuery[index]['date']).substring(5, 7), 10) === iMonth) {
-
-                    if (parseInt((filteredQuery[index]['date']).substring(8, 10), 10) >= iDay) {
-                        result.push(filteredQuery[index]);
-                    }
-                }
-            }
-
-        }
-        //ordenado desc. por cantidad
-        result = result.sort((a, b) => b.bill_books[0].quantity - a.bill_books[0].quantity);
-        return result;
-    }
-
-
     componentDidMount() {
-        this.setState({
-            table:
-            {
-                Products:
-                    [{ Item: "-", Bill: "-", Date: "-", Quantity: "-", Title: "-" }]
-            }
-        });
+        this.setState({ table: { Products } });
     }
+
 
     render() {
 
@@ -203,7 +164,7 @@ export default class Trending extends React.Component {
                 <br />
                 <Button variant="contained" color="primary" onClick={() => {
                     this.setState({ table: "" });
-                    this.getpro();
+                    this.showReport();
                 }}>
                     Show Report
                     </Button>
