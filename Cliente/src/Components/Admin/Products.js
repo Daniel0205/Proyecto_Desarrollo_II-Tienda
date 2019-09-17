@@ -485,16 +485,15 @@ export default class Products extends React.Component {
             </TextField>
             <p>Select the quantity :</p>
             <TextField
-              select
-              fullWidth
+              variant="outlined"
+              margin="normal"
               required
+              fullWidth
               type="number"
               label="Quatity"
               inputProps={{ min:"1",max:'1000' }}
               onChange={(x)=>this.setState({quantity:x.target.value})} 
               value={this.state.quantity}
-              margin="normal"
-              variant="outlined"
             ></TextField>
            
             <Button  onClick={this.addInventory}>add product</Button>
