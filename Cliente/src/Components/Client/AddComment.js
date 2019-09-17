@@ -2,8 +2,11 @@ import React from 'react';
 import {Card, CardContent, CardHeader, CardActions, TextField, Button,Typography} from '@material-ui/core';
 import "./AddComment.css";
 import Rating from '@material-ui/lab/Rating';
+import {getUsername} from '../../store/username/reducer'
+import {connect} from 'react-redux'
+import updateUsername from '../../store/username/action'
 
-export default class AddComment extends React.Component {
+class AddComment extends React.Component {
 
     
     constructor(props) {
@@ -11,27 +14,52 @@ export default class AddComment extends React.Component {
     
         this.state = {
           score:1,
-          comment: ""
+          comment: "",
+          isbn: this.props.isbn,
+          username:this.props.username
         }
 
-        this.adjustStyle = this.adjustStyle.bind(this);
-
+        this.actualizarDatos = this.actualizarDatos.bind(this);
+        this.guardarComentarios = this.guardarComentarios.bind(this);
     }
 
-    adjustStyle(){
-
-        var tostyle = document.getElementById('mainBox');
-
-        if(this.props.dad === "fromBc"){
-            tostyle.body.className="Coment"
-        } else if(this.props.dad === "fromD"){
-            tostyle.body.className="Coment2"
+    actualizarDatos(e){
+        switch (e.target.id) {
+            case 'opinion':
+              this.setState({
+                comment: e.target.value
+              })
+              break;
+            default:
+              break;
         }
+    }
+
+    guardarComentarios(){
+        fetch("/Critics/insert",{
+            method: "POST",
+            headers: {
+              Accept: "application/json, text/plain, */*",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(this.state)
+          })
+          .then(res => res.json())
+          .then(res => {
+            if(res[0].bool){
+              console.log("Creo que funciona");
+              this.props.closing()
+            }
+            else{
+              console.log("Creo que no funciona");
+            }
+          })
     }
 
     render(){  
 
-        var st = this.props.st    
+        var st = this.props.st  
+        
         return (
         <div className={st}>
             
@@ -54,7 +82,7 @@ export default class AddComment extends React.Component {
                     </Typography>
                     <br/>
                     <TextField
-                        id="filled-full-width"
+                        id="opinion"
                         label="Comment"
                         style={{ margin: 8 }}
                         placeholder="Please! Add here your comment"
@@ -64,17 +92,13 @@ export default class AddComment extends React.Component {
                         InputLabelProps={{
                         shrink: true,
                         }}
+                        onChange={this.actualizarDatos}
                         value = {this.state.comment}
-                        onChange={(event, newValue) => {
-                            this.setState({
-                                comment: newValue
-                            })
-                          }}
                     />
                 </CardContent>
 
                 <CardActions>
-                    <Button size="small" color="primary" onClick={() => {console.log(this.state)}}>
+                    <Button size="small" color="primary" onClick={this.guardarComentarios}>
                         Aceptar
                     </Button>
                     <Button size="small" color="primary" onClick={() => {this.props.closing()}}>
@@ -88,3 +112,11 @@ export default class AddComment extends React.Component {
       }
   
     }
+
+    const mapStateToProps= state => {
+        return {
+          username: getUsername(state)
+        }
+      }
+      
+export default connect (mapStateToProps,{updateUsername})(AddComment);
