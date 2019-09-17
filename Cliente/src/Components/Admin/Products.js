@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Input, MenuItem} from '@material-ui/core'
+import {Button, MenuItem} from '@material-ui/core'
 import TextField from "@material-ui/core/TextField";
  
 
@@ -484,8 +484,19 @@ export default class Products extends React.Component {
               ))}
             </TextField>
             <p>Select the quantity :</p>
-            <Input name="quatity" type="number" placeholder='quatity' inputProps={{ min:"1",max:'1000' }}
-            onChange={(x)=>this.setState({quantity:x.target.value})}  value={this.state.quantity}/> <br/>
+            <TextField
+              select
+              fullWidth
+              required
+              type="number"
+              label="Quatity"
+              inputProps={{ min:"1",max:'1000' }}
+              onChange={(x)=>this.setState({quantity:x.target.value})} 
+              value={this.state.quantity}
+              margin="normal"
+              variant="outlined"
+            ></TextField>
+           
             <Button  onClick={this.addInventory}>add product</Button>
           </div>
         );
