@@ -6,6 +6,11 @@ import AddShoppingCartRoundedIcon from '@material-ui/icons/AddShoppingCartRounde
 import "./Details.css";
 import Comments from './Comments';
 import AddComment from './AddComment';
+import { Redirect } from 'react-router-dom'
+import {getType} from '../../store/type/reducer'
+import {connect} from 'react-redux'
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarMesssages from '../../SnackbarMesssages';
 
 const styles = 
 {
@@ -32,16 +37,21 @@ const styles =
     }
   };
 
-export default class Details extends React.Component {
+class Details extends React.Component {
 
     constructor(props) {
         super(props)
     
         this.state = {
-          addcoment:false
+          addcoment:false,
+          open:false,
+          msj:false
         }
 
         this.checkAddComment = this.checkAddComment.bind(this)
+        this.setRedirect = this.setRedirect.bind(this)
+        this.setRedirect2 = this.setRedirect2.bind(this)
+        this.renderRedirect =this.renderRedirect.bind(this)
       }
 
     closeAddComment(){
@@ -56,11 +66,35 @@ export default class Details extends React.Component {
         }
     }
 
+    setRedirect() {
+        if(this.props.type==="init"){
+            this.setState({msj:true})
+            setTimeout(() => this.setState({open:true}), 2000);
+        }
+
+    }
+    
+    setRedirect2() {
+        if(this.props.type==="init"){
+            this.setState({msj:true})
+            setTimeout(() => this.setState({open:true}), 2000);
+        }
+        else  this.handleAddComment()
+      }
+    
+    
+
     handleAddComment(){
         this.setState({   
             addcoment: true,                            
         }) 
     }
+
+    renderRedirect() {
+        if (this.state.open) {
+          return <Redirect to='/login' />
+        }
+      }
 
     render(){  
         
@@ -68,16 +102,27 @@ export default class Details extends React.Component {
 
         return (
         <div className="Details">
+            <Snackbar
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
+                open={this.state.msj}
+                autoHideDuration={3000} //opcional
+            >
+                <SnackbarMesssages
+                    variant="info"
+                    message="DEBES INGRESAR A TU CUENTA ANTES!" />
+            </Snackbar>
+
+            {this.renderRedirect()}
             <Card className="card">
                 <CardHeader
                     title= {this.props.inf.title}
                     subheader={this.props.inf.price}
                     action={
                         <div>
-                            <IconButton aria-label="Add to cart">
+                            <IconButton aria-label="Add to cart" onClick={this.setRedirect}>
                                 <AddShoppingCartRoundedIcon />
                             </IconButton>
-                            <IconButton aria-label="Add a comment" onClick={() => {this.handleAddComment()}}>
+                            <IconButton aria-label="Add a comment" onClick={this.setRedirect2}>
                                 <AddCommentRoundedIcon />
                             </IconButton>
                         </div>
@@ -140,4 +185,13 @@ export default class Details extends React.Component {
         );
       }
   
+}
+
+
+const mapStateToProps= state => {
+    return {
+        type: getType(state)
     }
+}
+    
+export default connect (mapStateToProps)(Details);
