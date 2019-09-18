@@ -11,8 +11,6 @@ const Critics = require('../models/Critics')
 //Insertar una critica sobre un libro
 router.post("/insert", function(req,res){
 
-    delete req.body.tipo
-
     Critics.create(req.body)
     .then(x => res.json([{bool:true}]))
     .catch(err => {

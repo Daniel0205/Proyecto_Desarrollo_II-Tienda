@@ -4,6 +4,8 @@ import {IconButton} from '@material-ui/core';
 import AddCommentRoundedIcon from '@material-ui/icons/AddCommentRounded';
 import AddShoppingCartRoundedIcon from '@material-ui/icons/AddShoppingCartRounded';
 import "./Details.css";
+import Comments from './Comments';
+import AddComment from './AddComment';
 
 const styles = 
 {
@@ -32,6 +34,34 @@ const styles =
 
 export default class Details extends React.Component {
 
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+          addcoment:false
+        }
+
+        this.checkAddComment = this.checkAddComment.bind(this)
+      }
+
+    closeAddComment(){
+        this.setState({
+            addcoment: false
+        })
+    }
+
+    checkAddComment(){
+        if(this.state.addcoment){
+            return(<AddComment closing={this.closeAddComment.bind(this)} st="Coment2" isbn={this.props.inf.isbn}/>)
+        }
+    }
+
+    handleAddComment(){
+        this.setState({   
+            addcoment: true,                            
+        }) 
+    }
+
     render(){  
         
         let path = "http://localhost:3001/"+ this.props.inf.imagepath;
@@ -47,7 +77,7 @@ export default class Details extends React.Component {
                             <IconButton aria-label="Add to cart">
                                 <AddShoppingCartRoundedIcon />
                             </IconButton>
-                            <IconButton aria-label="Add a comment">
+                            <IconButton aria-label="Add a comment" onClick={() => {this.handleAddComment()}}>
                                 <AddCommentRoundedIcon />
                             </IconButton>
                         </div>
@@ -63,34 +93,34 @@ export default class Details extends React.Component {
                         <Typography variant="h6" gutterBottom>
                             Sypnosis
                         </Typography>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             {this.props.inf.synopsis}
                         </Typography>
                         <Typography variant="h6" gutterBottom>
                             Details 
                         </Typography>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             ISBN: {this.props.inf.isbn}
                         </Typography> <br/>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             Subcategory: {this.props.inf.name_subcategory}
                         </Typography> <br/>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             Year of publication: {this.props.inf.publication_year}
                         </Typography> <br/>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             Author: {this.props.inf.author}
                         </Typography> <br/>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             Number of pages: {this.props.inf.number_of_pages}
                         </Typography> <br/>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             Edition: {this.props.inf.edition}
                         </Typography> <br/>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             Editorial: {this.props.inf.editorial}
                         </Typography> <br/>
-                        <Typography variant="p" gutterBottom>
+                        <Typography variant="body2" gutterBottom>
                             Cover: {this.props.inf.cover_type}
                         </Typography> <br/>
                     </div>   
@@ -100,14 +130,12 @@ export default class Details extends React.Component {
 
                 <CardContent>
                     <div>
-                        <h2>Holaaaa</h2>
+                        <Comments isbn={this.props.inf.isbn}/>
                     </div>
                 </CardContent>
-
-                
-
             </Card>
             <button className="close" onClick={() => {this.props.callback()}} > X </button>
+            {this.checkAddComment()}
         </div>
         );
       }

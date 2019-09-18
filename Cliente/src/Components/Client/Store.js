@@ -1,5 +1,6 @@
 import React from 'react';
 import BookCard from './BookCard';
+import AddComment from './AddComment';
 import Details from './Details';
 import {Grid} from "@material-ui/core";
 import {connect} from 'react-redux';
@@ -15,10 +16,15 @@ class Store extends React.Component {
     this.state = {
       selectedBook: false,
       itemNumber: null,
-      book:[]
+      book:[],
+      acomment: false,
+      isbn: null
     }
 
     this.handleViewMore=this.handleViewMore.bind(this);
+    this.handleAddComment=this.handleAddComment.bind(this);
+    this.closeAddComment=this.closeAddComment.bind(this);
+    this.viewAddComment=this.viewAddComment.bind(this);
     this.getBook=this.getBook.bind(this);
     this.getBook()
 
@@ -51,14 +57,17 @@ class Store extends React.Component {
         {this.state.book.map(prove => (
           <Grid item key={prove.isbn}>
             <BookCard isbn={prove.isbn} title={prove.title} callback={this.handleViewMore.bind(this)} 
-            car={this.addCar.bind(this)}  synopsis={prove.synopsis} image={prove.imagepath} price={prove.price}/>
+            car={this.addCar.bind(this)}  synopsis={prove.synopsis} image={prove.imagepath} price={prove.price} addComent={this.handleAddComment.bind(this)}/>
           </Grid>
         ))}
         </Grid>
         {this.viewDetails()}
+        {this.viewAddComment()}
       </div>
       );
   }
+
+  //-----------To manage Cart---------
 
   addCar(identifier){
     var aux = this.state.book.find(x=>{
@@ -81,7 +90,7 @@ class Store extends React.Component {
     
   }
 
-
+ //-----------To manage the details of a book---------
 
   handleViewMore (identifier) {
     console.log(identifier)
@@ -98,20 +107,41 @@ class Store extends React.Component {
 
   }
 
+  viewDetails () {
+    if(this.state.selectedBook){
+      return(
+        <Details callback={this.closeViewMore.bind(this)} inf={this.state.book[this.state.itemNumber]} />
+      )
+    }
+  }
+
   closeViewMore(){
     this.setState({
       selectedBook: false
     })
   }
 
-  viewDetails () {
-    console.log(this.state.itemNumber)
-    if(this.state.selectedBook){
-      return(
-        <Details callback={this.closeViewMore.bind(this)} inf={this.state.book[this.state.itemNumber]} />
-      )
-    }
+   //-----------To add a comment of a book---------
 
+  handleAddComment(identifier){
+    this.setState({   
+      acomment: true,
+      isbn: identifier                            
+    }) 
+  }
+
+  viewAddComment(){
+    if(this.state.acomment){
+      return(<AddComment closing={this.closeAddComment.bind(this)} st="Coment" isbn={this.state.isbn}/>)
+    }
+  }
+
+
+
+  closeAddComment(){
+    this.setState({   
+      acomment: false,                            
+    }) 
   }
 }
 
@@ -122,5 +152,7 @@ const mapStateToProps= state => {
     car: getCar(state),
   }
 }
+
+
 
 export default connect (mapStateToProps,{updateCar})(Store);
