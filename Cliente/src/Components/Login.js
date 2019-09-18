@@ -67,8 +67,10 @@ const SignInSide = ({ updateUsername, updateType,updateBirthday }) => {
 
   const classes = useStyles();
 
-  function compareDate(date){
-    var today = new Date();
+  function compareDate(date,tipo){
+
+    if(tipo==="client"){
+      var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
@@ -78,6 +80,9 @@ const SignInSide = ({ updateUsername, updateType,updateBirthday }) => {
     var ddBirth = date.slice(-2)
 
     return (ddBirth===dd && mmBirth===mm)
+
+    }
+    
   }
 
   function handleClick(e) {
@@ -97,7 +102,7 @@ const SignInSide = ({ updateUsername, updateType,updateBirthday }) => {
           console.log(res)
           updateUsername(res.username);
           updateType(res.type)
-          updateBirthday(compareDate(res.date))
+          updateBirthday(compareDate(res.date,res.type))
         }
         else {
           console.log("NO entro")
