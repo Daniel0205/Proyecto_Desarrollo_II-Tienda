@@ -19,7 +19,8 @@ router.post("/buy",function(req,res){
 
     Bill.create({
         username:req.body.username,
-        date: db.fn('NOW')
+        date: db.fn('NOW'),
+        discount: req.body.discount
     })
     .then(x =>{
         BillBook.bulkCreate(

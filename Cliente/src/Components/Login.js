@@ -14,6 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Background from "../Images/books.jpg";
 import updateUsername from '../store/username/action'
 import updateType from '../store/type/action'
+import updateBirthday from '../store/birthday/action'
 import { connect } from "react-redux"
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
@@ -62,9 +63,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInSide = ({ updateUsername, updateType }) => {
+const SignInSide = ({ updateUsername, updateType,updateBirthday }) => {
 
   const classes = useStyles();
+
+  function compareDate(date){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = mm + '/' + dd + '/' + yyyy;
+    var mmBirth = date.slice(5,7)
+    var ddBirth = date.slice(-2)
+
+    return (ddBirth===dd && mmBirth===mm)
+  }
 
   function handleClick(e) {
     if (!logged)
@@ -83,6 +97,7 @@ const SignInSide = ({ updateUsername, updateType }) => {
           console.log(res)
           updateUsername(res.username);
           updateType(res.type)
+          updateBirthday(compareDate(res.date))
         }
         else {
           console.log("NO entro")
@@ -176,4 +191,4 @@ const SignInSide = ({ updateUsername, updateType }) => {
 }
 
 
-export default connect(null, { updateUsername, updateType })(SignInSide);
+export default connect(null, { updateUsername,updateBirthday, updateType })(SignInSide);

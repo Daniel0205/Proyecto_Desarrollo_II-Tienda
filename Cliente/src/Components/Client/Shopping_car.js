@@ -6,6 +6,7 @@ import {Button} from '@material-ui/core';
 import {connect} from 'react-redux';
 import {getCar} from '../../store/shopping_car/reducer';
 import {getUsername} from '../../store/username/reducer';
+import {getBirthday} from '../../store/birthday/reducer';
 import updateCar from '../../store/shopping_car/action';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,10 +17,15 @@ import TextField from "@material-ui/core/TextField";
 class Shopping_car extends React.Component {
   constructor(props){
     super(props)
+    var discount=0
+    console.log(this.props)
+
+    if(this.props.birthday)discount=30
 
     this.state={
       activate: false,
-      total:0
+      total:0,
+      discount:discount
     }
 
     this.update= this.update.bind(this);
@@ -31,6 +37,7 @@ class Shopping_car extends React.Component {
     this.act = this.act.bind(this)
     this.calculateTotal = this.calculateTotal.bind(this); 
     this.doBuy = this.doBuy.bind(this); 
+    this.discount = this.discount.bind(this); 
   }
 
   componentDidMount(){
@@ -49,6 +56,7 @@ class Shopping_car extends React.Component {
       },
       body: JSON.stringify({
         username:this.props.username,
+        discount:this.state.discount,
         books:this.props.car.map((z)=>{
           console.log(z)
           return({
@@ -86,37 +94,6 @@ class Shopping_car extends React.Component {
     this.setState({   
       activate: true            
     })
-    /*
-    fetch ("/Bill/buy", {
-      method: 'POST',
-      headers: {
-        Accept: "application/json, text/plain, * /*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        username:this.props.username,
-        books:this.props.car.map((z)=>{
-          console.log(z)
-          return({
-              isbn:z.isbn,
-              name_dp:z.distribution_point,
-              quantity:z.quantity
-          })
-      })
-      })
-    })
-    .then(res => res.json())
-    .then(res => {
-      if(res.bool){
-        console.log(res)
-        this.props.updateCar([])
-        this.forceUpdate();
-      }
-      else{
-        console.log("NO entro")
-      }
-    });
-    */
   }
 
   payment(){
@@ -149,7 +126,8 @@ class Shopping_car extends React.Component {
   act(){
     if(this.state.activate){
       return(
-        <CheckPayment callback={this.closePayment.bind(this)} total={this.state.total+this.state.total*0.16} buy={this.doBuy} />
+        <CheckPayment callback={this.closePayment.bind(this)} 
+        total={this.state.total+this.state.total*0.16-this.state.total*(this.state.discount/100)} buy={this.doBuy} />
       )
     }
   }
@@ -159,6 +137,10 @@ class Shopping_car extends React.Component {
       activate: false
     })
   }
+
+  discount(){
+    if(this.state.discount!==0) return <h2>Happy Birthday! You have a 30% discount on purchases this day! </h2>
+  }
   
   showCar(){
    
@@ -166,6 +148,8 @@ class Shopping_car extends React.Component {
       
       return(
         <div>
+          <h1>Shopping Car</h1>
+          {this.discount()}
           {this.props.car.map( (x,i)=>
                     <Card key={i} >
                       <CardContent>
@@ -204,7 +188,9 @@ class Shopping_car extends React.Component {
                     </Card>  
                     )}
             <h2>Subtotal: {this.state.total}</h2>
-            <h1>Total: {this.state.total+this.state.total*0.16}</h1>
+            <h2>IVA: 16%</h2>
+            <h2>Discount: {this.state.discount}%</h2>
+            <h1>Total: ${this.state.total+this.state.total*0.16-this.state.total*(this.state.discount/100)}</h1>
             <Button key="boton" onClick={this.buy}>To buy</Button>
             {this.act()}
         </div>
@@ -226,7 +212,8 @@ class Shopping_car extends React.Component {
 const mapStateToProps= state => {
   return {
     car: getCar(state),
-    username: getUsername(state)
+    username: getUsername(state),
+    birthday:getBirthday(state)
   }
 }
 

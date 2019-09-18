@@ -79,7 +79,7 @@ router.post("/", function (req, res) {
     let { username, password } = req.body;
   //  req.session.count = req.session.count ? req.session.count + 1 : 0;
     Client.findOne({
-        attributes: ['username'],
+        attributes: ['username',"date_birth"],
         where: { username: username ,password: password }
     })
     .then(x => {
@@ -95,7 +95,8 @@ router.post("/", function (req, res) {
             })
         }
         else{
-                res.json({bool: true , username: username, type: "client" })
+            
+                res.json({bool: true , username: username,date:x.date_birth , type: "client" })
         }
     })
     .catch(err => {

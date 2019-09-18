@@ -12,6 +12,10 @@ const Bill = db.define ('bill',{
     date:{
         type: Sequelize.DATEONLY,
         allowNull: false     
+    },
+    discount:{
+        type: Sequelize.INTEGER,
+        allowNull: false     
     }
 },{
     freezeTableName: true,
