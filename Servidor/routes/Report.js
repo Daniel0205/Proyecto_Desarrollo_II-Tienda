@@ -6,7 +6,8 @@ const BillBook = require('../models/BillBook');
 const Book = require('../models/Book');
 const Bill = require('../models/Bill');
 const Inventory = require('../models/Inventory');
-const DistributionPoint = require('../models/DistributionPoint');
+const Client = require('../models/Client');
+const Card = require('../models/Card')
 
 
 /////////////////////////////////////////////////////
@@ -92,7 +93,42 @@ router.post("/sales", (req, res) => {
                     exclude:
                         ['publication_year', 'synopsis', 'number_of_pages',
                             'lang', 'cover_type', ' recommended_age', 'imagepath']
-                }}]
+                }
+            }]
+        }
+    )
+        .then(x => res.json(x))
+        .catch(err => {
+            console.log(err)
+            res.json({ bool: false })
+        });
+});
+
+router.post("/buyers", (req, res) => {
+
+    let initDate = req.body.initDate;
+    let finalDate = req.body.finalDate;
+
+    Book.findAll(
+        {
+            attributes: ['isbn', 'price'],
+            include: [{
+                model: Bill,
+                required: true,
+                where: {
+                    date: {
+                        [Op.lte]: finalDate,
+                        [Op.gte]: initDate
+                    }
+                },
+                include: [{
+                    model: Card,
+                    required: true,
+                    include: [{
+                        model: Client, attributes: ["first_name", "last_name", 'email']
+                    }]
+                }]
+            }]
         }
     )
         .then(x => res.json(x))
