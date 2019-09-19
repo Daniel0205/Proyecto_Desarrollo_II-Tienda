@@ -53,7 +53,7 @@ class Store extends React.Component {
     console.log(this.state) 
       return (
       <div>
-        <Grid container spacing={4} justify="center">
+        <Grid container spacing={2} justify="center">
         {this.state.book.map(prove => (
           <Grid item key={prove.isbn}>
             <BookCard isbn={prove.isbn} title={prove.title} callback={this.handleViewMore.bind(this)} 

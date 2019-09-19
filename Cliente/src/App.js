@@ -10,7 +10,7 @@ import {Component } from 'react';
 import { Redirect } from 'react-router-dom'
 import updateType from './store/type/action'
 import updateUsername from './store/username/action'
-
+import { Home, AddBox, AccountBox  } from '@material-ui/icons'
 
 
 class  App extends Component {
@@ -21,28 +21,36 @@ class  App extends Component {
       case "init":
           return (
             <div>
-              
               <AppBar position="static">
                 <Toolbar>
+                
         
                   {/* --- Enlace a la ruta de la pagina de bienvenida --- */}
                   <TypoGraphy variant="h6" >
-                     <Link to={`/home/`} style={{ textDecoration: 'none', color: 'white' }}> Home</Link>
+                    <Link to={`/home/`}
+                      style={{ textDecoration: 'none', color: 'white' }}>
+                      Home <Home />
+                    </Link>
                   </TypoGraphy>
-        
+
+                  
                   {/* --- Enlace a la ruta para el login --- */}
                   <TypoGraphy variant="h6" >
                     <Link
                       to={`/login/`}
                       style={{ textDecoration: 'none', color: 'white' }}>
-                      &nbsp; &nbsp; &nbsp; Login</Link>
-                  </TypoGraphy>
+                      &nbsp; &nbsp; &nbsp; Login <AccountBox/>
+                      </Link>
+                  
+
                   {/* --- Enlace a la ruta para el registro de los usuarios --- */}
+                  </TypoGraphy>
                   <TypoGraphy variant="h6" >
                     <Link
                       to={`/Sign_up/`}
                       style={{ textDecoration: 'none', color: 'white' }}>
-                      &nbsp; &nbsp; &nbsp; Sign up</Link>
+                      &nbsp; &nbsp; &nbsp; Sign up <AddBox/>
+                      </Link>
                   </TypoGraphy>           
                 
                 </Toolbar>
