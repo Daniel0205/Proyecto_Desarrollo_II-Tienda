@@ -22,6 +22,7 @@ import Bill from '../Bill';
 import Trending from '../Trending';
 import Sales from '../Sales'
 import Low_stocks from '../Low_stocks';
+import Buyers from '../Buyers';
 import { Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import EmailIcon from '@material-ui/icons/Email';
@@ -188,6 +189,7 @@ export default function Admin_page(props) {
         <Route path="/Admin_page/trending" component={Trending} />
         <Route path="/Admin_page/low_stocks" component={Low_stocks} />
         <Route path="/Admin_page/sales" component={Sales} />
+        <Route path="/Admin_page/buyers" component={Buyers} />
 
 
         
