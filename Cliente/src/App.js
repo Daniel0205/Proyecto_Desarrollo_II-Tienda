@@ -70,7 +70,7 @@ class  App extends Component {
        
             return(
               <div>
-              <Redirect from="/login/" to="/user_page" />
+              <Redirect from="/login/" to="/user_page/home" />
               <AppBar position="static">
                 <Toolbar>
         

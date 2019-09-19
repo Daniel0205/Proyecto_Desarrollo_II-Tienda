@@ -19,7 +19,7 @@ router.get("/consultBook", (req,res) =>{
   DistributionPoint.findAll()
    .then(x => {
 
-      Book.findAll()
+      Book.findAll({where:{active:true}})
       .then(z => {
         
         Subcategory.findAll()

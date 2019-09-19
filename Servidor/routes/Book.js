@@ -52,6 +52,7 @@ router.post("/insert", function(req,res){
 router.post('/getAll', function(req,res){
 
     Book.findAll({
+        where: {active:true},
         include: [{model:Inventory,where:{name_dp:req.body.dp}}]
     })
     .then(x => res.json({bool:true,book:x}))
@@ -69,12 +70,14 @@ router.post("/update", function(req,res){
     let path = '';
     let EDFile = null;
 
-    if (Object.keys(req.files.EDFile).length != 0) {
-              
-        EDFile = req.files.EDFile;
-        path = `./images/${EDFile.name}`;
-        imgRoute = `images/${EDFile.name}`
-        req.body.imagepath = imgRoute;
+    if(req.files!==null){
+        if (Object.keys(req.files.EDFile).length != 0) {
+                
+            EDFile = req.files.EDFile;
+            path = `./images/${EDFile.name}`;
+            imgRoute = `images/${EDFile.name}`
+            req.body.imagepath = imgRoute;
+        }
     }
     
 
@@ -107,7 +110,7 @@ router.post("/update", function(req,res){
 router.delete('/delete', function(req,res){
 
 
-    Book.destroy({where: {
+    Book.update({active:false},{where: {
         isbn: req.body.isbn
     }}).then(x => res.json([{bool:true}]))
     .catch(err => {

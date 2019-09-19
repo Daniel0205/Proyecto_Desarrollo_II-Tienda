@@ -3,6 +3,8 @@ import { Button } from '@material-ui/core'
 import {getUsername} from '../../store/username/reducer'
 import {connect} from 'react-redux'
 import TextField from "@material-ui/core/TextField";
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarMesssages from '../../SnackbarMesssages';
 
 
 class Contact_us extends React.Component {
@@ -14,7 +16,9 @@ constructor(props){
     username: this.props.username,
     matter: '',
     description: '',
-    solved: false
+    solved: false,
+    msj:'',
+    type:''
   }
 
   this.mensaje = this.mensaje.bind(this);
@@ -42,11 +46,19 @@ mensaje(){
       this.setState({
         matter: '',
         description: '',
-        solved: false
-      },alert("send succesfully!"))
+        solved: false,
+        msj:'SEND SUCCESFULLY!',
+        type:"success"
+      })
     }
     else{
-      alert("Dont send succesfully!")
+      this.setState({
+        matter: '',
+        description: '',
+        solved: false,
+        msj:'DONT SEND SUCCESFULLY!',
+        type:"error"
+      })
     }
   })
 }
@@ -55,6 +67,17 @@ mensaje(){
   render(){
     return (<div>
       <h1>Contact_us</h1>
+      <Snackbar
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
+              open={this.state.msj!==''}
+              autoHideDuration={3000} //opcional
+          >
+              <SnackbarMesssages
+                  variant={this.state.type}
+                  onClose={()=>this.setState({msj:''})}
+                  message={this.state.msj} />
+          </Snackbar>
+
           <TextField
               id='reason' 
               variant="outlined"

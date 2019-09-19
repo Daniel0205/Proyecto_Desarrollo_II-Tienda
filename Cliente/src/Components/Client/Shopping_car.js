@@ -12,6 +12,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import CheckPayment from './CheckPayment';
 import TextField from "@material-ui/core/TextField";
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarMesssages from '../../SnackbarMesssages';
 
 
 class Shopping_car extends React.Component {
@@ -25,7 +27,9 @@ class Shopping_car extends React.Component {
     this.state={
       activate: false,
       total:0,
-      discount:discount
+      discount:discount,
+      msj:'',
+      type:'',
     }
 
     this.update= this.update.bind(this);
@@ -38,47 +42,61 @@ class Shopping_car extends React.Component {
     this.calculateTotal = this.calculateTotal.bind(this); 
     this.doBuy = this.doBuy.bind(this); 
     this.discount = this.discount.bind(this); 
+    this.calculatePorcent = this.calculatePorcent.bind(this)
   }
 
   componentDidMount(){
     this.calculateTotal()
   }
 
-  doBuy(e){
-    console.log(e)
-    console.log(this.state)
+  calculatePorcent(cards){
+    var porcent=0
 
-    fetch ("/Bill/buy", {
-      method: 'POST',
-      headers: {
-        Accept: "application/json, text/plain, * /*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        username:this.props.username,
-        discount:this.state.discount,
-        books:this.props.car.map((z)=>{
-          console.log(z)
-          return({
-              isbn:z.isbn,
-              name_dp:z.distribution_point,
-              quantity:z.quantity
-          })
-        }),
-        cards:e
+    for (let i = 0; i < cards.length; i++) {
+      porcent+=parseInt(cards[i].porcent)
+    }
+
+    console.log(porcent)
+    return porcent===100
+
+  }
+
+  doBuy(e){
+
+
+    if(this.calculatePorcent(e)){
+      fetch ("/Bill/buy", {
+        method: 'POST',
+        headers: {
+          Accept: "application/json, text/plain, * /*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username:this.props.username,
+          discount:this.state.discount,
+          books:this.props.car.map((z)=>{
+            console.log(z)
+            return({
+                isbn:z.isbn,
+                name_dp:z.distribution_point,
+                quantity:z.quantity
+            })
+          }),
+          cards:e
+        })
       })
-    })
-    .then(res => res.json())
-    .then(res => {
-      if(res.bool){
-        console.log(res)
-        this.props.updateCar([])
-        this.forceUpdate();
-      }
-      else{
-        console.log("NO entro")
-      }
-    });
+      .then(res => res.json())
+      .then(res => {
+        if(res.bool){
+
+          this.props.updateCar([])
+          this.forceUpdate();
+        }
+      });
+    }
+    else{
+      this.setState({msj:'THE SUM OF PERCENTAGES MUST GIVE 100%',type:'error'})
+    }
   }
 
   calculateTotal(){
@@ -98,7 +116,7 @@ class Shopping_car extends React.Component {
 
   payment(){
     return(
-      <CheckPayment />
+      <CheckPayment total={this.calculateTotal()} />
     );
   }
 
@@ -203,6 +221,17 @@ class Shopping_car extends React.Component {
     console.log(this.state)     
     return (
     <div>
+      <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
+          open={this.state.msj!==''}
+          autoHideDuration={3000} //opcional
+      >
+          <SnackbarMesssages
+              variant={this.state.type}
+              onClose={()=>this.setState({msj:''})}
+              message={this.state.msj} />
+      </Snackbar>
+
       {this.showCar()}
     </div>);
   } 

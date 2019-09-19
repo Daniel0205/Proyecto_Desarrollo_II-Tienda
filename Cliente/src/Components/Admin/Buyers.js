@@ -9,12 +9,12 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 
 
 const Products = [{
-    Item: "-", Isbn: "-", Date: "-", Quantity: "-",
-    Title: "-", Author: "-", Distribution_point: "-"
+    Order: '-', Username: '-', First_name: '-', Last_name: '-',
+    Email: '-', Date: '-', Spent: '-'
 }]
 
 
-export default class Trending extends React.Component {
+export default class Buyers extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -34,7 +34,7 @@ export default class Trending extends React.Component {
 
 
     showReport() {
-        fetch("/Report/consult", {
+        fetch("/Report/buyers", {
             method: "POST",
             headers: {
                 Accept: "application/json, text/plain, */*",
@@ -57,36 +57,56 @@ export default class Trending extends React.Component {
     resJsonToTable() {
 
         let json = this.state.query;
-        console.log(json)
-        let table = [];
+
+        var table = [];
+        var users = [];
+        var result = [];
 
         for (let i = 0; i < json.length; i++) {
+            let newjson = {};
 
-            if (json[i]['books'].length > 0) {
-                for (let j = 0; j < json[i]['books'].length; j++) {
+            newjson.Order = '';
+            newjson.Username = json[i]['bills'][0]['cards'][0]['username'];
+            newjson.First_name = json[i]['bills'][0]['cards'][0]['client']['first_name'];
+            newjson.Last_name = json[i]['bills'][0]['cards'][0]['client']['last_name'];
+            newjson.Email = json[i]['bills'][0]['cards'][0]['client']['email'];
+            newjson.Date = json[i]['bills'][0]['date']
+            newjson.Price = parseInt(json[i]['price'], 10);
+            newjson.Quantity = json[i]['bills'][0]['bill_book']['quantity'];
+            newjson.Buy = newjson.Quantity * newjson.Price;
 
-                    let newjson = {};
-
-                    newjson.Item = '';
-                    newjson.Isbn = json[i]['books'][j]['bill_book']['isbn'];
-                    newjson.Date = json[i]['date'];
-                    newjson.Quantity = json[i]['books'][j]['bill_book']['quantity'];
-                    newjson.Title = json[i]['books'][j]['title'];
-                    newjson.Author = json[i]['books'][j]['author'];
-                    newjson.Distribution_point = json[i]['books'][j]['bill_book']['name_dp'];
-
-                    table.push(newjson);
-                }
-            }
+            table.push(newjson);
         }
 
+        for (let index = 0; index < table.length; index++) {
+            users[table[index]['Username']] = 0;
+        }
+
+        for (let index = 0; index < table.length; index++) {
+            users[table[index]['Username']] += table[index]['Buy'];
+        }
+
+        for (let x in users) {
+            let index = 0;
+            while (index < table.length) {
+                if (table[index].Username === x) {
+                    table[index].Spent = users[x];
+                    delete table[index].Price;
+                    delete table[index].Buy;
+                    delete table[index].Quantity;
+                    result.push(table[index]);
+                    break;
+                }
+                index++;
+            }
+        }
         //ordenado desc. por cantidad
-        table = table.sort((a, b) => b.Quantity - a.Quantity);
+        result = result.sort((a, b) => b.Spent - a.Spent);
 
-        for (let index = 0; index < table.length; index++)
-            table[index].Item = index;
+        for (let index = 0; index < result.length; index++)
+            result[index].Order = (index + 1) + '°';
 
-        this.setState({ table: { Products: table } });
+        this.setState({ table: { Products: result } });
     }
 
 
@@ -96,7 +116,7 @@ export default class Trending extends React.Component {
         let data = {
             labels: [],
             datasets: [{
-                label: "Sales",
+                label: "Money expended",
                 backgroundColor: 'rgb(63, 81, 181)',
                 borderColor: 'rgb(255, 255, 255)',
                 data: [],
@@ -105,8 +125,8 @@ export default class Trending extends React.Component {
         //Agregar datos recibidos del servidor
         let json = this.state.table.Products;
         for (let index = 0; index < json.length; index++) {
-            data.labels[index] = "item" + index.toString();
-            data.datasets[0]['data'][index] = json[index].Quantity;
+            data.labels[index] = json[index].Username;
+            data.datasets[0]['data'][index] = json[index].Spent;
         }
         this.setState({ chartData: data });
     }
@@ -126,7 +146,7 @@ export default class Trending extends React.Component {
 
         return (
             <div className="trending">
-                <h1>Trending</h1>
+                <h1>Best Buyers</h1>
                 {/*--Fecha inicial--*/}
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
@@ -186,7 +206,7 @@ export default class Trending extends React.Component {
                         }
                     }}
                     width={200}
-                    height={50} />
+                    height={30} />
             </div>
         );
     }

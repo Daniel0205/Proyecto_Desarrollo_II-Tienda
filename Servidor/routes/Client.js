@@ -37,7 +37,7 @@ router.post("/get", (req, res) => {
     Client.findAll({ where: req.body ,
         include: [{model:Card,where:{active:true}}]
     })
-        .then(x => res.json(x))
+        .then(x => res.json({bool:true,datos:x}))
         .catch(err => {
             console.log(err)
             res.json({ bool: false })
@@ -80,7 +80,7 @@ router.post("/", function (req, res) {
   //  req.session.count = req.session.count ? req.session.count + 1 : 0;
     Client.findOne({
         attributes: ['username',"date_birth"],
-        where: { username: username ,password: password }
+        where: { username: username ,password: password,state:true }
     })
     .then(x => {
         
@@ -111,7 +111,7 @@ router.post("/", function (req, res) {
 router.delete('/delete', function (req, res) {
     console.log(req.body)
 
-    Client.destroy({ where: req.body })
+    Client.update({state:false},{ where: req.body })
         .then(x => res.json([{ bool: true }]))
         .catch(err => {
             console.log(err)

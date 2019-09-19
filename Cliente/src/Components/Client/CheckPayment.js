@@ -1,18 +1,11 @@
 import React from 'react';
 import {Card, CardContent, Typography, CardActions, Button, CardHeader,List, ListItem,Checkbox,ListItemText,ListItemIcon,TextField,InputAdornment} from '@material-ui/core';
 import { Link } from 'react-router-dom'
-/*
-const styles = 
-{
-    media: {
-        height: 0,
-        paddingTop: '56.25%', // 16:9,
-        marginTop:'30',
-        paddingLeft: '10%'
-    }
-  };
-*/
-export default class CheckPayment extends React.Component {
+import { getUsername } from "../../store/username/reducer";
+import {connect} from 'react-redux';
+
+
+class CheckPayment extends React.Component {
 
   constructor(props) {
     super(props)
@@ -20,22 +13,11 @@ export default class CheckPayment extends React.Component {
     this.state = {
       selectedBook: false,
       itemNumber: null,
-      cards: [{
-        username: 'dan',
-        credit_card_number: '333',
-        entity: 'VISA',
-        type: 'C'
-      },{
-        username: 'dan',
-        credit_card_number: '444',
-        entity: 'VISA',
-        type: 'D'
-      }],
-      used:[]
+      cards: [],
+      used:[],
     }
 
     this.bringCards = this.bringCards.bind(this)
-    this.withoutCards = this.withoutCards.bind(this)
     this.itsCredit = this.itsCredit.bind(this)
     this.add = this.add.bind(this)
     this.changePorcent =this.changePorcent.bind(this)
@@ -62,7 +44,16 @@ export default class CheckPayment extends React.Component {
   }
 
   getCards(){
-    console.log('Cualquiera')
+    fetch("/Card/get", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({username:this.props.username})
+    })
+      .then(res => res.json())
+      .then(res => this.setState({cards:res}))
   }
 
   itsCredit(typ, number ){
@@ -118,85 +109,89 @@ export default class CheckPayment extends React.Component {
   }
 
   bringCards(){
+    console.log(this.state.cards.length)
+    if(this.state.cards.length!==0){
     return(
-      <div className="Details">
-        <Card className="card">
-          <CardHeader 
-            title="Payment configuration"
-          />
-          <CardContent>
-            <List dense>
+        <div className="Details">
+          <Card className="card">
+            <CardHeader 
+              title="Payment configuration"
+            />
+            <CardContent>
+              <List dense>
 
-              {this.state.cards.map(( card,i) => (
-                <ListItem key={i}>
-                  <ListItemText primary={card.credit_card_number} />
-                  <ListItemText primary={card.entity} />
-                  {this.itsCredit(card.type,card.credit_card_number)}
-                  <TextField
-                    id="standard-number"
-                    label="Percent"
-                    type="number"
-                    margin="normal"
-                    defaultValue={0}
-                    InputProps={{
-                      endAdornment: <InputAdornment position="end">%</InputAdornment>,
-                      min: "0", max: "100", step: "1" 
-                    }}
-                    onChange={this.changePorcent(card.credit_card_number)}
-                  />
-                  <ListItemIcon>
-                    <Checkbox
-                      edge="end"
-                      color="primary"
-                      onChange={this.add(card.credit_card_number)}
+                {this.state.cards.map(( card,i) => (
+                  <ListItem key={i}>
+                    <ListItemText primary={card.credit_card_number} />
+                    <ListItemText primary={card.entity} />
+                    {this.itsCredit(card.type,card.credit_card_number)}
+                    <TextField
+                      id="standard-number"
+                      label="Percent"
+                      type="number"
+                      margin="normal"
+                      disabled={this.state.used.findIndex((z)=>{
+                        return z.credit_card_number===card.credit_card_number})===-1}
+                      defaultValue={0}
+                      InputProps={{
+                        endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                        min: "0", max: "100", step: "1" 
+                      }}
+                      onChange={this.changePorcent(card.credit_card_number)}
                     />
-                  </ListItemIcon>
-                </ListItem>
-              ))}
+                    <ListItemIcon>
+                      <Checkbox
+                        edge="end"
+                        color="primary"
+                        onChange={this.add(card.credit_card_number)}
+                      />
+                    </ListItemIcon>
+                  </ListItem>
+                ))}
 
-            </List>
-          </CardContent>
-          <CardActions>
-              <Button size="small" color="primary" onClick={() => {this.props.buy(this.state.used)}}>
-                  Buy
-              </Button>
-              <Button size="small" color="primary" onClick={() => {this.props.callback()}}>
-                  Cancel
-              </Button>
-          </CardActions>
-        </Card>
-        <button className="close" onClick={() => {this.props.callback()}}> X </button>
-      </div>
-    )
+              </List>
+            </CardContent>
+            <h2>Total: {this.props.total}</h2>
+            <CardActions>
+                <Button size="small" color="primary" onClick={() => {this.props.buy(this.state.used)}}>
+                    Buy
+                </Button>
+                <Button size="small" color="primary" onClick={() => {this.props.callback()}}>
+                    Cancel
+                </Button>
+            </CardActions>
+          </Card>
+          <button className="close" onClick={() => {this.props.callback()}}> X </button>
+        </div>
+      )
+    }
+    else{
+      return(
+        <div className="Details">
+          <Card className="card">
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h4">
+                Ooops! It looks like you haven't added a card yet 
+              </Typography>
+              <Typography gutterBottom variant="h6" component="h6">
+                Click on "Add card" to configure a payment method 
+              </Typography>
+            </CardContent>
+            <CardActions>
+                <Button size="small" color="primary" component={Link} to="/User_page/account">
+                    Add card
+                </Button>
+                <Button size="small" color="primary" onClick={() => {this.props.callback()}}>
+                    Cancel
+                </Button>
+            </CardActions>
+          </Card>
+          <h2>Total: {this.props.total}</h2>
+          <button className="close" onClick={() => {this.props.callback()}}> X </button>
+        </div>
+      )
+    }
   }
-
-  withoutCards(){
-    return(
-      <div className="Details">
-        <Card className="card">
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h4">
-              Ooops! It looks like you haven't added a card yet 
-            </Typography>
-            <Typography gutterBottom variant="h6" component="h6">
-              Click on "Add card" to configure a payment method 
-            </Typography>
-          </CardContent>
-          <CardActions>
-              <Button size="small" color="primary" component={Link} to="/User_page/account">
-                  Add card
-              </Button>
-              <Button size="small" color="primary" onClick={() => {this.props.callback()}}>
-                  Cancel
-              </Button>
-          </CardActions>
-        </Card>
-        <h2>Total: {this.props.total}</h2>
-        <button className="close" onClick={() => {this.props.callback()}}> X </button>
-      </div>
-    )
-  }
-
 
   render(){      
     console.log(this.state)
@@ -208,3 +203,12 @@ export default class CheckPayment extends React.Component {
     }
 
   }
+
+const mapStateToProps= state => {
+  return {
+    username: getUsername(state)
+  }
+}
+
+
+export default  connect (mapStateToProps)(CheckPayment);

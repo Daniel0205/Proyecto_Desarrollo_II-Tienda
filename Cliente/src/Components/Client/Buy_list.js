@@ -12,8 +12,10 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 
+var total =0;
 
 function createTable(rows){
+  
   return (
     <Paper>
       <Table >
@@ -29,8 +31,9 @@ function createTable(rows){
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row,i) => (
-            <TableRow key={i}>
+          {rows.map((row,i) => {
+            total+=row.price*row.bill_book.quantity
+            return (<TableRow key={i}>
               <TableCell component="th" scope="row">
                 {row.title}
               </TableCell>
@@ -41,7 +44,7 @@ function createTable(rows){
               <TableCell align="right">{row.price}</TableCell>
               <TableCell align="right">{row.price*row.bill_book.quantity}</TableCell>
             </TableRow>
-          ))}
+          )})}
         </TableBody>
       </Table>
     </Paper>
@@ -83,8 +86,9 @@ function createCard(list){
   
   console.log(list)
 
-  return(list.map((x,i)=>
-  <Card key={i}>
+  return(list.map((x,i)=>{
+  total=0
+  return (<Card key={i}>
     <CardContent>
       <Typography  component="h2" gutterBottom>
         Bill #{x.id_bill}
@@ -94,11 +98,17 @@ function createCard(list){
       </Typography>
       {createTable(x.books)}
       <Typography  color="textSecondary" gutterBottom>
+      Discount: {total+total*0.16-(total*(x.discount/100))}
+      </Typography>  
+      <Typography  color="textSecondary" gutterBottom>
+      Total: {x.discount}
+      </Typography>  
+      <Typography  color="textSecondary" gutterBottom>
       Payment methods used:
       </Typography>      
       {createTable2(x.cards)}      
     </CardContent>
-  </Card>))
+  </Card>)}))
 }
 
 

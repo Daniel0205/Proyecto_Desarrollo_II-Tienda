@@ -24,7 +24,10 @@ import {getPoint} from '../../store/point/reducer';
 import updatePoint from '../../store/point/action';
 import {connect} from 'react-redux';
 import { getUsername } from "../../store/username/reducer";
+import { getBirthday } from "../../store/birthday/reducer";
 import { Player } from 'video-react';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarMesssages from '../../SnackbarMesssages';
 
 
 const drawerWidth = 240;
@@ -124,6 +127,7 @@ const User_page = (props) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const [dp, setDp] = React.useState([]);
+  const [hola, setHola] = React.useState(true);
 
 
   const handleDrawerOpen = () => {
@@ -229,6 +233,16 @@ const User_page = (props) => {
         <Route path="/User_page/store" component={Store} />
         <Route path="/User_page/contact_us" component={Contact_us} />
       </main>
+       <Snackbar
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
+              open={props.birth && hola}
+              autoHideDuration={3000} //opcional
+          >
+              <SnackbarMesssages
+                  variant="info"
+                  onClose={()=>setHola(false)}
+                  message="HAPPY BIRTHDAY! YOU HAVE A 30% DISCOUNT ON YOUR PURCHASES TODAY!" />
+          </Snackbar>
     </div>);
 
 }
@@ -236,7 +250,9 @@ const User_page = (props) => {
 const mapStateToProps= state => {
   return {
     dp: getPoint(state),
-    username: getUsername(state)
+    username: getUsername(state),
+    birth: getBirthday(state)
+
   }
 }
 

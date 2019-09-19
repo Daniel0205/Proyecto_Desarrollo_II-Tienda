@@ -1,4 +1,4 @@
-const initialState = {point: "---"};
+const initialState = {point: "Cali"};
 
 export default (state= initialState,action)=>{
     

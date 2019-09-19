@@ -7,7 +7,7 @@ const Category = require('../models/Category')
 //consulta todas las categorias en la base de datos
 router.get("/consult", (req,res) =>{
 
- Category.findAll()
+ Category.findAll({where:{active:true}})
    .then(x =>  res.json(x))
    .catch(err => console.log(err));
 })
@@ -15,9 +15,9 @@ router.get("/consult", (req,res) =>{
 
 
 //consulta todas las categorias en la base de datos
-router.post("/createCategory", (req,res) =>{
+router.post("/create", (req,res) =>{
   
-  let {name_category,description} = req.body
+  
 
 
   // Insert into table
@@ -46,7 +46,7 @@ router.post("/update",(req,res)=>{
 
 //Elimina una instancia de una categoria en la base de datos
 router.delete("/delete",(req,res) =>{
-  Category.destroy({
+  Category.update({active:false},{
     where:{
       name_category:req.body.category
     }
