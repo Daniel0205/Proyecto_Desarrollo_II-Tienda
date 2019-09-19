@@ -25,13 +25,24 @@ router.post('/getAll', function(req,res){
       })
 })
 
+//Obtener las tarjetas de la base de datos
+router.post('/get', function(req,res){
+
+    Card.findAll({where:{username:req.body.username}})
+    .then(x =>  res.json(x))
+    .catch(err => {
+        console.log(err)
+        res.json({bool:false})
+      })
+})
+
 //Eliminar una tarjeta especifico de la base de datos
 router.post('/delete', function (req, res) {
     console.log(req.body)
 
     Card.update({active:false},{ where: req.body })
         .then(x => {
-            console.log("ENTREOOOOOO")
+
             res.json([{ bool: true }])})
         .catch(err => res.json([{ bool: false }]));
 

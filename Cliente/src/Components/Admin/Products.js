@@ -1,6 +1,8 @@
 import React from 'react';
 import {Button, MenuItem} from '@material-ui/core'
 import TextField from "@material-ui/core/TextField";
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarMesssages from '../../SnackbarMesssages';
  
 
 export default class Products extends React.Component {
@@ -31,11 +33,13 @@ export default class Products extends React.Component {
       book:[],
       dp:'',
       dpList:[],
-      subcategory:[]
+      subcategory:[],
+      msj:'',
+      type:'',
     };
 
     this.insertpro = this.insertpro.bind(this);
-    this.getpro = this.getpro.bind(this);
+  
     this.updatepro = this.updatepro.bind(this);
     this.deletepro = this.deletepro.bind(this);
     this.getBookDp = this.getBookDp.bind(this);
@@ -291,10 +295,10 @@ export default class Products extends React.Component {
     .then(res => res.json())
     .then(res => {
       if(res[0].bool){
-        console.log("Creo que funciona");
+        this.setState({msj:'AMOUNT ADDED TO INVENTORY!',type:'success'})
       }
       else{
-        console.log("Creo que no funciona");
+        this.setState({msj:'ERROR WHEN ADDING AMOUNT TO INVENTORY!',type:'error'})
       }
     })
     
@@ -311,7 +315,7 @@ export default class Products extends React.Component {
         this.setState(res)
       }
       else{
-        console.log("Creo que no funciona");
+        this.setState({msj:'ERROR GETTING THE DATA',type:'error'})
       }
     })
 
@@ -333,29 +337,15 @@ export default class Products extends React.Component {
       .then(res => res.json())
       .then(res => {
         if(res[0].bool){
-          console.log("Creo que funciona");
+          this.setState({msj:'PRODUCT ADDED SUCCESSFULLY!',type:'success'})
         }
         else{
-          console.log("Creo que no funciona");
+          this.setState({msj:'ERROR WHEN ADDING PRODUCT',type:'error'})
         }
       })
 
   }
 
-  getpro(){
-    fetch("/Book/get",{
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        isbn : this.state.isbn,
-      })
-    })
-    .then(res => res.json())
-    .then(res => this.setState(res[0]))
-  }
 
   updatepro(){
     let myForm = document.getElementById('toSend');
@@ -372,10 +362,10 @@ export default class Products extends React.Component {
     .then(res => res.json())
     .then(res => {
       if(res[0].bool){
-        console.log("Creo que funciona");
+        this.setState({msj:'PRODUCT UPDATING SUCCESSFULLY!',type:'success'})
       }
       else{
-        console.log("Creo que no funciona");
+        this.setState({msj:'ERROR WHEN UPDATING PRODUCT',type:'error'})
       }
     })
 
@@ -395,10 +385,12 @@ export default class Products extends React.Component {
     .then(res => res.json())
     .then(res => {
       if(res[0].bool){
-        console.log("Creo que funciona");
+        this.setState({msj:'PRODUCT DELETED SUCCESSFULLY!',type:'success'})
+        this.getBookDp()
+        this.forceUpdate()
       }
       else{
-        console.log("Creo que no funciona");
+        this.setState({msj:'ERROR WHEN DELETING PRODUCT',type:'error'})
       }
     }
     )
@@ -508,6 +500,16 @@ export default class Products extends React.Component {
       console.log(this.state)
       return (
         <div className='botns'>
+          <Snackbar
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
+              open={this.state.msj!==''}
+              autoHideDuration={3000} //opcional
+          >
+              <SnackbarMesssages
+                  variant={this.state.type}
+                  onClose={()=>this.setState({msj:''})}
+                  message={this.state.msj} />
+          </Snackbar>
         <h1>Products</h1>
         <Button onClick={() => this.setState({tipo: "insertar"})}>INSERT PRODUCT</Button>
         <Button onClick={() => this.setState({tipo: "obtener"})}>CONSULT PRODUCTS</Button>

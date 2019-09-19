@@ -241,13 +241,14 @@ export default class Sales extends React.Component {
                         FILTER PRODUCT  </InputLabel>
                     <Select
                         style={{ maxWidth: '510px', minWidth: '510px' }}
-                        value={this.state.selectedProduct}
+                        
                         onChange={this.onSelect}
                         name="product"
+                        defaultValue='all'
                         displayEmpty
                         >
                             
-                        <MenuItem key='' value=''> All </MenuItem>
+                        <MenuItem key='all' value=''> All </MenuItem>
                         {selectedProducts.map((color, index) =>
                             <MenuItem key={index} value={index}> {color}</MenuItem>
                         )}

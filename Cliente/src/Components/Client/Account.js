@@ -15,6 +15,9 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import DateFnsUtils from '@date-io/date-fns';
 import format from "date-fns/format";
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarMesssages from '../../SnackbarMesssages';
+import { Redirect } from 'react-router-dom'
 
 const type = [
   {
@@ -81,7 +84,10 @@ class Account extends React.Component {
       State: true,
       cards:[],
       tipo: "inicio",
-      newCard:{credit_card_number:'',type:'C',entity:''}
+      newCard:{credit_card_number:'',type:'C',entity:''},
+      msj:'',
+      type:'',
+      redirect:[]
     }
 
     this.modCliente = this.modCliente.bind(this);
@@ -108,10 +114,10 @@ class Account extends React.Component {
       .then(res => {
         console.log(res)
         if (res[0].bool) {
-          console.log("Creo que funciona");
+          this.setState({msj:'DATA UPDATED SUCCESSFULLY',type:'success'})
         }
         else {
-          console.log("Creo que no funciona");
+          this.setState({msj:'ERROR UPDATING THE DATA',type:'error'})
         }
       }
       )
@@ -140,8 +146,12 @@ class Account extends React.Component {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res)
-        this.setState(res[0])
+        if(res.bool){
+          this.setState(res.datos[0])
+        }
+        else{
+          this.setState({msj:'ERROR GETTING THE DATA',type:'error'})
+        }
       })
   }
 
@@ -161,12 +171,19 @@ class Account extends React.Component {
         console.log(res)
 
         if (res[0].bool) {
-          this.props.updateUsername("");
-          this.props.updateType("init")
+          this.setState({msj:'ACCOUNT DELETED SUCCESSFULLY!',type:'success'})
+          
+          setTimeout(() => {
+            this.props.updateUsername("");
+            this.props.updateType("init");
+            this.setState({redirect:[<Redirect to="/Home" />]})
+          }, 2000);
+
+          
 
         }
         else {
-          console.log("no funciona");
+          this.setState({msj:'ERROR WHEN DELETING ACCOUNT',type:'error'})
         }
       }
       )
@@ -496,6 +513,18 @@ class Account extends React.Component {
     console.log(this.state)
     return (
       <div className='botns'>
+        {this.state.redirect}
+          <Snackbar
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
+              open={this.state.msj!==''}
+              autoHideDuration={3000} //opcional
+          >
+              <SnackbarMesssages
+                  variant={this.state.type}
+                  onClose={()=>this.setState({msj:''})}
+                  message={this.state.msj} />
+          </Snackbar>
+
         <h1>Account</h1>
         <Button onClick={() => this.setState({ tipo: "modify" })}>MODIFY INFORMATION</Button><br />
         <Button onClick={() => this.setState({ tipo: "consult" })}>CONSULT INFORMATION</Button><br />
