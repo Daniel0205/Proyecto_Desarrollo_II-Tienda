@@ -32,7 +32,7 @@ router.post('/get', function(req,res){
 })
 
 //Modificar una critica realizada por un usuario sobre un libro
-router.put("/update", function(req,res){
+router.post("/update", function(req,res){
     delete req.body.tipo
 
     let index = req.body.isbn;
