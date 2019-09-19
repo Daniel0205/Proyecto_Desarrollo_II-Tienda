@@ -44,25 +44,30 @@ class Details extends React.Component {
     
         this.state = {
           addcoment:false,
+          num:1,
           open:false,
           msj:false
         }
 
         this.checkAddComment = this.checkAddComment.bind(this)
+        this.closeAddComment =this.closeAddComment.bind(this)
         this.setRedirect = this.setRedirect.bind(this)
         this.setRedirect2 = this.setRedirect2.bind(this)
         this.renderRedirect =this.renderRedirect.bind(this)
       }
 
     closeAddComment(){
+       
         this.setState({
-            addcoment: false
+            addcoment: false,
+            num:2
         })
+       
     }
 
     checkAddComment(){
         if(this.state.addcoment){
-            return(<AddComment closing={this.closeAddComment.bind(this)} st="Coment2" isbn={this.props.inf.isbn}/>)
+        return(<AddComment closing={this.closeAddComment} st="Coment2" isbn={this.props.inf.isbn} activate={this.closeAddComment}/>)
         }
     }
 
@@ -88,6 +93,7 @@ class Details extends React.Component {
         this.setState({   
             addcoment: true,                            
         }) 
+        
     }
 
     renderRedirect() {
@@ -97,7 +103,7 @@ class Details extends React.Component {
       }
 
     render(){  
-        
+        console.log(this.state)
         let path = "http://localhost:3001/"+ this.props.inf.imagepath;
 
         return (
@@ -175,7 +181,7 @@ class Details extends React.Component {
 
                 <CardContent>
                     <div>
-                        <Comments isbn={this.props.inf.isbn}/>
+                        <Comments isbn={this.props.inf.isbn} hola={this.state.num}/>
                     </div>
                 </CardContent>
             </Card>

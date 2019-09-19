@@ -151,6 +151,7 @@ class CheckPayment extends React.Component {
 
               </List>
             </CardContent>
+            <h2>Total: {this.props.total}</h2>
             <CardActions>
                 <Button size="small" color="primary" onClick={() => {this.props.buy(this.state.used)}}>
                     Buy

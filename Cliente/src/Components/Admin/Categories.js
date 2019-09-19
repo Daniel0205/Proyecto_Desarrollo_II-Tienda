@@ -11,7 +11,7 @@ export default class Categories extends React.Component {
     super(props)
     this.state = {
       type: "Search",
-      selected: 'Select',
+      selected: 'DEFAULT',
       name: "",
       description: "",
       categoryNames: [],
@@ -54,7 +54,7 @@ export default class Categories extends React.Component {
         this.getNames()
         this.setState({
           type: "Search",
-          selected: 'Select'
+          selected:'DEFAULT'
         })
       })
   }
@@ -89,7 +89,7 @@ export default class Categories extends React.Component {
         this.getNames()
         this.setState({
           type: "Search",
-          selected: "Select"
+          selected: 'DEFAULT'
         })
       })
   }
@@ -105,26 +105,28 @@ export default class Categories extends React.Component {
       },
       body: JSON.stringify({
         name_category: this.state.name,
-        description: this.state.description
+        description: this.state.description,
+        active:true
       })
     })
       .then(res => res.json())
       .then(res => {
         if (res.bool) {
           this.setState({msj:'CATEGORY CREATED SUCCESSFULLY!',types:'success'})
+          this.forceUpdate()
         }
         else this.setState({msj:'ERROR CREATING CATEGORY',types:'error'})
         this.getNames()
         this.setState({
           type: "Search",
-          selected: 'Select'
+          selected:'DEFAULT'
         })
       })
   }
 
 
   handleSelect(event) {
-    if (event.target.value !== "Select") {
+    if (event.target.value !== 'DEFAULT') {
       let object = this.state.categoryNames.find(x => x.name_category === event.target.value)
       this.setState({
         selected: event.target.value,
@@ -134,7 +136,7 @@ export default class Categories extends React.Component {
     }
     else {
       this.setState({
-        selected: "Select"
+        selected:'DEFAULT'
       });
     }
   }
@@ -156,7 +158,7 @@ export default class Categories extends React.Component {
 
   getFormular() {
 
-    if (this.state.selected !== "Select") {
+    if (this.state.selected !=='DEFAULT') {
 
       switch (this.state.type) {
         case "Search":
@@ -225,17 +227,31 @@ export default class Categories extends React.Component {
 
 
   render() {
+    
+     var msj =
+     (<Snackbar
+           anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
+           open={this.state.msj!==''}
+           autoHideDuration={3000} //opcional
+       >
+           <SnackbarMesssages
+               variant={this.state.types}
+               onClose={()=>this.setState({msj:''})}
+               message={this.state.msj} />
+       </Snackbar>)
+
 
     if (this.state.type !== 'Create') {
       return (<div>
         <h1>Category</h1>
-
+        {msj}
         <Select
           name="categoryName"
+          defaultValue={'DEFAULT'}
           value={this.state.selected}
           onChange={this.handleSelect}
         >
-          <option value="Select" >
+          <option value={'DEFAULT'} disabled >
             Select a category:
               </option>
           {this.state.categoryNames.map(x =>
@@ -256,17 +272,8 @@ export default class Categories extends React.Component {
       return (
         <div>
           <h1>Category</h1>
-            <Snackbar
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
-                open={this.state.msj!==''}
-                autoHideDuration={3000} //opcional
-            >
-                <SnackbarMesssages
-                    variant={this.state.types}
-                    onClose={()=>this.setState({msj:''})}
-                    message={this.state.msj} />
-            </Snackbar>
-
+          
+          {msj}
           <ValidatorForm onSubmit={this.handleSubmit}>
 
             <h3>Category name:</h3>
@@ -288,7 +295,7 @@ export default class Categories extends React.Component {
               placeholder='Description of the category' /><br />
 
             <Button type="submit" >Create</Button>
-            <Button onClick={() => this.setState({ type: "Search", selected: "Select" })}>Cancel</Button>
+            <Button onClick={() => this.setState({ type: "Search", selected:'DEFAULT' })}>Cancel</Button>
 
           </ValidatorForm >
         </div>

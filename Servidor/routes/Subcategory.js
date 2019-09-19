@@ -6,7 +6,7 @@
 //consulta todas las subcategorias en la base de datos
 router.get("/consult", (req,res) =>{
 
-  Subcategory.findAll()
+  Subcategory.findAll({where:{active:true}})
     .then(x =>  res.json(x))
     .catch(err => {
       console.log(err)
@@ -18,15 +18,10 @@ router.get("/consult", (req,res) =>{
 //consulta todas las subcategorias en la base de datos
 router.post("/create", (req,res) =>{
   
-  let {name_subcategory,description,name_category} = req.body
-
+  
 
   // Insert into table
-  Subcategory.create({
-    name_subcategory,
-    description,
-    name_category
-  })
+  Subcategory.create(req.body)
     .then(x =>res.json({bool:true}))
     .catch(err => {
       console.log(err)
@@ -51,7 +46,7 @@ router.post("/update",(req,res)=>{
 
 //Elimina una instancia de una subcategoria en la base de datos
 router.delete("/delete",(req,res) =>{
-  Subcategory.destroy({
+  Subcategory.update({active:false},{
     where:{
       name_subcategory:req.body.subcategory
     }
