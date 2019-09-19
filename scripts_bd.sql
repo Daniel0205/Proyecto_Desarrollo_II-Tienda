@@ -160,10 +160,10 @@ CREATE TRIGGER updateProducto AFTER INSERT ON bill_Book FOR EACH ROW EXECUTE PRO
 --------------------------------------------------------
 
 INSERT INTO admin(password,username) values
-   ('1234','1629338'),
-   ('1234','1670129'),
-   ('1234','1630536'),
-   ('1234','1625644');
+   ('1234567890','1629338'),
+   ('1234567890','1670129'),
+   ('1234567890','1630536'),
+   ('1234567890','1625644');
 
 INSERT INTO category VALUES 
    ('Académicos','Contenido relacionado al conocimiento',true),
@@ -173,41 +173,41 @@ INSERT INTO category VALUES
    ('Filosofía','Aborda problemas raramente abordados por la ciencia',true);
 
 INSERT INTO subcategory VALUES 
-   ('Humanidades','Académicos', 'CUALQUIERA PARCE',true),
-   ('Salud','Académicos', 'CUALQUIERA PARCE',true),
-   ('Ciencias exactas','Académicos', 'CUALQUIERA PARCE',true),
-   ('Ingenieria','Académicos', 'CUALQUIERA PARCE',true),
-   ('Diccionarios','Académicos', 'CUALQUIERA PARCE',true),
-   ('Fantástica','Novelas', 'CUALQUIERA PARCE',true),
-   ('Histórica','Novelas', 'CUALQUIERA PARCE',true),
-   ('Misterio','Novelas', 'CUALQUIERA PARCE',true),
-   ('Drama','Novelas', 'CUALQUIERA PARCE',true),
-   ('Juvenil','Novelas', 'CUALQUIERA PARCE',true),
-   ('Inglés','Lenguas', 'CUALQUIERA PARCE',true),
-   ('Portugués','Lenguas', 'CUALQUIERA PARCE',true),
-   ('Francés','Lenguas', 'CUALQUIERA PARCE',true),
-   ('Alemán','Lenguas', 'CUALQUIERA PARCE',true),
-   ('Italiano','Lenguas', 'CUALQUIERA PARCE',true),
-   ('Drámatica','Poesía', 'CUALQUIERA PARCE',true),
-   ('Lírica','Poesía', 'CUALQUIERA PARCE',true),
-   ('Épica','Poesía', 'CUALQUIERA PARCE',true),
-   ('Vanguardista','Poesía', 'CUALQUIERA PARCE',true),
-   ('Contemporánea','Poesía', 'CUALQUIERA PARCE',true),
-   ('Metafísica','Filosofía', 'CUALQUIERA PARCE',true),
-   ('Lógica','Filosofía', 'CUALQUIERA PARCE',true),
-   ('Filosofía del lenguaje','Filosofía', 'CUALQUIERA PARCE',true),
-   ('Epistemología','Filosofía', 'CUALQUIERA PARCE',true),
-   ('Filosofía política','Filosofía', 'CUALQUIERA PARCE',true);
+   ('Humanidades','Académicos', 'Cualquier descripcion...',true),
+   ('Salud','Académicos', 'Cualquier descripcion...',true),
+   ('Ciencias exactas','Académicos', 'Cualquier descripcion...',true),
+   ('Ingenieria','Académicos', 'Cualquier descripcion...',true),
+   ('Diccionarios','Académicos', 'Cualquier descripcion...',true),
+   ('Fantástica','Novelas', 'Cualquier descripcion...',true),
+   ('Histórica','Novelas', 'Cualquier descripcion...',true),
+   ('Misterio','Novelas', 'Cualquier descripcion...',true),
+   ('Drama','Novelas', 'Cualquier descripcion...',true),
+   ('Juvenil','Novelas', 'Cualquier descripcion...',true),
+   ('Inglés','Lenguas', 'Cualquier descripcion...',true),
+   ('Portugués','Lenguas', 'Cualquier descripcion...',true),
+   ('Francés','Lenguas', 'Cualquier descripcion...',true),
+   ('Alemán','Lenguas', 'Cualquier descripcion...',true),
+   ('Italiano','Lenguas', 'Cualquier descripcion...',true),
+   ('Drámatica','Poesía', 'Cualquier descripcion...',true),
+   ('Lírica','Poesía', 'Cualquier descripcion...',true),
+   ('Épica','Poesía', 'Cualquier descripcion...',true),
+   ('Vanguardista','Poesía', 'Cualquier descripcion...',true),
+   ('Contemporánea','Poesía', 'Cualquier descripcion...',true),
+   ('Metafísica','Filosofía', 'Cualquier descripcion...',true),
+   ('Lógica','Filosofía', 'Cualquier descripcion...',true),
+   ('Filosofía del lenguaje','Filosofía', 'Cualquier descripcion...',true),
+   ('Epistemología','Filosofía', 'Cualquier descripcion...',true),
+   ('Filosofía política','Filosofía', 'Cualquier descripcion...',true);
 
 
 INSERT INTO client(
 	username, first_name, last_name, date_birth, type_id, id, password, phone_number,gender, address, email, state)
 	VALUES 
-	 ('dan', 'Darren', 'Haan', '2000-09-17', 'CC', 116554391, '1234', 3146884001,'M', 'Cl 5 5N-45', 'dar.han@gmail.com' , true), 
-	 ('helat', 'Helaine', 'Trussell', '2001-04-20', 'CC', 1757886571, '1234', 3006884001, 'F','Cra 66 5-44', 'helat@gmail.com' , true), 
-	 ('jonpe', 'Jonah', 'Petti', '1998-01-20', 'CC', 2757886001, '1234', 5006667001, 'M','Avn 6n 8-144', 'jonah-p@gmail.com' , true),
-	 ('josette', 'Josette', 'Drouin', '1990-12-22', 'CC', 7757000001, '1234', 7006667099, 'F','Cll 66 7-14', 'josette_D@gmail.com' , true),
-	 ('clehar', 'Clement ', 'Harrelson', '1995-11-22', 'CC', 4447000001, '1234', 5009967092, 'N','Cra 56 7-184', 'clehar@gmail.com' , true);
+	 ('darrhan', 'Darren', 'Haan', '2000-09-17', 'CC', 116554391, '1234567890', 3146884001,'M', 'Cl 5 5N-45', 'dar.han@gmail.com' , true), 
+	 ('helat', 'Helaine', 'Trussell', '2001-04-20', 'CC', 1757886571, '1234567890', 3006884001, 'F','Cra 66 5-44', 'helat@gmail.com' , true), 
+	 ('jonpe', 'Jonah', 'Petti', '1998-01-20', 'CC', 2757886001, '1234567890', 5006667001, 'M','Avn 6n 8-144', 'jonah-p@gmail.com' , true),
+	 ('josette', 'Josette', 'Drouin', '1990-12-22', 'CC', 7757000001, '1234567890', 7006667099, 'F','Cll 66 7-14', 'josette_D@gmail.com' , true),
+	 ('clehar', 'Clement ', 'Harrelson', '1995-11-22', 'CC', 4447000001, '1234567890', 5009967092, 'N','Cra 56 7-184', 'clehar@gmail.com' , true);
 INSERT INTO distribution_point VALUES 
    ('Cali','Calle 13 #100-00',3212100),
    ('Medellin','Calle 25 #12-80',3214000),
@@ -224,13 +224,12 @@ INSERT INTO book VALUES
    (9789707290624,'Salud',2004,'Fundamentos del sistema nervioso -- Tejido nervioso y su conformación celular','Neuroanatomía clínica','Stephen Waxman', 417, 95400, 180500,'Manual Moderno','13','Español','G','20','images/9789707290624.jpg',true);
 
 
-
 UPDATE inventory SET availability=500 WHERE name_dp='Cali';
 UPDATE inventory SET availability=400 WHERE name_dp='Medellin';
 UPDATE inventory SET availability=600 WHERE name_dp='Barranquilla';
 
 INSERT INTO card(credit_card_number,username,type,entity,active) VALUES 
-  (333,'dan','C','VISA',true),(444,'dan','D','VISA',true),(555,'helat','C','VISA',true),(666,'jonpe','C','VISA',true),(777,'josette','D','VISA',true),(888,'clehar','C','VISA',true);
+  (333,'darrhan','C','VISA',true),(444,'darrhan','D','VISA',true),(555,'helat','C','VISA',true),(666,'jonpe','C','VISA',true),(777,'josette','D','VISA',true),(888,'clehar','C','VISA',true);
 		  
 
 INSERT INTO bill(date,discount)VALUES 
@@ -258,7 +257,7 @@ INSERT INTO bill_book VALUES
    (3,9789707290624,'Barranquilla',1);
 
 INSERT INTO critics VALUES
-   ('dan',9788422626114,'No me gusto',2),
+   ('darrhan',9788422626114,'No me gusto',2),
    ('jonpe',9788431326968,'Me gusto',5),
    ('jonpe',9788490227565,'No me gusto',3),
    ('helat',9789707290624,'Me gusto',4);
@@ -266,6 +265,6 @@ INSERT INTO critics VALUES
 INSERT INTO message(
 	username,matter,description,solved)
 	VALUES
-	('dan','falla en libros','La pagina no me carga los libros',false),
+	('darrhan','falla en libros','La pagina no me carga los libros',false),
 	('helat','best app','Muy buena la pagina, sigan asi',false),
 	('josette','falla compras','No se donde puedo ver mis compras',false);
