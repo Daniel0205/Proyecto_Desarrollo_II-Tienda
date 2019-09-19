@@ -45,7 +45,7 @@ export const mainListItemsAdmin = (
       </ListItemIcon>
       <ListItemText primary="Categories" />
     </ListItem>
-    
+
     <ListItem button component={Link} to="/Admin_page/subcategories">
       <ListItemIcon>
         <CategoryIcon />
@@ -74,13 +74,6 @@ export const secondaryListItemsAdmin = (
 
     <ListSubheader inset>Reports</ListSubheader>
 
-    <ListItem button component={Link} to="/Admin_page/buyers">
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Best buyers" />
-    </ListItem>
-
     <ListItem button component={Link} to="/Admin_page/trending">
       <ListItemIcon>
         <AssignmentIcon />
@@ -101,13 +94,20 @@ export const secondaryListItemsAdmin = (
       </ListItemIcon>
       <ListItemText primary="Sales" />
     </ListItem>
+
+    <ListItem button component={Link} to="/Admin_page/buyers">
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Best buyers" />
+    </ListItem>
   </div>
 );
 
 export const sessionItem = (
   <div>
     <ListSubheader inset>Session</ListSubheader>
-    <ListItem  component={Link}to={`/home/`} button>
+    <ListItem component={Link} to={`/home/`} button>
       <ListItemIcon>
         <ExitToAppIcon />
       </ListItemIcon>
@@ -163,7 +163,7 @@ export const secondaryListItemsClient = (
       </ListItemIcon>
       <ListItemText primary="Contact us" />
     </ListItem>
-    <ListItem  component={Link}to={`/home/`} button>
+    <ListItem component={Link} to={`/home/`} button>
       <ListItemIcon>
         <ExitToAppIcon />
       </ListItemIcon>

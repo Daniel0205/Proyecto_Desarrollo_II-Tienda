@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
-const BillBook = require('../models/BillBook');
+const sequelize = require('sequelize');
+const Op = sequelize.Op;
 const Book = require('../models/Book');
 const Bill = require('../models/Bill');
 const Inventory = require('../models/Inventory');
@@ -72,7 +71,7 @@ router.post("/low_stocks", (req, res) => {
         });
 });
 
-
+//Funcion que retona las ventas por rangos de fechas
 router.post("/sales", (req, res) => {
 
     let initDate = req.body.initDate;
@@ -104,6 +103,8 @@ router.post("/sales", (req, res) => {
         });
 });
 
+
+//Funcion que retorna los compradores por rango de fecha
 router.post("/buyers", (req, res) => {
 
     let initDate = req.body.initDate;
@@ -137,5 +138,26 @@ router.post("/buyers", (req, res) => {
             res.json({ bool: false })
         });
 });
+
+
+
+//Funcion que retorna los compradores por rango de fecha
+router.get("/birthdays", (req, res) => {
+
+    Client.findAll(
+        {
+            attributes: {
+                exclude: ['password']
+            }
+        }
+    )
+        .then(x => res.json(x))
+        .catch(err => {
+            console.log(err)
+            res.json({ bool: false })
+        });
+});
+
+
 
 module.exports = router;

@@ -11,10 +11,11 @@ class Admin_page extends Component {
         Client: []
       },
       status: "Select",
-      msj:''
+      msj: ''
     };
     this.handleClick = this.handleClick.bind(this);
     this.getClient = this.getClient.bind(this);
+    this.nextBirthday = this.nextBirthday.bind(this);
     this.getClient()
   }
 
@@ -26,10 +27,10 @@ class Admin_page extends Component {
 
       .then(res => res.json())
       .then(res => {
-        if(res[0].bool){
+        if (res[0].bool) {
           delete res[0].bool
           this.setState({ algo: { Client: [] } });
-          this.setState({ algo: res[0] });
+          this.nextBirthday(res[0]);
         }
       });
 
@@ -52,7 +53,6 @@ class Admin_page extends Component {
         this.setState({ algo: { Client: [] } });
       })
       .then(() => {
-        console.log("safsadf")
         this.getClient()
       });
   }
@@ -63,13 +63,28 @@ class Admin_page extends Component {
     });
   }
 
+  nextBirthday(res) {
+    let json = res.Client;
+
+    for (let index = 0; index < json.length; index++) {
+      if (parseInt(json[index]['date_birth'].substring(5, 7)) === (new Date()).getMonth() + 2) {
+        json[index].next_birthday = "yes";
+      }
+      else {
+        json[index].next_birthday = "no";
+      }
+    }
+
+    this.setState({ algo: { Client: json } });
+  }
+
 
   render() {
-    console.log(this.state.algo)
 
     return (
 
       <div className='clientTable'>
+        <h1>Customers</h1>
         <br />
         <br />
         <JsonToTable json={this.state.algo} />
