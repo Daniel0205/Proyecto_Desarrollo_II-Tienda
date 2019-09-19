@@ -80,6 +80,14 @@ export const secondaryListItemsAdmin = (
   <div>
 
     <ListSubheader inset>Reports</ListSubheader>
+
+    <ListItem button component={Link} to="/Admin_page/buyers">
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Best buyers" />
+    </ListItem>
+
     <ListItem button component={Link} to="/Admin_page/trending">
       <ListItemIcon>
         <AssignmentIcon />
