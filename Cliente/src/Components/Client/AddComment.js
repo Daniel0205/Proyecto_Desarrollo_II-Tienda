@@ -47,12 +47,9 @@ class AddComment extends React.Component {
           .then(res => res.json())
           .then(res => {
             if(res[0].bool){
-              console.log("Creo que funciona");
               this.props.closing()
             }
-            else{
-              console.log("Creo que no funciona");
-            }
+            this.props.activate()
           })
     }
 

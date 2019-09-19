@@ -38,21 +38,26 @@ export default class Details extends React.Component {
         super(props)
     
         this.state = {
-          addcoment:false
+          addcoment:false,
+          num:1
         }
 
-        this.checkAddComment = this.checkAddComment.bind(this)
+        this.checkAddComment = this.checkAddComment.bind(this);
+        this.closeAddComment =this.closeAddComment.bind(this)
       }
 
     closeAddComment(){
+       
         this.setState({
-            addcoment: false
+            addcoment: false,
+            num:2
         })
+       
     }
 
     checkAddComment(){
         if(this.state.addcoment){
-            return(<AddComment closing={this.closeAddComment.bind(this)} st="Coment2" isbn={this.props.inf.isbn}/>)
+        return(<AddComment closing={this.closeAddComment.bind(this)} st="Coment2" isbn={this.props.inf.isbn} activate={this.closeAddComment}/>)
         }
     }
 
@@ -60,10 +65,11 @@ export default class Details extends React.Component {
         this.setState({   
             addcoment: true,                            
         }) 
+        
     }
 
     render(){  
-        
+        console.log(this.state)
         let path = "http://localhost:3001/"+ this.props.inf.imagepath;
 
         return (
@@ -130,7 +136,7 @@ export default class Details extends React.Component {
 
                 <CardContent>
                     <div>
-                        <Comments isbn={this.props.inf.isbn}/>
+                        <Comments isbn={this.props.inf.isbn} hola={this.state.num}/>
                     </div>
                 </CardContent>
             </Card>
