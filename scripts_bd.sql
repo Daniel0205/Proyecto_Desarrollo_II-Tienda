@@ -203,11 +203,11 @@ INSERT INTO subcategory VALUES
 INSERT INTO client(
 	username, first_name, last_name, date_birth, type_id, id, password, phone_number,gender, address, email, state)
 	VALUES 
-	 ('darrhan', 'Darren', 'Haan', '2000-09-17', 'CC', 116554391, '1234567891', 3146884001,'M', 'Cl 5 5N-45', 'dar.han@gmail.com' , true), 
-	 ('helat', 'Helaine', 'Trussell', '2001-04-20', 'CC', 1757886571, '1234', 3006884001, 'F','Cra 66 5-44', 'helat@gmail.com' , true), 
-	 ('jonpe', 'Jonah', 'Petti', '1998-01-20', 'CC', 2757886001, '1234', 5006667001, 'M','Avn 6n 8-144', 'jonah-p@gmail.com' , true),
-	 ('josette', 'Josette', 'Drouin', '1990-10-22', 'CC', 7757000001, '1234', 7006667099, 'F','Cll 66 7-14', 'josette_D@gmail.com' , true),
-	 ('clehar', 'Clement ', 'Harrelson', '1995-11-22', 'CC', 4447000001, '1234', 5009967092, 'N','Cra 56 7-184', 'clehar@gmail.com' , true);
+	 ('darrhan', 'Darren', 'Haan', '2000-09-17', 'CC', 116554391, '1234567890', 3146884001,'M', 'Cl 5 5N-45', 'dar.han@gmail.com' , true), 
+	 ('helat', 'Helaine', 'Trussell', '2001-04-20', 'CC', 1757886571, '1234567890', 3006884001, 'F','Cra 66 5-44', 'helat@gmail.com' , true), 
+	 ('jonpe', 'Jonah', 'Petti', '1998-01-20', 'CC', 2757886001, '1234567890', 5006667001, 'M','Avn 6n 8-144', 'jonah-p@gmail.com' , true),
+	 ('josette', 'Josette', 'Drouin', '1990-12-22', 'CC', 7757000001, '1234567890', 7006667099, 'F','Cll 66 7-14', 'josette_D@gmail.com' , true),
+	 ('clehar', 'Clement ', 'Harrelson', '1995-11-22', 'CC', 4447000001, '1234567890', 5009967092, 'N','Cra 56 7-184', 'clehar@gmail.com' , true);
 
 INSERT INTO distribution_point VALUES 
    ('Cali','Calle 13 #100-00',3212100),
@@ -219,11 +219,16 @@ INSERT INTO book VALUES
    (9788497321907,'Humanidades',2003,'Es un texto que pretende aportar una formación metodológica','Métodos de investigación en Ciencias Humanas y Sociales','José Losada', 246, 35000, 50000,'Paraninfo','4','Español','B','20','images/9788497321907.jpg',true),
    (9788422626114,'Humanidades',1988,'Relaciones de la sociología de la literatura con otras ciencias humanas','Fundamentos de sociologia de la literatura','Juan Ignacio Ferreas', 158, 64300, 106300,'Barcelona','3','Español','G','20','images/9788422626114.jpg',true),
    (9789588063737,'Humanidades',2010,' discute la trayectoria y el presente de la pedagogía','Pedagogía, saber y ciencias','Rafael Rios', 193, 40000, 70500,'UNC','2','Español','B','20','images/9789588063737.jpg',true),
+   (9789588063738,'Humanidades',2010,' discute la trayectoria y el presente de la pedagogía','Pedagogía, saber y ciencias edicion 2' ,'Rafael Rios', 193, 40000, 70500,'UNC','2','Español','B','20','images/9789588063737.jpg',true),
+   (9789588063739,'Humanidades',2010,' discute la trayectoria y el presente de la pedagogía','Pedagogía, saber y ciencias  edicion 3','Rafael Rios', 193, 40000, 70500,'UNC','2','Español','B','20','images/9789588063737.jpg',true),
+   (9789588063730,'Humanidades',2010,' discute la trayectoria y el presente de la pedagogía','Pedagogía, saber y ciencias  edicion 4','Rafael Rios', 193, 40000, 70500,'UNC','2','Español','B','20','images/9789588063737.jpg',true),
    (9788490227565,'Salud',2014,'Ofrece una visión concisa pero completa de la investigación en ciencias de la salud','Introducción a la investigación en ciencias de la salud','Stephen Polgar', 235, 130700, 210500,'Elsavier','6','Español','B','20','images/9788490227565.jpg',true),
    (9788431326968,'Salud',2010,'La actividad física regular proporciona beneficios sustanciales para la salud de las personas','Alimentación, ejercicio físico y salud','Diana Ansorena', 302, 40000, 70500,'Eunsa','3','Español','B','20','images/9788431326968.jpg',true),
    (9789588843056,'Salud',2014,'El hospital como organización -- Economía y financiamiento de la salud','Administración de servicios de salud','Humberto Blanco', 229, 20800, 60200,'CIB','2','Español','B','20','images/9789588843056.jpg',true),
-   (9789707290624,'Salud',2004,'Fundamentos del sistema nervioso -- Tejido nervioso y su conformación celular','Neuroanatomía clínica','Stephen Waxman', 417, 95400, 180500,'Manual Moderno','13','Español','G','20','images/9789707290624.jpg',true);
-   
+   (9789707290624,'Salud',2004,'Fundamentos del sistema nervioso -- Tejido nervioso y su conformación celular','Neuroanatomía clínica','Stephen Waxman', 417, 95400, 180500,'Manual Moderno','13','Español','G','20','images/9789707290624.jpg',true),
+   (9789707290625,'Salud',2004,'Fundamentos del sistema nervioso -- Tejido nervioso y su conformación celular edicion 2','Neuroanatomía clínica','Stephen Waxman', 417, 95400, 180500,'Manual Moderno','13','Español','G','20','images/9789707290624.jpg',true),
+   (9789707290626,'Salud',2004,'Fundamentos del sistema nervioso -- Tejido nervioso y su conformación celular edicion 3','Neuroanatomía clínica','Stephen Waxman', 417, 95400, 180500,'Manual Moderno','13','Español','G','20','images/9789707290624.jpg',true),
+   (9789707290627,'Salud',2004,'Fundamentos del sistema nervioso -- Tejido nervioso y su conformación celular edicion 4','Neuroanatomía clínica','Stephen Waxman', 417, 95400, 180500,'Manual Moderno','13','Español','G','20','images/9789707290624.jpg',true);
 
 UPDATE inventory SET availability=500 WHERE name_dp='Cali';
 UPDATE inventory SET availability=400 WHERE name_dp='Medellin';

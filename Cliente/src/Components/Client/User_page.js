@@ -180,7 +180,7 @@ const User_page = (props) => {
             Welcome {props.username}
             </Typography>
             <Typography component="h6" variant="h6" color="inherit"  >
-            Distribution Point:     
+            Distribution Point:  &nbsp; &nbsp;   
             </Typography>
             <Select
               value={props.dp}
