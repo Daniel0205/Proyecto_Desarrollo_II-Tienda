@@ -49,7 +49,7 @@ class AddComment extends React.Component {
             if(res[0].bool){
               this.props.closing()
             }
-            this.props.activate()
+           
           })
     }
 

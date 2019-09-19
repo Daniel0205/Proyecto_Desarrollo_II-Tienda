@@ -57,7 +57,7 @@ export default class Details extends React.Component {
 
     checkAddComment(){
         if(this.state.addcoment){
-        return(<AddComment closing={this.closeAddComment.bind(this)} st="Coment2" isbn={this.props.inf.isbn} activate={this.closeAddComment}/>)
+        return(<AddComment closing={this.closeAddComment} st="Coment2" isbn={this.props.inf.isbn} activate={this.closeAddComment}/>)
         }
     }
 

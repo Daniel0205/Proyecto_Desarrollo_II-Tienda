@@ -39,27 +39,7 @@ class Comments extends React.Component {
         this.canEdit = this.canEdit.bind(this)
       }
 
-    actualizarDatos(e){
 
-      let arrcom = this.state.myComments;
-
-        switch (e.target.id) {
-            case 'opinion2':
-              arrcom[0].comment = e.target.valu
-              this.setState({
-                myComments: arrcom
-              })
-              break;
-            case 'stars':
-                arrcom[0].score = e.target.valu
-                this.setState({
-                  myComments: arrcom
-                })
-              break;
-            default:
-              break;
-        }
-    }
 
     getComments(){
 
@@ -80,9 +60,25 @@ class Comments extends React.Component {
     }
 
     handleCloseUp(){
-      this.setState({
-        formOpen: false
+      console.log(this.state)
+      fetch ("/Critics/update", {
+        method: 'POST',
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(this.state.myComments[0])
       })
+      .then(res=>res.json())
+      .then(res => {
+        if(res[0].bool){
+          this.setState({
+            formOpen: false
+          })
+        }
+      })
+      
+
     }
 
 
@@ -188,6 +184,33 @@ class Comments extends React.Component {
       }
     }
 
+        actualizarDatos(e,newValue){
+
+      console.log(newValue)
+      console.log(e.target.id)
+      
+      let arrcom = this.state.myComments;
+
+        switch (e.target.id) {
+            case 'opinion2':
+              arrcom[0].comment = e.target.value
+              console.log(arrcom)
+              this.setState({
+                myComments: arrcom
+              })
+              break;
+            case 'stars':
+                arrcom[0].score = newValue
+                console.log(arrcom)
+                this.setState({
+                  myComments: arrcom
+                })
+              break;
+            default:
+              break;
+        }
+    }
+
     canEdit(){
       if(this.state.myComments.length > 0){
         return(
@@ -198,7 +221,14 @@ class Comments extends React.Component {
                   id="stars" 
                   name="simple-controlled"
                   value={this.state.myComments[0].score}
-                  onChange={this.actualizarDatos}
+                  onChange={(event, newValue) => {
+                    var arrcom = this.state.myComments;
+                    arrcom[0].score = newValue
+                    console.log(arrcom)
+                    this.setState({
+                      myComments: arrcom
+                    })
+                  }}
               />
             <TextField
                 id="opinion2"
@@ -211,7 +241,14 @@ class Comments extends React.Component {
                 InputLabelProps={{
                 shrink: true,
                 }}
-                onChange={this.actualizardatos}
+                onChange={(e)=>{
+                  var arrcom = this.state.myComments;
+                  arrcom[0].comment = e.target.value
+                  console.log(arrcom)
+                  this.setState({
+                    myComments: arrcom
+                  })
+                }}
                 value={this.state.myComments[0].comment}
             />
           </DialogContent>
