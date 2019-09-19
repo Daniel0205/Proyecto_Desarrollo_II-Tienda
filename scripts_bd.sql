@@ -223,7 +223,7 @@ INSERT INTO book VALUES
    (9788431326968,'Salud',2010,'La actividad física regular proporciona beneficios sustanciales para la salud de las personas','Alimentación, ejercicio físico y salud','Diana Ansorena', 302, 40000, 70500,'Eunsa','3','Español','B','20','images/9788431326968.jpg',true),
    (9789588843056,'Salud',2014,'El hospital como organización -- Economía y financiamiento de la salud','Administración de servicios de salud','Humberto Blanco', 229, 20800, 60200,'CIB','2','Español','B','20','images/9789588843056.jpg',true),
    (9789707290624,'Salud',2004,'Fundamentos del sistema nervioso -- Tejido nervioso y su conformación celular','Neuroanatomía clínica','Stephen Waxman', 417, 95400, 180500,'Manual Moderno','13','Español','G','20','images/9789707290624.jpg',true);
-
+   
 
 UPDATE inventory SET availability=500 WHERE name_dp='Cali';
 UPDATE inventory SET availability=400 WHERE name_dp='Medellin';

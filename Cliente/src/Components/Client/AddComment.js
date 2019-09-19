@@ -112,10 +112,10 @@ class AddComment extends React.Component {
 
                 <CardActions>
                     <Button size="small" color="primary" onClick={this.guardarComentarios}>
-                        Aceptar
+                        Acept
                     </Button>
                     <Button size="small" color="primary" onClick={() => {this.props.closing()}}>
-                        Cancelar
+                        Cancel
                     </Button>
                 </CardActions>
             </Card>
