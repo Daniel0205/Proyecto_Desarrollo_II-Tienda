@@ -1,15 +1,19 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
-//const Client =require('./Client')
 
 const Message = db.define ('message',{
-    username:{
-        type: Sequelize.TEXT,
-        primaryKey: true 
+    id_message:{
+        type: Sequelize.BIGINT,
+        primaryKey: true,
+        autoIncrement: true
     },
-    message:{
+    description:{
         type: Sequelize.TEXT,
-        primaryKey: true 
+        allowNull: false 
+    },
+    matter:{
+        type: Sequelize.TEXT,
+        allowNull: false
     },
     solved:{
         type: Sequelize.BOOLEAN,
@@ -21,6 +25,5 @@ const Message = db.define ('message',{
     timestamps: false
 })
 
-Message.belongsTo(Client,{foreingkey: 'username', sourcekey:'username'});
 
 module.exports = Message;

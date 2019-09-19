@@ -1,7 +1,9 @@
 import React from 'react';
-import { Button, Input, Select } from '@material-ui/core';
+import { Button, Select } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-
+import TextField from "@material-ui/core/TextField";
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarMesssages from '../../SnackbarMesssages';
 
 
 export default class Categories extends React.Component {
@@ -9,10 +11,13 @@ export default class Categories extends React.Component {
     super(props)
     this.state = {
       type: "Search",
-      selected: 'Select',
+      selected: 'DEFAULT',
       name: "",
       description: "",
-      categoryNames: []
+      categoryNames: [],
+      msj:'',
+      types:''
+
     };
     this.getNames = this.getNames.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
@@ -43,13 +48,13 @@ export default class Categories extends React.Component {
       .then(res => res.json())
       .then(res => {
         if (res.bool) {
-          console.log("SI ACTUALIZO")
+          this.setState({msj:'CATEGORY UPDATED SUCCESSFULLY!',types:'success'})
         }
-        else console.log("NO ACTUALIZO")
+        else this.setState({msj:'ERROR UPDATING CATEGORY',types:'error'})
         this.getNames()
         this.setState({
           type: "Search",
-          selected: 'Select'
+          selected:'DEFAULT'
         })
       })
   }
@@ -78,13 +83,13 @@ export default class Categories extends React.Component {
       .then(res => res.json())
       .then(res => {
         if (res.bool) {
-          console.log("SI ELIMINO")
+          this.setState({msj:'CATEGORY DELETED SUCCESSFULLY!',types:'success'})
         }
-        else console.log("NO ELIMINO")
+        else this.setState({msj:'ERROR DELETING CATEGORY',types:'error'})
         this.getNames()
         this.setState({
           type: "Search",
-          selected: "Select"
+          selected: 'DEFAULT'
         })
       })
   }
@@ -100,26 +105,28 @@ export default class Categories extends React.Component {
       },
       body: JSON.stringify({
         name_category: this.state.name,
-        description: this.state.description
+        description: this.state.description,
+        active:true
       })
     })
       .then(res => res.json())
       .then(res => {
         if (res.bool) {
-          console.log("SI CREO")
+          this.setState({msj:'CATEGORY CREATED SUCCESSFULLY!',types:'success'})
+          this.forceUpdate()
         }
-        else console.log("NO CREO")
+        else this.setState({msj:'ERROR CREATING CATEGORY',types:'error'})
         this.getNames()
         this.setState({
           type: "Search",
-          selected: 'Select'
+          selected:'DEFAULT'
         })
       })
   }
 
 
   handleSelect(event) {
-    if (event.target.value !== "Select") {
+    if (event.target.value !== 'DEFAULT') {
       let object = this.state.categoryNames.find(x => x.name_category === event.target.value)
       this.setState({
         selected: event.target.value,
@@ -129,7 +136,7 @@ export default class Categories extends React.Component {
     }
     else {
       this.setState({
-        selected: "Select"
+        selected:'DEFAULT'
       });
     }
   }
@@ -151,7 +158,7 @@ export default class Categories extends React.Component {
 
   getFormular() {
 
-    if (this.state.selected !== "Select") {
+    if (this.state.selected !=='DEFAULT') {
 
       switch (this.state.type) {
         case "Search":
@@ -170,14 +177,26 @@ export default class Categories extends React.Component {
           return (
             <div className="actualizar-categoria">
               <form>
-                <h3>Category name:</h3>
-                <Input value={this.state.name} onChange={this.handleName} disabled /><br />
-
-                <h3>Description of the category</h3>
-                <Input value={this.state.description}
+                <TextField
+                required
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                label="Category name"
+                disabled
+                value={this.state.name}
+                onChange={this.handleName} 
+                />
+                <TextField
+                  required
+                  fullWidth
+                  variant="outlined"
+                  margin="normal"
+                  label="Description of the category"
+                  
+                  value={this.state.description}
                   onChange={this.handleDescription}
-                  placeholder='Description of the category' /><br />
-
+                />
                 <Button onClick={this.actualizar}>Update</Button>
                 <Button onClick={() => this.setState({ type: "Search" })}>Cancel</Button>
               </form>
@@ -208,17 +227,31 @@ export default class Categories extends React.Component {
 
 
   render() {
+    
+     var msj =
+     (<Snackbar
+           anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
+           open={this.state.msj!==''}
+           autoHideDuration={3000} //opcional
+       >
+           <SnackbarMesssages
+               variant={this.state.types}
+               onClose={()=>this.setState({msj:''})}
+               message={this.state.msj} />
+       </Snackbar>)
+
 
     if (this.state.type !== 'Create') {
       return (<div>
         <h1>Category</h1>
-
+        {msj}
         <Select
           name="categoryName"
+          defaultValue={'DEFAULT'}
           value={this.state.selected}
           onChange={this.handleSelect}
         >
-          <option value="Select" >
+          <option value={'DEFAULT'} disabled >
             Select a category:
               </option>
           {this.state.categoryNames.map(x =>
@@ -239,7 +272,8 @@ export default class Categories extends React.Component {
       return (
         <div>
           <h1>Category</h1>
-
+          
+          {msj}
           <ValidatorForm onSubmit={this.handleSubmit}>
 
             <h3>Category name:</h3>
@@ -261,7 +295,7 @@ export default class Categories extends React.Component {
               placeholder='Description of the category' /><br />
 
             <Button type="submit" >Create</Button>
-            <Button onClick={() => this.setState({ type: "Search", selected: "Select" })}>Cancel</Button>
+            <Button onClick={() => this.setState({ type: "Search", selected:'DEFAULT' })}>Cancel</Button>
 
           </ValidatorForm >
         </div>

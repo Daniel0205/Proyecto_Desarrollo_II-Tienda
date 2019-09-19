@@ -2,64 +2,106 @@ const express = require('express');
 const router = express.Router();
 const db  =require('../config/database')
 const Bill = require('../models/Bill')
+const BillBook = require('../models/BillBook')
+const Book = require('../models/Book')
+const BillCard = require('../models/BillCard')
+const Card = require('../models/Card')
 
 /////////////////////////////////////////////////////
 ////////////CONSULTAS DE LAS VENTAS//////////////////
 /////////////////////////////////////////////////////
 
 //insertar una venta
-router.post("/insertBill",function(req,res){
+router.post("/buy",function(req,res){
 
-    Bill.create(req.body).then(x => res.json(x))
-    .catch(err => console.log(err));
+
+    console.log(req.body)
+
+    Bill.create({
+        username:req.body.username,
+        date: db.fn('NOW'),
+        discount: req.body.discount
+    })
+    .then(x =>{
+        BillBook.bulkCreate(
+            req.body.books.map((z)=>{
+                return({
+                    id_bill:x.id_bill,
+                    isbn:z.isbn,
+                    name_dp:z.name_dp,
+                    quantity:z.quantity
+                })
+            })
+        ).then(p => {
+            console.log(p)
+            console.log(x)
+            BillCard.bulkCreate(
+                req.body.cards.map((z)=>{
+                    return({
+                        id_bill:x.id_bill,
+                        credit_card_number:z.credit_card_number,
+                        dues:z.dues,
+                        porcent:z.porcent
+                    })
+                })
+            ).then(x => 
+                res.json({bool:true})
+            )
+            .catch(err => {
+                res.json({bool:false})
+                console.log(err)});
+
+        })
+        .catch(err => {
+            res.json({bool:false})
+            console.log(err)});
+    })
+    .catch(err => {
+        res.json({bool:false})
+        console.log(err)});
   
   })
   
 //Consultar las ventas
 
-router.post("/getBills",function(req,res){
-
-    Bill.findAll()
-    .then(x =>  res.json(x))
+router.get("/getBills",function(req,res){
+    Bill.findAll({ 
+        
+        include: [
+            {
+                model: Book, 
+            },
+            {
+                model: Card, 
+                required:true,                
+            }
+          ]})
+    .then(x =>res.json(x)) 
     .catch(err => console.log(err));
 
 })
   
 //Consultar una venta
 
+
 router.post("/getBill",function(req,res){
 
-    Bill.findAll({where: {
-        id_bill: req.body.id_bill
-    }})
-    .then(x =>  res.json(x))
+    Bill.findAll({ 
+        
+        include: [
+            {
+                model: Book, 
+                               
+            },
+            {
+                model: Card, 
+                required:true,                
+                where:req.body,
+            }
+          ]})
+    .then(x =>res.json(x)) 
     .catch(err => console.log(err));
 
 })
-  
-//Modificar una venta
-
-router.put("/updateBill", function(req,res){
-
-    let index = req.body.id_bill;
-    delete req.body.id_bill
-
-    Bill.update(req.body,{where: {
-        id_bill: index
-    }}).then(x => res.json(x))
-    .catch(err => console.log(err));
-
-})
-
-//Eliminar una venta
-
-router.delete("/deleteClient/:idbill", function(req,res){
-
-    Bill.destroy({where: {
-        id_bill: req.params.idbill
-    }}).then(x => res.json(x))
-    .catch(err => console.log(err));
-
-})
-
+ 
 module.exports =router;

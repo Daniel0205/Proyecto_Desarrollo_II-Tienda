@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const db  =require('../config/database')
 const BillBook = require('../models/BillBook')
 
 /////////////////////////////////////////////////////
@@ -8,9 +7,10 @@ const BillBook = require('../models/BillBook')
 /////////////////////////////////////////////////////
 
 //insertar un producto a un venta
-router.post("/insertBillbook",function(req,res){
+router.post("/insert",function(req,res){
 
-    BillBook.create(req.body).then(x => res.json(x))
+    BillBook.create(req.body)
+    .then(x => res.json(x))
     .catch(err => console.log(err));
   
 })
@@ -39,28 +39,19 @@ router.post("/getBillBookp",function(req,res){
 })
 
 //Modificar unproducto en una venta
+router.put("/update", function(req,res){
 
-router.put("/updateBillBook", function(req,res){
+    let idb = req.body.id_bill
+    let idx = req.body.isbn
+    delete req.body.id_bill
+    delete req.body.isbn
 
-    BillBook.update(req.body.quantity,{where: {
-        id_bill: req.body.id_bill,
-        isbn: req.body.isbn
+    BillBook.update(req.body,{where: {
+        id_bill: idb,
+        isbn: idx
     }}).then(x => res.json(x))
     .catch(err => console.log(err));
 
 })
-
-//Eliminar un producto en una venta
-
-router.delete("/deleteBillBook/:idbill-:isbn", function(req,res){
-
-    BillBook.destroy({where: {
-        id_bill: req.params.idbill,
-        isbn: req.params.isbn
-    }}).then(x => res.json(x))
-    .catch(err => console.log(err));
-
-})
-  
 
 module.exports =router;

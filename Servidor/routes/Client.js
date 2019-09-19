@@ -3,6 +3,7 @@ const router = express.Router();
 const bd = require('../config/database');
 const Client = require('../models/Client');
 const Admin = require('../models/Admin');
+const Card  = require('../models/Card');
 
 
 /////////////////////////////////////////////////////
@@ -12,33 +13,31 @@ const Admin = require('../models/Admin');
 //Insertar productos en la base de datos
 router.post("/insert", function (req, res) {
 
-    delete req.body.tipo
 
     Client.create(req.body)
-        .then(x => res.json([{ bool: true }]))
-        .catch(err => {
-            res.json([{ bool: false }])
-        });
+        .then(x => res.json({ bool: true }))
+        .catch(err => res.json({ bool: false }));
 
 })
 //consulta todas los usuarios en la base de datos
 router.get("/consult", (req, res) => {
 
-    Client.findAll({
-        attributes: ['username', 'first_name', 'last_name', 'date_birth', 'type_id', 'id', 'phone_number', 'address',
-            'email', ['credit_card_number', 'credit card'], [bd.cast(bd.col('state'), 'VARCHAR(5)'), 'state active']]
-    })
-        .then(x => res.json([{ Client: x }]))
+    Client.findAll({ attributes: ['username', 'first_name', 'last_name', 'date_birth', 'type_id', 'id', 'phone_number', 'address',
+    'email', [bd.cast(bd.col('state'), 'VARCHAR(5)'), 'state active']]})
+        .then(x => res.json([{bool: true, Client: x }]))
         .catch(err => {
             console.log(err)
             res.json({ bool: false })
         });
 });
-
+ 
 //consulta todas las subcategorias en la base de datos
 router.post("/get", (req, res) => {
-    Client.findAll({ where: req.body })
-        .then(x => res.json(x))
+
+    Client.findAll({ where: req.body ,
+        include: [{model:Card,where:{active:true}}]
+    })
+        .then(x => res.json({bool:true,datos:x}))
         .catch(err => {
             console.log(err)
             res.json({ bool: false })
@@ -48,6 +47,7 @@ router.post("/get", (req, res) => {
 
 //Modificar los datos de un producto especifico de la base de datos
 router.post("/deactivate", function (req, res) {
+    console.log(req.body)
     let index = req.body.client;
     Client.findAll({
         where: {
@@ -74,27 +74,16 @@ router.post("/deactivate", function (req, res) {
         })
 })
 
-/*
-//////PRUEBA
-const session = require("express-session");
-
-router.use(session({
-    secret: 'Sup3R$ecR3t',
-    resave: true,
-    saveUninitialized: true
-}));
-*/
-
 //Modificar los datos de un producto especifico de la base de datos
 router.post("/", function (req, res) {
     let { username, password } = req.body;
   //  req.session.count = req.session.count ? req.session.count + 1 : 0;
     Client.findOne({
-        attributes: ['username'],
-        where: { username: username ,password: password }
+        attributes: ['username',"date_birth"],
+        where: { username: username ,password: password,state:true }
     })
     .then(x => {
-        console.log("NO ENCONTRO")
+        
         if (x===null){
             Admin.findOne({
                 attributes: ['username'],
@@ -106,7 +95,8 @@ router.post("/", function (req, res) {
             })
         }
         else{
-                res.json({bool: true , username: username, type: "client" })
+            
+                res.json({bool: true , username: username,date:x.date_birth , type: "client" })
         }
     })
     .catch(err => {
@@ -121,7 +111,7 @@ router.post("/", function (req, res) {
 router.delete('/delete', function (req, res) {
     console.log(req.body)
 
-    Client.destroy({ where: req.body })
+    Client.update({state:false},{ where: req.body })
         .then(x => res.json([{ bool: true }]))
         .catch(err => {
             console.log(err)

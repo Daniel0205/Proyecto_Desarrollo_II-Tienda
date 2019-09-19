@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Select, Button } from '@material-ui/core';
 import { JsonToTable } from "react-json-to-table";
-import "./Activate_Client.css"
 
 
 class Admin_page extends Component {
@@ -11,7 +10,8 @@ class Admin_page extends Component {
       algo: {
         Client: []
       },
-      status: "Select"
+      status: "Select",
+      msj:''
     };
     this.handleClick = this.handleClick.bind(this);
     this.getClient = this.getClient.bind(this);
@@ -26,8 +26,11 @@ class Admin_page extends Component {
 
       .then(res => res.json())
       .then(res => {
-        this.setState({ algo: { Client: [] } });
-        this.setState({ algo: res[0] });
+        if(res[0].bool){
+          delete res[0].bool
+          this.setState({ algo: { Client: [] } });
+          this.setState({ algo: res[0] });
+        }
       });
 
   }
@@ -49,6 +52,7 @@ class Admin_page extends Component {
         this.setState({ algo: { Client: [] } });
       })
       .then(() => {
+        console.log("safsadf")
         this.getClient()
       });
   }
@@ -63,29 +67,11 @@ class Admin_page extends Component {
   render() {
     console.log(this.state.algo)
 
-    /*
-        const tab = (
-          <tbody>
-            <tr>
-              <td >1</td>
-              <td>2</td>
-              <button>b</button>
-            </tr>
-        </tbody>);*/
-
     return (
-      // <div>
-      //   <Dashboard handleList={this.handleList}/>
-      //   <button onClick={this.handleClick}>Clientes</button>
-      //   <ul>
-      //   {result.map(item => {
-      //       return <li>{item[1]}</li>;
-      //     })}
-      //   </ul>
-      //   </div>);
 
       <div className='clientTable'>
-        <br /><br />
+        <br />
+        <br />
         <JsonToTable json={this.state.algo} />
         <br />
         <Button id="desactivar" onClick={this.handleClick}>Activate/Deactivate&nbsp;</Button>
@@ -103,32 +89,6 @@ class Admin_page extends Component {
               {x.username}
             </option>)}
         </Select>
-
-
-        {/* <Table id="table" border="1">
-          <th>username</th>  <th>first_name</th> <th>last_name</th>
-          <th>date_birth</th> <th>type_id</th> <th>id</th>
-          <th>phone_number</th> <th>address</th> <th>email</th>
-          <th>state</th><th>change</th>
-
-{tab} */}
-
-        {/* <tr>
-            <td >1</td>
-            <td>2</td>
-            <button>b</button>
-          </tr>
-
-          <tr>
-            <td>3</td>
-            <td>4</td>
-            <button>b</button>
-          </tr> */}
-
-        {/* </Table> */}
-
-
-
 
       </div>);
 

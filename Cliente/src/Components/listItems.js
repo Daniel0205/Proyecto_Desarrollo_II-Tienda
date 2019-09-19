@@ -23,12 +23,7 @@ import { Link } from 'react-router-dom'
 
 export const mainListItemsAdmin = (
   <div>
-    <ListItem button >
-        <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Dashboard" />
-    </ListItem>
+
 
     <ListItem button component={Link} to="/Admin_page/products">
       <ListItemIcon>
@@ -74,45 +69,60 @@ export const mainListItemsAdmin = (
   </div>);
 
 
-
 export const secondaryListItemsAdmin = (
   <div>
-    <ListSubheader inset>Saved reports</ListSubheader>
-    <ListItem button>
+
+    <ListSubheader inset>Reports</ListSubheader>
+
+    <ListItem button component={Link} to="/Admin_page/buyers">
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Current month" />
+      <ListItemText primary="Best buyers" />
     </ListItem>
-    <ListItem button>
+
+    <ListItem button component={Link} to="/Admin_page/trending">
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Last quarter" />
+      <ListItemText primary="Trending products" />
     </ListItem>
-    <ListItem button>
+
+    <ListItem button component={Link} to="/Admin_page/low_stocks">
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
+      <ListItemText primary="Low stocks" />
     </ListItem>
+
+    <ListItem button component={Link} to="/Admin_page/sales">
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Sales" />
+    </ListItem>
+  </div>
+);
+
+export const sessionItem = (
+  <div>
     <ListSubheader inset>Session</ListSubheader>
     <ListItem  component={Link}to={`/home/`} button>
       <ListItemIcon>
         <ExitToAppIcon />
       </ListItemIcon>
-      <ListItemText primary="Sign off" />
+      <ListItemText primary="Sign out" />
     </ListItem>
   </div>
 );
 
 export const mainListItemsClient = (
   <div>
-    <ListItem button>
+    <ListItem button component={Link} to="/User_page/home">
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
-      <ListItemText primary="Dashboard" />
+      <ListItemText primary="Home" />
     </ListItem>
 
     <ListItem button component={Link} to="/User_page/store">
@@ -157,7 +167,7 @@ export const secondaryListItemsClient = (
       <ListItemIcon>
         <ExitToAppIcon />
       </ListItemIcon>
-      <ListItemText primary="Sign off" />
+      <ListItemText primary="Sign out" />
     </ListItem>
 
   </div>

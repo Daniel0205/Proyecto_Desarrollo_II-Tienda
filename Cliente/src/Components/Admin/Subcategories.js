@@ -1,19 +1,23 @@
 import React from 'react';
 import { Button, Input, Select } from '@material-ui/core';
 import { ValidatorForm, SelectValidator } from "react-material-ui-form-validator";
-
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarMesssages from '../../SnackbarMesssages';
 
 export default class Subcategories extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       type: "Search",
-      selected: 'Select',
+      selected: 'DEFAULT',
       name: "",
-      catName: 'Select',
+      catName: 'DEFAULT',
       description: "",
       subcategoryNames: [],
-      categoryNames: []
+      categoryNames: [],
+      msj:'',
+      types:''
+      
     };
     this.getNames = this.getNames.bind(this);
     this.getNamesCat = this.getNamesCat.bind(this);
@@ -48,13 +52,13 @@ export default class Subcategories extends React.Component {
       .then(res => res.json())
       .then(res => {
         if (res.bool) {
-          console.log("SI ACTUALIZO")
+          this.setState({msj:'SUBCATEGORY UPDATED SUCCESSFULLY!',types:'success'})
         }
-        else console.log("NO ACTUALIZO")
+        else this.setState({msj:'ERROR UPDATING CATEGORY',types:'error'})
         this.getNames()
         this.setState({
           type: "Search",
-          selected: 'Select'
+          selected: 'DEFAULT'
         })
       })
 
@@ -91,13 +95,13 @@ export default class Subcategories extends React.Component {
       .then(res => res.json())
       .then(res => {
         if (res.bool) {
-          console.log("SI ELIMINO")
+          this.setState({msj:'SUBCATEGORY DELETED SUCCESSFULLY!',types:'success'})
         }
-        else console.log("NO ELIMINO")
+        else this.setState({msj:'ERROR DELETING SUBCATEGORY',types:'error'})
         this.getNames()
         this.setState({
           type: "Search",
-          selected: "Select"
+          selected: 'DEFAULT'
         })
       })
 
@@ -114,25 +118,26 @@ export default class Subcategories extends React.Component {
       body: JSON.stringify({
         name_subcategory: this.state.name,
         description: this.state.description,
-        name_category: this.state.catName
+        name_category: this.state.catName,
+        active:true
       })
     })
       .then(res => res.json())
       .then(res => {
         if (res.bool) {
-          console.log("SI CREO")
+          this.setState({msj:'SUBCATEGORY CREATED SUCCESSFULLY!',types:'success'})
         }
-        else console.log("NO CREO")
+        else this.setState({msj:'ERROR CREATING CATEGORY',types:'error'})
         this.getNames()
         this.setState({
           type: "Search",
-          selected: 'Select'
+          selected:'DEFAULT'
         })
       })
   }
 
   handleSelect(event) {
-    if (event.target.value !== "Select") {
+    if (event.target.value !=='DEFAULT') {
       let object = this.state.subcategoryNames.find(x => x.name_subcategory === event.target.value)
       this.setState({
         selected: event.target.value,
@@ -143,7 +148,7 @@ export default class Subcategories extends React.Component {
     }
     else {
       this.setState({
-        selected: "Select"
+        selected: 'DEFAULT'
       });
     }
   }
@@ -163,7 +168,7 @@ export default class Subcategories extends React.Component {
 
   getFormular() {
 
-    if (this.state.selected !== "Select") {
+    if (this.state.selected !== 'DEFAULT') {
 
       switch (this.state.type) {
         case "Search":
@@ -192,11 +197,12 @@ export default class Subcategories extends React.Component {
                   validators={["isEmpty"]}
                   errorMessages={["Please select a subcategory"]}
                   name="categoryName"
+                  defaultValue={'DEFAULT'}
                   value={this.state.catName}
                   onChange={(x) => this.setState({ catName: x.target.value })}
                   placeholder="Select a subcategory:"
                 >
-                  <option value="Select" key="Select">
+                  <option value={'DEFAULT'} disabled>
                     Select a category:
                     </option>
                   {this.state.categoryNames.map(x =>
@@ -225,7 +231,7 @@ export default class Subcategories extends React.Component {
   //Validaciones con expresiones regulares
   componentDidMount() {
     ValidatorForm.addValidationRule('isEmpty', () => {
-      if (this.state.catName === 'Select') {
+      if (this.state.catName === 'DEFAULT') {
         return false;
       }
       return true;
@@ -234,18 +240,30 @@ export default class Subcategories extends React.Component {
 
 
   render() {
+    var msj =
+    (<Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
+          open={this.state.msj!==''}
+          autoHideDuration={3000} //opcional
+      >
+          <SnackbarMesssages
+              variant={this.state.types}
+              onClose={()=>this.setState({msj:''})}
+              message={this.state.msj} />
+      </Snackbar>)
 
     if (this.state.type !== 'Create') {
       return (
       <div className="create-subcategory"> 
         <h1>Subcategories</h1>
+        {msj}
 
         <Select
           name="subcategoryName"
           value={this.state.selected}
           onChange={this.handleSelect}
         >
-          <option value="Select" >
+          <option value='DEFAULT' disabled>
             Select a subcategory
               </option>
           {this.state.subcategoryNames.map(x =>
@@ -259,7 +277,7 @@ export default class Subcategories extends React.Component {
           type: "Create",
           name: "",
           description: "",
-          catName: "Select"
+          catName:'DEFAULT'
         })}>Create Subcategory</Button>
       </div>);
     }
@@ -267,18 +285,19 @@ export default class Subcategories extends React.Component {
       return (
         <div className="subcategories">
           <h1>Subcategories</h1>
-
-          <h3>Subcategory Name:</h3>
-          <Input value={this.state.name} onChange={this.handleName} placeholder='Subcategory Name:' /><br />
-          <h3>Category to which it belongs:</h3>
-          <Select
-            name="categoryName"
-            value={this.state.catName}
-            onChange={(x) => this.setState({ catName: x.target.value })}
-            placeholder="Select a subcategory:"
-          >
-            <option value="Select" >
-              Select a category:
+          {msj}
+           
+            <h3>Subcategory Name:</h3>
+            <Input id="name" value={this.state.name} onChange={this.handleName} placeholder='Subcategory Name:'/><br/>
+            <h3>Category to which it belongs:</h3>
+            <Select
+                name="categoryName"
+                value={this.state.catName}
+                onChange={(x)=>this.setState({catName:x.target.value})}
+                placeholder="Select a subcategory:"
+              >
+                <option value='DEFAULT' disabled > 
+                  Select a category:
                 </option>
             {this.state.categoryNames.map(x =>
               <option value={x.name_category} key={x.name_category}>
@@ -289,7 +308,7 @@ export default class Subcategories extends React.Component {
           <Input value={this.state.description} onChange={this.handleDescription} placeholder='Subcategory Description' /><br />
 
           <Button onClick={this.crear}>Create</Button>
-          <Button onClick={() => this.setState({ type: "Search", selected: "Select" })}>Cancel</Button>
+          <Button onClick={() => this.setState({ type: "Search", selected: 'DEFAULT' })}>Cancel</Button>
         </div>
       )
     }

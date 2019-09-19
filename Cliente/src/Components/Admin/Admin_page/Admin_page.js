@@ -11,8 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItemsAdmin, secondaryListItemsAdmin } from '../../listItems';
+import { mainListItemsAdmin, secondaryListItemsAdmin, sessionItem } from '../../listItems';
 import { makeStyles } from '@material-ui/core/styles';
 import Activate_Client from '../Activate_Client/Activate_Client';
 import Products from '../Products';
@@ -20,7 +19,14 @@ import Categories from '../Categories';
 import Subcategories from '../Subcategories';
 import Message from '../Message';
 import Bill from '../Bill';
-import { Route } from 'react-router-dom'
+import Trending from '../Trending';
+import Sales from '../Sales'
+import Low_stocks from '../Low_stocks';
+import Buyers from '../Buyers';
+import { Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import EmailIcon from '@material-ui/icons/Email';
+
 
 
 const drawerWidth = 240;
@@ -92,9 +98,9 @@ const useStyles = makeStyles(theme => ({
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    height: '100vh',
+    //height: '100vh',
     overflow: 'auto',
-    padding: '60px 15px 25px 15px',
+    padding: '60px 30px 0px 30px',
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -144,9 +150,9 @@ export default function Admin_page(props) {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Dashboard
             </Typography>
-          <IconButton color="inherit">
+          <IconButton color="inherit"component={Link} to="/Admin_page/message" >
             <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
+              <EmailIcon />
             </Badge>
           </IconButton>
         </Toolbar>
@@ -168,6 +174,8 @@ export default function Admin_page(props) {
         <List onSelect={e => console.log(e)} component="nav">{mainListItemsAdmin}</List>
         <Divider />
         <List>{secondaryListItemsAdmin}</List>
+        <Divider />
+        <List>{sessionItem}</List>
       </Drawer>
 
       <main className={classes.content}>
@@ -178,6 +186,13 @@ export default function Admin_page(props) {
         <Route path="/Admin_page/products" component={Products} />
         <Route path="/Admin_page/message" component={Message} />
         <Route path="/Admin_page/bill" component={Bill} />
+        <Route path="/Admin_page/trending" component={Trending} />
+        <Route path="/Admin_page/low_stocks" component={Low_stocks} />
+        <Route path="/Admin_page/sales" component={Sales} />
+        <Route path="/Admin_page/buyers" component={Buyers} />
+
+
+        
       </main>
     </div>);
 

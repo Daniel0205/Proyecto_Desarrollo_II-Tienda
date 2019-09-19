@@ -14,8 +14,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Background from "../Images/books.jpg";
 import updateUsername from '../store/username/action'
 import updateType from '../store/type/action'
+import updateBirthday from '../store/birthday/action'
 import { connect } from "react-redux"
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarMesssages from '../SnackbarMesssages';
 
 
 var logged = false;
@@ -49,9 +52,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInSide = ({ updateUsername, updateType }) => {
+const SignInSide = ({ updateUsername, updateType,updateBirthday }) => {
+
+  const [msj, setMsj] = React.useState('');
 
   const classes = useStyles();
+
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -71,6 +77,24 @@ const SignInSide = ({ updateUsername, updateType }) => {
  
   console.log(ValidatorForm)
 
+  function compareDate(date,tipo){
+
+    if(tipo==="client"){
+      var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = mm + '/' + dd + '/' + yyyy;
+    var mmBirth = date.slice(5,7)
+    var ddBirth = date.slice(-2)
+
+    return (ddBirth===dd && mmBirth===mm)
+
+    }
+    
+  }
+
   function handleClick(e) {
     if (!logged)
       e.preventDefault();
@@ -88,9 +112,11 @@ const SignInSide = ({ updateUsername, updateType }) => {
           console.log(res)
           updateUsername(res.username);
           updateType(res.type)
+          updateBirthday(compareDate(res.date,res.type))
         }
         else {
-          console.log("NO entro")
+          setMsj('INCORRECT USER OR PASSWORD!');
+ 
         }
       });
 
@@ -109,6 +135,16 @@ const SignInSide = ({ updateUsername, updateType }) => {
 
   return (
     <Grid container component="main" className={classes.root}>
+       <Snackbar
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
+                open={msj!==''}
+                autoHideDuration={3000} //opcional
+            >
+                <SnackbarMesssages
+                    onClose={()=>setMsj('')}
+                    variant="error" 
+                    message={msj}/>
+            </Snackbar>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -158,6 +194,7 @@ const SignInSide = ({ updateUsername, updateType }) => {
               color="primary"
               className={classes.submit}
               type="submit"
+              onClick={handleClick}
             >
               Sign In
             </Button>
@@ -181,4 +218,4 @@ const SignInSide = ({ updateUsername, updateType }) => {
 }
 
 
-export default connect(null, { updateUsername, updateType })(SignInSide);
+export default connect(null, { updateUsername,updateBirthday, updateType })(SignInSide);

@@ -1,13 +1,13 @@
 const initialState = {car: []};
 
 export default (state= initialState,action)=>{
-    if(action.car === 'UPDATE_CAR'){
+    if(action.type === 'UPDATE_CAR'){
         
         return {
             ...state,
             car: action.payload    
         }
-    }
+    } 
 
     return state;
 };

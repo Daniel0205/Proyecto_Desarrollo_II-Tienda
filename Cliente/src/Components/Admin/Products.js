@@ -1,5 +1,9 @@
 import React from 'react';
-import {Button, Input, Select } from '@material-ui/core'
+import {Button, MenuItem} from '@material-ui/core'
+import TextField from "@material-ui/core/TextField";
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarMesssages from '../../SnackbarMesssages';
+ 
 
 export default class Products extends React.Component {
 
@@ -14,52 +18,269 @@ export default class Products extends React.Component {
       title: '',
       author: '',
       number_of_pages:'',
+      cost: '',
       price: '', 
       editorial: '',
       edition: '',
       lang: '',
-      cover_type: '',
+      cover_type: 'G',
       recommended_age:'',
-      tipo: 'inicio' 
-    }
-
+      tipo: 'inicio',
+      source: null,
+      file : null ,
+      quantity:1,
+      isbnDp:'',
+      book:[],
+      dp:'',
+      dpList:[],
+      subcategory:[],
+      msj:'',
+      type:'',
+    };
 
     this.insertpro = this.insertpro.bind(this);
-    this.getpro = this.getpro.bind(this);
+  
     this.updatepro = this.updatepro.bind(this);
     this.deletepro = this.deletepro.bind(this);
-
-    this.handleClick = this.handleClick.bind(this);
+    this.getBookDp = this.getBookDp.bind(this);
     this.action = this.action.bind(this);
-    this.actualizarDatos = this.actualizarDatos.bind(this);
-
+    this.isbnField = this.isbnField.bind(this);
+    this.getFields = this.getFields.bind(this);
+    this.addInventory = this.addInventory.bind(this);
+    this.getBookDp()
   }
 
-  insertpro(){
-
-      fetch("/Book/insert",{
-        method: "POST",
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(this.state)
-      })
-      .then(res => res.json())
-      .then(res => {
-        if(res[0].bool){
-          console.log("Creo que funciona");
-        }
-        else{
-          console.log("Creo que no funciona");
-        }
-      }
-      )
-
+ 
+  getFields(){
+    return(
+      <div>
+        {/*--Subcategory--*/}
+        <TextField
+              id="outlined-select-currency"
+              name="name_subcategory"
+              select
+              fullWidth
+              required
+              disabled={this.state.tipo==="obtener"}
+              label="Subcategory"
+              value={this.state.name_subcategory}
+              onChange={(x)=>this.setState({name_subcategory:x.target.value})}
+              margin="normal"
+              variant="outlined"
+            >
+              {this.state.subcategory.map((option,i) => (
+                <MenuItem key={i} value={option.name_subcategory}>
+                  {option.name_subcategory}
+                </MenuItem>
+              ))}
+        </TextField>
+        {/*--publication_year--*/}
+        <TextField
+         name="publication_year"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          type="number"
+          inputProps={{min:"1500", max:"2019"}}
+          disabled={this.state.tipo==="obtener"}
+          value={this.state.publication_year}
+          label="Year of publication"
+          onChange={(x)=>this.setState({publication_year:x.target.value})}
+        />
+        {/*--synopsis--*/}
+        <TextField
+          name="synopsis"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          disabled={this.state.tipo==="obtener"}
+          value={this.state.synopsis}
+          label="Synopsis"
+          onChange={(x)=>this.setState({synopsis:x.target.value})}
+        />
+        {/*--Title--*/}
+        <TextField
+          name="title"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          disabled={this.state.tipo==="obtener"}
+          value={this.state.title}
+          label="Title"
+          onChange={(x)=>this.setState({title:x.target.value})}
+        />
+        {/*--Author--*/}
+        <TextField
+          name="author"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          disabled={this.state.tipo==="obtener"}
+          value={this.state.author}
+          label="Author"
+          onChange={(x)=>this.setState({author:x.target.value})}
+        />
+        {/*--Number of pages--*/}
+         <TextField
+          name="number_of_pages"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          type="number"
+          inputProps={{min:"1"}}
+          disabled={this.state.tipo==="obtener"}
+          value={this.state.number_of_pages}
+          label="Number of pages"
+          onChange={(x)=>this.setState({number_of_pages:x.target.value})}
+        />
+        {/*--Cost--*/}
+        <TextField
+          name="cost"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          type="number"
+          inputProps={{min:"0"}}
+          disabled={this.state.tipo==="obtener"}
+          value={this.state.cost}
+          label="Cost"
+          onChange={(x)=>this.setState({cost:x.target.value})}
+        />
+         {/*--Price--*/}
+         <TextField
+          name="price"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          type="number"
+          inputProps={{min:"0"}}
+          disabled={this.state.tipo==="obtener"}
+          value={this.state.price}
+          label="Price"
+          onChange={(x)=>this.setState({price:x.target.value})}
+        />
+        {/*--Editorial--*/}
+        <TextField
+          name="editorial"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          disabled={this.state.tipo==="obtener"}
+          value={this.state.editorial}
+          label="Editorial"
+          onChange={(x)=>this.setState({editorial:x.target.value})}
+        />
+         {/*--Edition--*/}
+         <TextField
+          name="edition"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          type="number"
+          inputProps={{min:"0"}}
+          disabled={this.state.tipo==="obtener"}
+          value={this.state.edition}
+          label="Edition"
+          onChange={(x)=>this.setState({edition:x.target.value})}
+        />
+        {/*--Language--*/}
+        <TextField
+          name="lang"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          disabled={this.state.tipo==="obtener"}
+          value={this.state.lang}
+          label="Language"
+          onChange={(x)=>this.setState({lang:x.target.value})}
+        />
+        {/*--Cover type--*/}
+        <TextField
+          name="cover_type"
+            id="outlined-select-currency"
+            select
+            fullWidth
+            required
+            label="Cover type"
+            disabled={this.state.tipo==="obtener"}
+            value={this.state.cover_type}
+            onChange={(x)=>this.setState({cover_type:x.target.value})}
+            margin="normal"
+            variant="outlined"
+          >
+            <MenuItem value="G">Gross</MenuItem>
+            <MenuItem value="B">Soft</MenuItem> 
+        </TextField>
+        {/*--Recommended age--*/}
+        <TextField
+          name="recommended_age" 
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          type="number"
+          inputProps={{min:"0"}}
+          disabled={this.state.tipo==="obtener"}
+          value={this.state.recommended_age}
+          label="Recommended age"
+          onChange={(x)=>this.setState({recommended_age:x.target.value})}
+        />
+        {/*--Cover image--*/}
+        <TextField
+          name="EDFile" 
+          variant="outlined"
+          margin="normal"
+          type="file"
+          required
+          fullWidth
+          disabled={this.state.tipo==="obtener"}
+          label="Cover image"
+          onChange={(x)=>this.setState({file:x.target.files[0]})}
+        />
+      
+      </div>
+    )
   }
 
-  getpro(){
-    fetch("/Book/get",{
+  isbnField(){
+    return (
+      <TextField
+        id="outlined-select-currency"
+        name="isbn"
+        select
+        fullWidth
+        required
+        label="ISBN*"
+        value={this.state.isbn}
+        onChange={(x)=>this.setState(
+          this.state.book[
+            this.state.book.findIndex((z)=>{
+            return z.isbn===x.target.value
+          })])}
+        margin="normal"
+        variant="outlined"
+      >
+        {this.state.book.map((option,i) => (
+          <MenuItem key={i} value={option.isbn}>
+            {option.isbn}-{option.title}
+          </MenuItem>
+        ))}
+      </TextField>)
+  }
+
+  addInventory(){
+
+    fetch("/Inventory/update",{
       method: "POST",
       headers: {
         Accept: "application/json, text/plain, */*",
@@ -67,31 +288,87 @@ export default class Products extends React.Component {
       },
       body: JSON.stringify({
         isbn : this.state.isbn,
+        name_dp: this.state.dp,
+        quantity:this.state.quantity
       })
-    })
-    .then(res => res.json())
-    .then(res => this.setState(res[0]))
-  }
-
-  updatepro(){
-    fetch("/Book/update",{
-      method: "PUT",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(this.state)
     })
     .then(res => res.json())
     .then(res => {
       if(res[0].bool){
-        console.log("Creo que funciona");
+        this.setState({msj:'AMOUNT ADDED TO INVENTORY!',type:'success'})
       }
       else{
-        console.log("Creo que no funciona");
+        this.setState({msj:'ERROR WHEN ADDING AMOUNT TO INVENTORY!',type:'error'})
       }
-    }
-    )
+    })
+    
+  }
+
+  getBookDp(){
+    fetch("/DistributionPoint/consultBook",{
+      method: "GET",
+    })
+    .then(res => res.json())
+    .then(res => {
+      if(res.bool){
+        delete res.bool
+        this.setState(res)
+      }
+      else{
+        this.setState({msj:'ERROR GETTING THE DATA',type:'error'})
+      }
+    })
+
+  }
+
+  insertpro(){
+
+      let myForm = document.getElementById('toSend');
+      let formData = new FormData(myForm);
+      //formData.append('cover_type',this.state.cover_type)
+      
+      fetch("/Book/insert",{
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*"
+        },
+        body: formData
+      })
+      .then(res => res.json())
+      .then(res => {
+        if(res[0].bool){
+          this.setState({msj:'PRODUCT ADDED SUCCESSFULLY!',type:'success'})
+        }
+        else{
+          this.setState({msj:'ERROR WHEN ADDING PRODUCT',type:'error'})
+        }
+      })
+
+  }
+
+
+  updatepro(){
+    let myForm = document.getElementById('toSend');
+    let formData = new FormData(myForm);
+    //formData.append('cover_type',this.state.cover_type)
+    
+    fetch("/Book/update",{
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*"
+      },
+      body: formData
+    })
+    .then(res => res.json())
+    .then(res => {
+      if(res[0].bool){
+        this.setState({msj:'PRODUCT UPDATING SUCCESSFULLY!',type:'success'})
+      }
+      else{
+        this.setState({msj:'ERROR WHEN UPDATING PRODUCT',type:'error'})
+      }
+    })
+
   }
 
   deletepro(){
@@ -108,91 +385,15 @@ export default class Products extends React.Component {
     .then(res => res.json())
     .then(res => {
       if(res[0].bool){
-        console.log("Creo que funciona");
+        this.setState({msj:'PRODUCT DELETED SUCCESSFULLY!',type:'success'})
+        this.getBookDp()
+        this.forceUpdate()
       }
       else{
-        console.log("Creo que no funciona");
+        this.setState({msj:'ERROR WHEN DELETING PRODUCT',type:'error'})
       }
     }
     )
-  }
-
-  handleClick(e){
-        console.log(e.target.value);
-        this.setState({tipo: e.target.value});
-  }
-
-  actualizarDatos(e){
-
-    switch (e.target.name){
-      case 'isbn':
-        this.setState({
-          isbn:e.target.value
-        });
-        break;
-      case 'name_subcategory':
-        this.setState({
-          name_subcategory:e.target.value
-        })
-      break;
-      case 'publication_year':
-        this.setState({
-          publication_year:e.target.value
-        })
-      break;
-      case 'synopsis':
-        this.setState({
-          synopsis:e.target.value
-        })
-      break;
-      case 'title':
-        this.setState({
-          title:e.target.value
-        })
-      break;
-      case 'author':
-        this.setState({
-          author:e.target.value
-        })
-      break;
-      case 'number_of_pages':
-        this.setState({
-          number_of_pages:e.target.value
-        })
-      break;
-      case 'price':
-        this.setState({
-          price:e.target.value
-        })
-      break;
-      case 'editorial':
-        this.setState({
-          editorial:e.target.value
-        })
-      break;
-      case 'edition':
-        this.setState({
-          edition:e.target.value
-        })
-      break;
-      case 'lang':
-        this.setState({
-          lang:e.target.value
-        })
-      break;
-      case 'cover_type':
-        this.setState({
-          cover_type:e.target.value
-        })
-      break;
-      case 'recommended_age':
-        this.setState({
-          recommended_age:e.target.value
-        })
-      break;
-      default:
-      break;
-    }
   }
 
   action(){
@@ -202,36 +403,18 @@ export default class Products extends React.Component {
           <div>
             <hr/>
             <p>Enter the product data you want to add:</p>
-            <form>
-              <label>ISBN*:</label> <br/>
-              <Input name="isbn" type="text" placeholder='ISBN*' onChange={this.actualizarDatos} value={this.state.isbn}/> <br/>
-              <label>Subcategory*:</label> <br/>
-              <Input name="name_subcategory" type="text" placeholder='Subcategory*' onChange={this.actualizarDatos} value={this.state.name_subcategory}/> <br/>
-              <label>Year of publication*:</label> <br/>
-              <Input name="publication_year" type="number" min="2019" onChange={this.actualizarDatos} value={this.state.publication_year}/> <br/>
-              <label>Synopsis*:</label> <br/>
-              <Input name="synopsis" type="text" placeholder='Synopsis*' onChange={this.actualizarDatos} value={this.state.synopsis}/> <br/>
-              <label>Title*:</label> <br/>
-              <Input name="title" type="text" placeholder='Title*' onChange={this.actualizarDatos} value={this.state.title}/> <br/>
-              <label>Author*:</label> <br/>
-              <Input name="author" type="text" placeholder='Author*' onChange={this.actualizarDatos} value={this.state.author}/> <br/>
-              <label>Number of pages*:</label> <br/>
-              <Input name="number_of_pages" type="number" min="1" onChange={this.actualizarDatos} value={this.state.number_of_pages}/> <br/>
-              <label>Price*:</label> <br/>
-              <Input name="price" type="text" placeholder='Price*' onChange={this.actualizarDatos} value={this.state.price}/> <br/>
-              <label>Editión*:</label> <br/>
-              <Input name="editorial" type="number" min="1" onChange={this.actualizarDatos} value={this.state.editorial}/> <br/>
-              <label>Editorial*:</label> <br/>
-              <Input name="edition" type="text" placeholder='Editión*' onChange={this.actualizarDatos} value={this.state.edition}/> <br/>
-              <label>Language*:</label> <br/>
-              <Input name="lang" type="text" placeholder='Language*' onChange={this.actualizarDatos} value={this.state.lang}/><br/> 
-              <label>Cover type::</label>
-              <Select onSelect={(x)=>this.setState({cover_type:x.target.value})} value="G">
-                <option value="G">Gross</option>
-                <option value="B">Soft</option>               
-              </Select><br/>
-              <label>Recommended age*</label>
-              <Input name="recommended_age" type="text" placeholder='Recommended age*' onChange={this.actualizarDatos} value={this.state.recommended_age}/> <br/>
+            <form id="toSend">
+              {/*--ISBN--*/}
+              <TextField
+              name="isbn"
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              value={this.state.isbn}
+              label="ISBN"
+              onChange={(x)=>this.setState({isbn:x.target.value})}/>  
+              {this.getFields()} 
               <Button  onClick={this.insertpro}>Insert product</Button> <br/>
             </form>
           </div>
@@ -242,33 +425,8 @@ export default class Products extends React.Component {
             <hr/>
             <p>Enter the product data you want to consult:</p>
             <form>
-              <label>ISBN*:</label> <br/>
-              <Input name="isbn" type="text"   value={this.state.isbn}/>
-              <Button onClick={this.getpro}>Consultar producto</Button> <br/>
-              <label>Subcategory*:</label> <br/>
-              <Input name="name_subcategory" type="text" disabled   value={this.state.name_subcategory}/> <br/>
-              <label>Year of publication*:</label> <br/>
-              <Input name="publication_year" type="text" disabled  value={this.state.publication_year}/> <br/>
-              <label>Synopsis*:</label> <br/>
-              <Input name="synopsis" type="text" disabled   value={this.state.synopsis}/> <br/>
-              <label>Title*:</label> <br/>
-              <Input name="title" type="text" disabled   value={this.state.title}/> <br/>
-              <label>Author*:</label> <br/>
-              <Input name="author" type="text" disabled    value={this.state.author}/> <br/>
-              <label>Number of pages*:</label> <br/>
-              <Input name="number_of_pages" type="text" disabled   value={this.state.number_of_pages}/> <br/>
-              <label>Price*:</label> <br/>
-              <Input name="price" type="text" disabled   value={this.state.price}/> <br/>
-              <label>Editorial*:</label> <br/>
-              <Input name="editorial" type="text" disabled   value={this.state.editorial}/> <br/>
-              <label>Editión*:</label> <br/>
-              <Input name="edition" type="text" disabled   value={this.state.edition}/> <br/>
-              <label>Language*:</label> <br/>
-              <Input name="lang" type="text" disabled   value={this.state.lang}/><br/> 
-              <label>Cover type:</label>
-              <Input name="cover_type" type="text" disabled   value={this.state.cover_type}/><br/>
-              <label>Recommended age*</label>
-              <Input name="recommended_age" type="text" disabled   value={this.state.recommended_age}/> <br/>
+              {this.isbnField()}
+              {this.getFields()}            
             </form>
           </div>
         );
@@ -277,37 +435,9 @@ export default class Products extends React.Component {
           <div>
             <hr/>
             <p>Enter the product data you want to update:</p>
-            <form>
-              <label>ISBN*:</label> <br/>
-              <Input name="isbn" type="text" onChange={this.actualizarDatos} value={this.state.isbn}/> 
-              <Button onClick={this.getpro}>Cargar producto</Button> <br/>
-              <label>Subcategory*:</label> <br/>
-              <Input name="name_subcategory" type="text" onChange={this.actualizarDatos} value={this.state.name_subcategory}/> <br/>
-              <label>Year of publication*:</label> <br/>
-              <Input name="publication_year" type="number" min="2019"  onChange={this.actualizarDatos} value={this.state.publication_year}/> <br/>
-              <label>Synopsis*:</label> <br/>
-              <Input name="synopsis" type="text" onChange={this.actualizarDatos} value={this.state.synopsis}/> <br/>
-              <label>Title*:</label> <br/>
-              <Input name="title" type="text" onChange={this.actualizarDatos} value={this.state.title}/> <br/>
-              <label>Author*:</label> <br/>
-              <Input name="author" type="text" onChange={this.actualizarDatos} value={this.state.author}/> <br/>
-              <label>Number of pages*:</label> <br/>
-              <Input name="number_of_pages" type="number" min="1" onChange={this.actualizarDatos} value={this.state.number_of_pages}/> <br/>
-              <label>Price*:</label> <br/>
-              <Input name="price" type="text"  onChange={this.actualizarDatos} value={this.state.price}/> <br/>
-              <label>Editorial*:</label> <br/>
-              <Input name="editorial" type="text" placeholder='Editorial*' onChange={this.actualizarDatos} value={this.state.editorial}/> <br/>
-              <label>Editión*:</label> <br/>
-              <Input name="edition" type="number" min="1" placeholder='Editión*' onChange={this.actualizarDatos} value={this.state.edition}/> <br/>
-              <label>Language*:</label> <br/>
-              <Input name="lang" type="text" placeholder='Language*' onChange={this.actualizarDatos} value={this.state.lang}/><br/> 
-              <label>Cover type:</label>
-              <Select onSelect={(x)=>this.setState({cover_type:x.target.value})} value="G">
-                <option value="G">Gross</option>
-                <option value="B">Soft</option>               
-              </Select><br/>
-              <label>Recommended age*</label>
-              <Input name="recommended_age" type="text" placeholder='Recommended age*' onChange={this.actualizarDatos} value={this.state.recommended_age}/> <br/>
+            <form id="toSend">
+              {this.isbnField()}
+              {this.getFields()}
               <Button  onClick={this.updatepro}>Update product</Button> <br/>
             </form>          
           </div>
@@ -316,9 +446,49 @@ export default class Products extends React.Component {
         return(
           <div>
             <hr/>
-            <p>Select the product data you want to add:</p>
-            <Input name="isbn" type="text" placeholder='ISBN*' onChange={this.actualizarDatos} value={this.state.isbn}/> <br/>
+            <p>Select the product data you want to delete:</p>
+            {this.isbnField()}
             <Button  onClick={this.deletepro}>Delete product</Button>
+          </div>
+        );
+      case "addInventory":
+        return(
+          <div>
+            <hr/>
+            <p>Select the product you want to add :</p>
+             {this.isbnField()}
+
+            <TextField
+              id="outlined-select-currency"
+              select
+              fullWidth
+              required
+              label="Distribution Point*"
+              value={this.state.dp}
+              onChange={(x)=>this.setState({dp:x.target.value})}
+              margin="normal"
+              variant="outlined"
+            >
+              {this.state.dpList.map((option,i) => (
+                <MenuItem key={i} value={option.name_dp}>
+                  {option.name_dp}
+                </MenuItem>
+              ))}
+            </TextField>
+            <p>Select the quantity :</p>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              type="number"
+              label="Quatity"
+              inputProps={{ min:"1",max:'1000' }}
+              onChange={(x)=>this.setState({quantity:x.target.value})} 
+              value={this.state.quantity}
+            ></TextField>
+           
+            <Button  onClick={this.addInventory}>add product</Button>
           </div>
         );
       default:
@@ -327,13 +497,25 @@ export default class Products extends React.Component {
   }
 
     render(){
+      console.log(this.state)
       return (
         <div className='botns'>
+          <Snackbar
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
+              open={this.state.msj!==''}
+              autoHideDuration={3000} //opcional
+          >
+              <SnackbarMesssages
+                  variant={this.state.type}
+                  onClose={()=>this.setState({msj:''})}
+                  message={this.state.msj} />
+          </Snackbar>
         <h1>Products</h1>
         <Button onClick={() => this.setState({tipo: "insertar"})}>INSERT PRODUCT</Button>
         <Button onClick={() => this.setState({tipo: "obtener"})}>CONSULT PRODUCTS</Button>
         <Button onClick={() => this.setState({tipo: "actualizar"})}>UPDATE PRODUCTS</Button>
         <Button onClick={() => this.setState({tipo: "eliminar"})}>DELETE PRODUCTS</Button>
+        <Button onClick={() => this.setState({tipo: "addInventory"})}>ADD PRODUCTS TO INVENTORY</Button>
         {this.action()}
       </div>
       );
