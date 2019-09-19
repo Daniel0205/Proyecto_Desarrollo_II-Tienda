@@ -1,5 +1,6 @@
 import React from 'react';
 import {Typography, Divider, Grid,IconButton,Dialog,DialogContent,DialogContentText,DialogActions,Button} from '@material-ui/core';
+import {DialogTitle,TextField} from '@material-ui/core';
 import CommentIcon from '@material-ui/icons/Comment';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Rating from '@material-ui/lab/Rating';
@@ -23,7 +24,8 @@ class Comments extends React.Component {
         this.state = {
           comments:[],
           myComments:[],
-          dialogOpen: false
+          dialogOpen: false,
+          formOpen: false
         }
 
         this.getComments();
@@ -32,7 +34,32 @@ class Comments extends React.Component {
         this.handleClose = this.handleClose.bind(this);
         this.deleteComment = this.deleteComment.bind(this)
         this.updateComment = this.updateComment.bind(this)
+        this.handleCloseUp = this.handleCloseUp.bind(this);
+        this.actualizarDatos = this.actualizarDatos.bind(this)
+        this.canEdit = this.canEdit.bind(this)
       }
+
+    actualizarDatos(e){
+
+      let arrcom = this.state.myComments;
+
+        switch (e.target.id) {
+            case 'opinion2':
+              arrcom[0].comment = e.target.valu
+              this.setState({
+                myComments: arrcom
+              })
+              break;
+            case 'stars':
+                arrcom[0].score = e.target.valu
+                this.setState({
+                  myComments: arrcom
+                })
+              break;
+            default:
+              break;
+        }
+    }
 
     getComments(){
 
@@ -51,6 +78,13 @@ class Comments extends React.Component {
       )
  
     }
+
+    handleCloseUp(){
+      this.setState({
+        formOpen: false
+      })
+    }
+
 
     divideComments(arr){
       let otherscomments = arr
@@ -86,7 +120,12 @@ class Comments extends React.Component {
           Accept: "application/json, text/plain, */*",
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({isbn:this.props.isbn,username:this.props.username})
+        body: JSON.stringify({
+          isbn:this.props.isbn,
+          username:this.props.username,
+          comment:this.state.myComments[0].comment,
+          score:this.state.myComments[0].score
+        })
       })
       .then(res=>res.json())
       .then(() => {
@@ -94,7 +133,6 @@ class Comments extends React.Component {
         this.setState({
           dialogOpen: false
         });
-        this.props.activate();
       }
       )
     }
@@ -135,7 +173,7 @@ class Comments extends React.Component {
                       {this.state.myComments[0].comment} 
                   </Typography>
                   <Rating value={this.state.myComments[0].score} readOnly/>
-                  <IconButton aria-label="Add a comment" >
+                  <IconButton aria-label="Add a comment" onClick={()=>this.setState({formOpen:true})}>
                     <EditOutlinedIcon />
                   </IconButton>
                   <IconButton aria-label="Add a comment" onClick={()=>this.setState({dialogOpen:true})}>
@@ -147,6 +185,46 @@ class Comments extends React.Component {
         );
 
         
+      }
+    }
+
+    canEdit(){
+      if(this.state.myComments.length > 0){
+        return(
+          <Dialog open={this.state.formOpen} onClose={this.handleCloseUp} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Update your comment</DialogTitle>
+          <DialogContent>
+            <Rating
+                  id="stars" 
+                  name="simple-controlled"
+                  value={this.state.myComments[0].score}
+                  onChange={this.actualizarDatos}
+              />
+            <TextField
+                id="opinion2"
+                label="Comment"
+                style={{ margin: 8 }}
+                placeholder="Please! Add here your comment"
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                InputLabelProps={{
+                shrink: true,
+                }}
+                onChange={this.actualizardatos}
+                value={this.state.myComments[0].comment}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleCloseUp} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.handleCloseUp} color="primary">
+              Update
+            </Button>
+          </DialogActions>
+        </Dialog>
+        )
       }
     }
 
@@ -200,6 +278,10 @@ class Comments extends React.Component {
                     </Button>
                   </DialogActions>
                 </Dialog>
+
+                {this.canEdit()}
+
+               
             </div>
         );
     }
