@@ -230,7 +230,6 @@ INSERT INTO book VALUES
    (9789707290626,'Salud',2004,'Fundamentos del sistema nervioso -- Tejido nervioso y su conformación celular edicion 3','Neuroanatomía clínica','Stephen Waxman', 417, 95400, 180500,'Manual Moderno','13','Español','G','20','images/9789707290624.jpg',true),
    (9789707290627,'Salud',2004,'Fundamentos del sistema nervioso -- Tejido nervioso y su conformación celular edicion 4','Neuroanatomía clínica','Stephen Waxman', 417, 95400, 180500,'Manual Moderno','13','Español','G','20','images/9789707290624.jpg',true);
 
-
 UPDATE inventory SET availability=500 WHERE name_dp='Cali';
 UPDATE inventory SET availability=400 WHERE name_dp='Medellin';
 UPDATE inventory SET availability=600 WHERE name_dp='Barranquilla';

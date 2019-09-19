@@ -1,10 +1,11 @@
 import React from 'react';
-import {Card, CardContent, CardHeader, CardActions, TextField, Button,Typography} from '@material-ui/core';
+import {Card, CardContent, CardHeader, CardActions, Button,Typography} from '@material-ui/core';
 import "./AddComment.css";
 import Rating from '@material-ui/lab/Rating';
 import {getUsername} from '../../store/username/reducer'
 import {connect} from 'react-redux'
 import updateUsername from '../../store/username/action'
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
 class AddComment extends React.Component {
 
@@ -22,6 +23,15 @@ class AddComment extends React.Component {
         this.actualizarDatos = this.actualizarDatos.bind(this);
         this.guardarComentarios = this.guardarComentarios.bind(this);
     }
+
+    componentDidMount() {
+      ValidatorForm.addValidationRule(
+        "isValidOpinion", (string) => /[a-zA-Z0-9 \u00E0-\u00FC]/g.test(string)
+      );
+      ValidatorForm.addValidationRule(
+        "isValidLengthOpinion", (string) => /\b[a-zA-Z0-9 \u00E0-\u00FC]{4,200}\b/g.test(string)
+      );
+  }
 
     actualizarDatos(e){
         switch (e.target.id) {
@@ -65,41 +75,47 @@ class AddComment extends React.Component {
                     title= "Add a comment"
                 />
                 <CardContent>
-                    <Rating 
-                        name="simple-controlled"
-                        value={this.state.score}
-                        onChange={(event, newValue) => {
-                            this.setState({
-                                score: newValue
-                            })
+
+                <ValidatorForm>
+                  <Rating 
+                          name="simple-controlled"
+                          value={this.state.score}
+                          onChange={(event, newValue) => {
+                              this.setState({
+                                  score: newValue
+                              })
+                            }}
+                      /> 
+                      <Typography variant="caption" display="block" gutterBottom>
+                          Ranking the book
+                      </Typography>
+                      <br/>
+                      <TextValidator
+                          id="opinion"
+                          label="Comment"
+                          style={{ margin: 8 }}
+                          placeholder="Please! Add here your comment"
+                          fullWidth
+                          margin="normal"
+                          variant="outlined"
+                          InputLabelProps={{
+                          shrink: true,
                           }}
-                    /> 
-                    <Typography variant="caption" display="block" gutterBottom>
-                        Ranking the book
-                    </Typography>
-                    <br/>
-                    <TextField
-                        id="opinion"
-                        label="Comment"
-                        style={{ margin: 8 }}
-                        placeholder="Please! Add here your comment"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        InputLabelProps={{
-                        shrink: true,
-                        }}
-                        onChange={this.actualizarDatos}
-                        value = {this.state.comment}
-                    />
+                          onChange={this.actualizarDatos}
+                          value = {this.state.comment}
+                          validators={["required", "isValidOpinion", "isValidLengthOpinion"]}
+                          errorMessages={["Please fill out  this field", "Invalid format!", "Invalid lentgth!"]}
+                      />
+                </ValidatorForm>
+                    
                 </CardContent>
 
                 <CardActions>
                     <Button size="small" color="primary" onClick={this.guardarComentarios}>
-                        Aceptar
+                        Acept
                     </Button>
                     <Button size="small" color="primary" onClick={() => {this.props.closing()}}>
-                        Cancelar
+                        Cancel
                     </Button>
                 </CardActions>
             </Card>

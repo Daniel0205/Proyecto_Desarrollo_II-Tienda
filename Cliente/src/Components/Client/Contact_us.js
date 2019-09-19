@@ -2,9 +2,9 @@ import React from 'react';
 import { Button } from '@material-ui/core'
 import {getUsername} from '../../store/username/reducer'
 import {connect} from 'react-redux'
-import TextField from "@material-ui/core/TextField";
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarMesssages from '../../SnackbarMesssages';
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
 
 class Contact_us extends React.Component {
@@ -22,6 +22,18 @@ constructor(props){
   }
 
   this.mensaje = this.mensaje.bind(this);
+}
+
+componentDidMount() {
+  ValidatorForm.addValidationRule(
+    "isValidOpinion", (string) => /[a-zA-Z0-9 \u00E0-\u00FC]/g.test(string)
+  );
+  ValidatorForm.addValidationRule(
+    "isValidLengthMatter", (string) => /\b[a-zA-Z0-9 \u00E0-\u00FC]{4,20}\b/g.test(string)
+  );
+  ValidatorForm.addValidationRule(
+    "isValidLengthMessage", (string) => /\b[a-zA-Z0-9 \u00E0-\u00FC]{4,2000}\b/g.test(string)
+  );
 }
 
 mensaje(){
@@ -47,7 +59,7 @@ mensaje(){
         matter: '',
         description: '',
         solved: false,
-        msj:'SEND SUCCESFULLY!',
+        msj:'THE ANSWER WILL BE SENT TO YOUR E-MAIL!',
         type:"success"
       })
     }
@@ -78,26 +90,34 @@ mensaje(){
                   message={this.state.msj} />
           </Snackbar>
 
-          <TextField
-              id='reason' 
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              onChange={(x)=>this.setState({matter:x.currentTarget.value})}
-              value={this.state.matter}
-              label="Matter"
-            />
-          <TextField
-              id='msm' 
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              onChange={(x)=>this.setState({description:x.currentTarget.value})}
-              value={this.state.description}
-              label="Message"
-            />
+          <ValidatorForm>
+            <TextValidator
+                id='reason' 
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                onChange={(x)=>this.setState({matter:x.currentTarget.value})}
+                value={this.state.matter}
+                label="Matter"
+                validators={["required", "isValidOpinion", "isValidLengthMatter"]}
+                errorMessages={["Please fill out  this field", "Invalid format!", "Invalid lentgth!"]}
+              />
+            <TextValidator
+                id='msm' 
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                onChange={(x)=>this.setState({description:x.currentTarget.value})}
+                value={this.state.description}
+                label="Message"
+                validators={["required", "isValidOpinion", "isValidLengthMessage"]}
+                errorMessages={["Please fill out  this field", "Invalid format!", "Invalid lentgth!"]}
+              />
+          </ValidatorForm>
+
+          
           <Button id='send' fullWidth onClick={this.mensaje} color="primary">Send</Button>
       </div>);
   } 

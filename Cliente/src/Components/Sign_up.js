@@ -21,6 +21,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { green } from '@material-ui/core/colors';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
 
 const useStyles = makeStyles(theme => ({
@@ -130,6 +131,25 @@ export default function SignInSide() {
 
   const classes = useStyles();
 
+  ValidatorForm.addValidationRule(
+    "isValidName", (string) => /[a-zA-Z0-9 \u00E0-\u00FC]/g.test(string)
+  );
+  ValidatorForm.addValidationRule(
+    "isValidLengthName", (string) => /\b[a-zA-Z0-9 \u00E0-\u00FC]{5,15}\b/g.test(string)
+  );
+  ValidatorForm.addValidationRule(
+    "isValidLengthPassword", (string) => /\b[a-zA-Z0-9 \u00E0-\u00FC]{10,25}\b/g.test(string)
+  );
+  ValidatorForm.addValidationRule(
+    "isValidLengthPhone", (string) => /\b[a-zA-Z0-9 \u00E0-\u00FC]{10}\b/g.test(string)
+  );
+  ValidatorForm.addValidationRule(
+    "isValidPhone", (string) => /\b^([0-9]){5,15}\b/g.test(string)
+  );
+  ValidatorForm.addValidationRule(
+    "isValidId", (string) => /^([0-9])*$/g.test(string)
+  );
+
 
   function SnackbarSuccess() {
     const classes = useStyles1();
@@ -200,12 +220,12 @@ export default function SignInSide() {
             <Typography component="h1" variant="h5">
               Create an account
           </Typography>
-            <form className={classes.form} noValidate>
+            <ValidatorForm className={classes.form} noValidate>
 
               {/*-----------------------------------------------------------*/}
 
               {/*--Username--*/}
-              <TextField
+              <TextValidator
                 variant="outlined"
                 margin="normal"
                 required
@@ -215,10 +235,12 @@ export default function SignInSide() {
                 name="username"
                 autoFocus
                 onChange={(x) => state['username'] = x.target.value}
+                validators={["required", "isValidName", "isValidLengthName"]}
+                errorMessages={["Please fill out  this field", "Invalid format!", "Invalid lentgth!"]}
               />
 
               {/*--First name--*/}
-              <TextField
+              <TextValidator
                 variant="outlined"
                 margin="normal"
                 required
@@ -227,10 +249,12 @@ export default function SignInSide() {
                 id="firstname"
                 name="first_name"
                 onChange={(x) => state['first_name'] = x.target.value}
+                validators={["required", "isValidName", "isValidLengthName"]}
+                errorMessages={["Please fill out  this field", "Invalid format!", "Invalid lentgth!"]}
               />
 
               {/*--Last name--*/}
-              <TextField
+              <TextValidator
                 variant="outlined"
                 margin="normal"
                 required
@@ -239,10 +263,12 @@ export default function SignInSide() {
                 id="lastname"
                 name='last_name'
                 onChange={(x) => state['last_name'] = x.target.value}
+                validators={["required", "isValidName", "isValidLengthName"]}
+                errorMessages={["Please fill out  this field", "Invalid format!", "Invalid lentgth!"]}
               />
 
               {/*--Password--*/}
-              <TextField
+              <TextValidator
                 variant="outlined"
                 margin="normal"
                 required
@@ -252,10 +278,12 @@ export default function SignInSide() {
                 name="password"
                 type="password"
                 onChange={(x) => state['password'] = x.target.value}
+                validators={["required", "isValidName", "isValidLengthPassword"]}
+                errorMessages={["Please fill out  this field", "Invalid format!", "Invalid lentgth!"]}
               />
 
               {/*--Phone number--*/}
-              <TextField
+              <TextValidator
                 variant="outlined"
                 margin="normal"
                 required
@@ -264,6 +292,8 @@ export default function SignInSide() {
                 id="phonenumber"
                 name='phone_number'
                 onChange={(x) => state['phone_number'] = x.target.value}
+                validators={["required", "isValidPhone", "isValidLengthPhone"]}
+                errorMessages={["Please fill out  this field", "Invalid format!", "Invalid lentgth!"]}
               />
 
               {/*--Address--*/}
@@ -303,7 +333,7 @@ export default function SignInSide() {
               </TextField>
 
               {/*--Identification number--*/}
-              <TextField
+              <TextValidator
                 required
                 fullWidth
                 variant="outlined"
@@ -312,10 +342,12 @@ export default function SignInSide() {
                 id="identification"
                 name='id'
                 onChange={(x) => state['id'] = x.target.value}
+                validators={["required", "isValidId"]}
+                errorMessages={["Please fill out  this field", "Invalid format!"]}
               />
 
               {/*--E-mail--*/}
-              <TextField
+              <TextValidator
                 variant="outlined"
                 margin="normal"
                 required
@@ -325,6 +357,8 @@ export default function SignInSide() {
                 type="email"
                 name="email"
                 onChange={(x) => state['email'] = x.target.value}
+                validators={['required', 'isEmail']}
+                errorMessages={['this field is required', 'email is not valid']}
               //error
               //id="outlined-error" // para resaltar error
               />
@@ -391,7 +425,7 @@ export default function SignInSide() {
                   {' '}
                 </Typography>
               </Box>
-            </form>
+            </ValidatorForm>
           </div>
         </Grid>
       </Grid>
