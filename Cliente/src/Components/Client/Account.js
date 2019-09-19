@@ -122,10 +122,13 @@ class Account extends React.Component {
       "isValidLengthPassword", (string) => /\b[a-zA-Z0-9 \u00E0-\u00FC]{10,25}\b/g.test(string)
     );
     ValidatorForm.addValidationRule(
-      "isValidPhone", (number) => /[0-9 \u00E0-\u00FC]{10}/g.test(number)
+      "isValidLengthPhone", (string) => /\b[a-zA-Z0-9 \u00E0-\u00FC]{10}\b/g.test(string)
     );
     ValidatorForm.addValidationRule(
-      "isValidId", (number) => /[0-9]/g.test(number)
+      "isValidPhone", (string) => /\b^([0-9]){5,15}\b/g.test(string)
+    );
+    ValidatorForm.addValidationRule(
+      "isValidId", (string) => /^([0-9])*$/g.test(string)
     );
 }
 
@@ -332,7 +335,7 @@ class Account extends React.Component {
                 id="phonenumber"
                 name='phone_number'
                 onChange={(x) =>  this.setState({phone_number: x.target.value})}
-                validators={["required", "isValidPhone", "isValidLengthPassword"]}
+                validators={["required", "isValidPhone", "isValidLengthPhone"]}
                 errorMessages={["Please fill out  this field", "Invalid format!", "Invalid lentgth!"]}
               />
 

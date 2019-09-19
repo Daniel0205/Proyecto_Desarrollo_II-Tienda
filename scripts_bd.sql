@@ -203,7 +203,7 @@ INSERT INTO subcategory VALUES
 INSERT INTO client(
 	username, first_name, last_name, date_birth, type_id, id, password, phone_number,gender, address, email, state)
 	VALUES 
-	 ('dan', 'Darren', 'Haan', '2000-09-17', 'CC', 116554391, '1234', 3146884001,'M', 'Cl 5 5N-45', 'dar.han@gmail.com' , true), 
+	 ('darrhan', 'Darren', 'Haan', '2000-09-17', 'CC', 116554391, '1234567891', 3146884001,'M', 'Cl 5 5N-45', 'dar.han@gmail.com' , true), 
 	 ('helat', 'Helaine', 'Trussell', '2001-04-20', 'CC', 1757886571, '1234', 3006884001, 'F','Cra 66 5-44', 'helat@gmail.com' , true), 
 	 ('jonpe', 'Jonah', 'Petti', '1998-01-20', 'CC', 2757886001, '1234', 5006667001, 'M','Avn 6n 8-144', 'jonah-p@gmail.com' , true),
 	 ('josette', 'Josette', 'Drouin', '1990-10-22', 'CC', 7757000001, '1234', 7006667099, 'F','Cll 66 7-14', 'josette_D@gmail.com' , true),
