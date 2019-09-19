@@ -16,11 +16,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import DateFnsUtils from '@date-io/date-fns';
 import format from "date-fns/format";
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import clsx from 'clsx';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import { green } from '@material-ui/core/colors';
+//import { green } from '@material-ui/core/colors';
 import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
+import SnackbarMesssages from '../SnackbarMesssages';
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
 
 const useStyles = makeStyles(theme => ({
@@ -52,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0, 2)
   }
 }));
-
+/** 
 const useStyles1 = makeStyles(theme => ({
   success: {
     backgroundColor: green[600],
@@ -69,7 +68,7 @@ const useStyles1 = makeStyles(theme => ({
     alignItems: 'center',
   },
 }));
-
+*/
 var state = {
   username: '',
   first_name: '',
@@ -124,24 +123,25 @@ export default function SignInSide() {
 
   const [selectedDate, setSelectedDate] = React.useState( '2015-05-05');
   const [RedirectToLogin, setRedirectToLogin] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [msj, setMsj] = React.useState('');
+  const [type, setType] = React.useState('');
   const [values, setValues] = React.useState({});
 
 
   const classes = useStyles();
 
+  ValidatorForm.addValidationRule(
+    "isValidName", (string) => /[a-zA-Z0-9 \u00E0-\u00FC]/g.test(string)
+  );
+  ValidatorForm.addValidationRule(
+    "isValidLengthName", (string) => /\b[a-zA-Z0-9 \u00E0-\u00FC]{5,15}\b/g.test(string)
+  );
+  
+  ValidatorForm.addValidationRule(
+    "isValidLengthPassword", (string) => /\b[a-zA-Z0-9 \u00E0-\u00FC]{10,25}\b/g.test(string)
+  );
+  
 
-  function SnackbarSuccess() {
-    const classes = useStyles1();
-    return (
-      <SnackbarContent
-        className={clsx(classes["success"])} aria-describedby="client-snackbar"
-        message={
-          <span id="client-snackbar" className={classes.message}>
-            <CheckCircleIcon className={clsx(classes.icon, classes.iconVariant)} />
-            {"YOUR ACCOUNT HAS BEEN SUCCESSFULLY CREATED!"}
-          </span>} />);
-  }
 
   function handleDateChange(date) {
     setSelectedDate(date);
@@ -150,7 +150,7 @@ export default function SignInSide() {
 
 
   function handleClick(e) {
-
+    e.preventDefault();
     
     fetch("/Client/insert", {
       method: "POST",
@@ -164,15 +164,19 @@ export default function SignInSide() {
       .then(res => {
         
         if (res.bool) {
-          console.log("Creado")
 
           //Mensaje de creacion de cuenta
-          setOpen(true);
+          setMsj("YOUR ACCOUNT HAS BEEN SUCCESSFULLY CREATED!");
+          setType("success");
           //retraso de 1 segundo antes redirigir
           setTimeout(() => setRedirectToLogin(true), 2000);
         }
         else {
-          console.log("No creado")
+          //Mensaje de creacion de cuenta
+          setMsj('ERROR CREATING YOUR ACCOUNT');
+          setType('error');
+          //retraso de 1 segundo antes redirigir
+          setTimeout(() => setMsj(''), 2000);
         }
       })
   }
@@ -199,13 +203,13 @@ export default function SignInSide() {
             </Avatar>
             <Typography component="h1" variant="h5">
               Create an account
-          </Typography>
-            <form className={classes.form} noValidate>
+             </Typography>
+            <ValidatorForm onSubmit={()=>handleClick()} className={classes.form}>
 
               {/*-----------------------------------------------------------*/}
 
               {/*--Username--*/}
-              <TextField
+                <TextValidator
                 variant="outlined"
                 margin="normal"
                 required
@@ -214,9 +218,11 @@ export default function SignInSide() {
                 id="username"
                 name="username"
                 autoFocus
-                onChange={(x) => state['username'] = x.target.value}
+                onChange={(x) => state['username'] = x.target.value}            
+                validators={["required", "isValidName", "isValidLengthName"]}
+                errorMessages={["Please fill out  this field", "Invalid format!", "Invalid lentgth!"]}
               />
-
+            
               {/*--First name--*/}
               <TextField
                 variant="outlined"
@@ -242,7 +248,7 @@ export default function SignInSide() {
               />
 
               {/*--Password--*/}
-              <TextField
+              <TextValidator
                 variant="outlined"
                 margin="normal"
                 required
@@ -252,8 +258,10 @@ export default function SignInSide() {
                 name="password"
                 type="password"
                 onChange={(x) => state['password'] = x.target.value}
+                validators={["required", "isValidName", "isValidLengthPassword"]}
+                errorMessages={["Please fill out  this field", "Invalid format!", "Invalid lentgth!"]}
               />
-
+           
               {/*--Phone number--*/}
               <TextField
                 variant="outlined"
@@ -375,14 +383,24 @@ export default function SignInSide() {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                type="submit"
                 onClick={handleClick}
               >
                 Sign Up
-            </Button>
+              </Button>
+            </ValidatorForm >
+            <Snackbar
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
+                open={msj!==''}
+                autoHideDuration={3000} //opcional
+            >
+                <SnackbarMesssages
+                    onClose={()=>setMsj('')}
+                    variant={type} 
+                    message={msj}/>
+            </Snackbar>
 
-              <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }} open={open}>
-                <SnackbarSuccess />
-              </Snackbar>
+           
 
               <Box mt={0}>
                 <Typography variant="body2" color="textSecondary" align="center">
@@ -391,7 +409,7 @@ export default function SignInSide() {
                   {' '}
                 </Typography>
               </Box>
-            </form>
+              
           </div>
         </Grid>
       </Grid>
