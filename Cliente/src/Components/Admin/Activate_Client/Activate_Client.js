@@ -10,7 +10,8 @@ class Admin_page extends Component {
       algo: {
         Client: []
       },
-      status: "Select"
+      status: "Select",
+      msj:''
     };
     this.handleClick = this.handleClick.bind(this);
     this.getClient = this.getClient.bind(this);
@@ -26,6 +27,7 @@ class Admin_page extends Component {
       .then(res => res.json())
       .then(res => {
         if(res[0].bool){
+          delete res[0].bool
           this.setState({ algo: { Client: [] } });
           this.setState({ algo: res[0] });
         }

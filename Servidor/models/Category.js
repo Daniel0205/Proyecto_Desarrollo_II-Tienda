@@ -11,6 +11,10 @@ const Category = db.define ('category',{
     description:{
         type: Sequelize.TEXT,
         allowNull: false     
+    },
+    active:{
+        type: Sequelize.BOOLEAN,
+        allowNull: true             
     }
 
 },{

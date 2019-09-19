@@ -17,6 +17,8 @@ import updateType from '../store/type/action'
 import updateBirthday from '../store/birthday/action'
 import { connect } from "react-redux"
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarMesssages from '../SnackbarMesssages';
 
 
 var logged = false;
@@ -65,6 +67,8 @@ const useStyles = makeStyles(theme => ({
 
 const SignInSide = ({ updateUsername, updateType,updateBirthday }) => {
 
+  const [msj, setMsj] = React.useState('');
+
   const classes = useStyles();
 
   function compareDate(date,tipo){
@@ -105,7 +109,8 @@ const SignInSide = ({ updateUsername, updateType,updateBirthday }) => {
           updateBirthday(compareDate(res.date,res.type))
         }
         else {
-          console.log("NO entro")
+          setMsj('INCORRECT USER OR PASSWORD!');
+ 
         }
       });
 
@@ -124,6 +129,16 @@ const SignInSide = ({ updateUsername, updateType,updateBirthday }) => {
 
   return (
     <Grid container component="main" className={classes.root}>
+       <Snackbar
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
+                open={msj!==''}
+                autoHideDuration={3000} //opcional
+            >
+                <SnackbarMesssages
+                    onClose={()=>setMsj('')}
+                    variant="error" 
+                    message={msj}/>
+            </Snackbar>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>

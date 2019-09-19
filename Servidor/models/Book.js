@@ -64,6 +64,10 @@ const Book = db.define ('book',{
     imagepath:{
         type: Sequelize.TEXT,
         allowNull: true             
+    },
+    active:{
+        type: Sequelize.BOOLEAN,
+        allowNull: true             
     }
 },{
     freezeTableName: true,

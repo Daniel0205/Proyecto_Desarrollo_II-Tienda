@@ -109,7 +109,7 @@ class Details extends React.Component {
             >
                 <SnackbarMesssages
                     variant="info"
-                    message="DEBES INGRESAR A TU CUENTA ANTES!" />
+                    message="YOU MUST LOGGING BEFORE!" />
             </Snackbar>
 
             {this.renderRedirect()}

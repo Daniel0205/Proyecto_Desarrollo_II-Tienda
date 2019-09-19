@@ -2,6 +2,8 @@ import React from 'react';
 import { Button, Select } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import TextField from "@material-ui/core/TextField";
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarMesssages from '../../SnackbarMesssages';
 
 
 export default class Categories extends React.Component {
@@ -12,7 +14,10 @@ export default class Categories extends React.Component {
       selected: 'Select',
       name: "",
       description: "",
-      categoryNames: []
+      categoryNames: [],
+      msj:'',
+      types:''
+
     };
     this.getNames = this.getNames.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
@@ -43,9 +48,9 @@ export default class Categories extends React.Component {
       .then(res => res.json())
       .then(res => {
         if (res.bool) {
-          console.log("SI ACTUALIZO")
+          this.setState({msj:'CATEGORY UPDATED SUCCESSFULLY!',types:'success'})
         }
-        else console.log("NO ACTUALIZO")
+        else this.setState({msj:'ERROR UPDATING CATEGORY',types:'error'})
         this.getNames()
         this.setState({
           type: "Search",
@@ -78,9 +83,9 @@ export default class Categories extends React.Component {
       .then(res => res.json())
       .then(res => {
         if (res.bool) {
-          console.log("SI ELIMINO")
+          this.setState({msj:'CATEGORY DELETED SUCCESSFULLY!',types:'success'})
         }
-        else console.log("NO ELIMINO")
+        else this.setState({msj:'ERROR DELETING CATEGORY',types:'error'})
         this.getNames()
         this.setState({
           type: "Search",
@@ -106,9 +111,9 @@ export default class Categories extends React.Component {
       .then(res => res.json())
       .then(res => {
         if (res.bool) {
-          console.log("SI CREO")
+          this.setState({msj:'CATEGORY CREATED SUCCESSFULLY!',types:'success'})
         }
-        else console.log("NO CREO")
+        else this.setState({msj:'ERROR CREATING CATEGORY',types:'error'})
         this.getNames()
         this.setState({
           type: "Search",
@@ -251,6 +256,16 @@ export default class Categories extends React.Component {
       return (
         <div>
           <h1>Category</h1>
+            <Snackbar
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
+                open={this.state.msj!==''}
+                autoHideDuration={3000} //opcional
+            >
+                <SnackbarMesssages
+                    variant={this.state.types}
+                    onClose={()=>this.setState({msj:''})}
+                    message={this.state.msj} />
+            </Snackbar>
 
           <ValidatorForm onSubmit={this.handleSubmit}>
 

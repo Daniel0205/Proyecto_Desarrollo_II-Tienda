@@ -13,7 +13,8 @@ export default class Subcategories extends React.Component {
       catName: 'Select',
       description: "",
       subcategoryNames: [],
-      categoryNames: []
+      categoryNames: [],
+      
     };
     this.getNames = this.getNames.bind(this);
     this.getNamesCat = this.getNamesCat.bind(this);

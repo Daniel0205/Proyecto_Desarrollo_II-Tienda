@@ -30,7 +30,8 @@ const useStyles = makeStyles(theme => ({
 
  function BookCard(props) {
   const [open, setOpen] = React.useState(false);
-  const [msj, setMsj] = React.useState(false);
+  const [msj, setMsj] = React.useState('');
+  const [type, setType] = React.useState('');
 
 
   const classes = useStyles();
@@ -41,18 +42,25 @@ const useStyles = makeStyles(theme => ({
 
   function setRedirect() {
     if(props.type==="init"){
-      setMsj(true)
+      setMsj("YOU MUST LOGGING BEFORE!")
+      setType("info")
       setTimeout(() => setOpen(true), 2000);
     }
-    else  props.car(props.isbn)
+    else  {
+      setMsj("PRODUCT ADDED TO THE SHOPPING CART!")
+      setType("success")
+      
+      props.car(props.isbn)
+    }
   }
 
   function setRedirect2() {
     if(props.type==="init"){
-      setMsj(true)
+      setMsj("YOU MUST LOGGING BEFORE!")
+      setType("info")
       setTimeout(() => setOpen(true), 2000);
     }
-    else  props.addComent(props.isbn)
+    else props.addComent(props.isbn)
   }
 
 
@@ -66,12 +74,13 @@ const useStyles = makeStyles(theme => ({
     <div> 
       <Snackbar
               anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
-              open={msj}
+              open={msj!==''}
               autoHideDuration={3000} //opcional
           >
               <SnackbarMesssages
-                  variant="info"
-                  message="DEBES INGRESAR A TU CUENTA ANTES!" />
+                  variant={type}
+                  onClose={()=>setMsj('')}
+                  message={msj} />
           </Snackbar>
 
       {renderRedirect()}

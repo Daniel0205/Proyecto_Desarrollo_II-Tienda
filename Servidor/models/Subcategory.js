@@ -12,6 +12,10 @@ const Subcategory = db.define ('subcategory',{
     description:{
         type: Sequelize.TEXT,
         allowNull: false     
+    },
+    active:{
+        type: Sequelize.BOOLEAN,
+        allowNull: true             
     }
 
 },{
